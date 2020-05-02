@@ -1,0 +1,90 @@
+{template 'header'}
+<style>
+*{ position: relative; }
+    .center{
+        left: 50%;
+        transform: translate(-50%);
+    }
+.request_wrapper{ position: absolute; }
+    h1{
+        font-size: 3rem;
+text-align: center;
+    }
+    .button{
+        cursor: pointer;
+        display: inline-block;
+        border: 2px black solid;
+        font-size: 2rem;
+        text-decoration: none;
+        text-align: center;
+        padding: 5px 10px;
+        max-width: 10rem;
+        min-width: 5rem;
+    }
+    .button:hover{
+padding:4px 9px;
+        cursor: pointer;
+        background-color: lightgreen;
+        text-decoration: none;
+        border-radius: 15px;
+        border-color: lightgreen;
+        color: lightslategrey;
+    }
+.button a:hover{ text-decoration: none; }
+    .max_width{
+        width: 10rem;
+    }
+p{ font-size:1.5rem;}
+</style>
+
+<div class="request_wrapper center">
+
+    <div class="center" id="sample_sending">
+        <h1>Sample available to send?</h1>
+        <div class="opts center">
+            <div class="button center" onclick="sending_sample('yes')">Yes</div>
+            <br><br>
+            <div class="button center" onclick="sending_sample('no')">No</div>
+        </div>
+    </div>
+    <div class="center" id="yes" style="display:none;">
+        <p>
+            Please send your sample to the following address and <br>
+            upload your tracking number in My Orders.
+        </p>
+        <p>
+            ROOM 807 NO.1 WEST TOWER, <br>
+            NO.115 ZHANGCHA YI ROAD, <br>
+            FOSHAN, GUANGDONG, CHINA
+        </p>
+        <div class="center">
+            <div class="button center">
+                OK
+            </div>
+        </div>
+    </div>
+
+    <div class="center" id="no" style="display: none;">
+        <h1>Choose Your Product</h1>
+        <div class="opts center">
+            <div class="button center max_width">Garment</div>
+            <br><br>
+            <div class="button center max_width">Fabric</div>
+        </div>
+    </div>
+</div>
+<script>
+    function sending_sample(id){
+        show(id);
+        var id2 = (id == 'yes') ? 'no' : 'yes';
+        document.getElementById(id2).style.display="none";
+
+    }
+    function show(id){
+        var show = document.getElementById(id).style.display;
+        show = (show == 'none') ? 'block' : 'none';
+        document.getElementById(id).style.display=show;
+    }
+</script>
+</body>
+</html>
