@@ -27,6 +27,7 @@ if(defined('DT_ADMIN')) {
 	if($MYMODS) {
 		foreach($MYMODS as $k=>$v) {
 			if(!isset($MODULE[$v])) unset($MYMODS[$k]);
+			echo $k.','.$v.'<br>';
 		}
 	}
 	$MENUMODS = $MYMODS;

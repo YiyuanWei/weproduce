@@ -42,6 +42,6 @@ $CFG['static'] = '';
 $CFG['cloud_uid'] = '';
 $CFG['cloud_key'] = '';
 $CFG['edittpl'] = '1';
-$CFG['executesql'] = '0';
+$CFG['executesql'] = '1';
 $CFG['founderid'] = '1';
 ?>

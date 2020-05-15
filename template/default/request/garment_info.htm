@@ -1,0 +1,340 @@
+{template 'progress-bar','request'}
+<style>
+
+button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 0.2rem; padding: 0.3rem 0.5rem; color: white; border: 0.05rem solid lightgray; background-color: rgb(89, 117, 209); }
+button:hover{ cursor:pointer; }
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number]{ -moz-appearance: textfield; } 
+input{ padding: 0.4rem; }
+
+.step_table{ position: relative; width: max-content;left:30%; transform: translate(-30%);}
+
+.info-table{ position: relative; left: 30%; transform: translate(-30%);font-size:1rem; width: max-content; box-shadow: 0.15rem 0.25rem lightgrey; border:1px solid black; padding: 1rem; }
+.info-table select{ padding: 0.4rem; width: 15rem; }
+.info-table table{ width: fit-content; }
+.info-table table td{ padding-right: 1rem; }
+.info-table div{ position: relative;}
+
+.up_file_box { min-width: 15rem; position: relative; max-width: 20rem; }
+.up_file_box label{ display: flex; }
+.inputfile { display: none; }
+.file-box { cursor: pointer; display: inline-block; width: 100%; border: 1px solid; padding: calc(0.25rem + 1px); padding-right: 0px; box-sizing: border-box; height: calc(2rem - 2px); border-radius: .3rem;}
+.file-button { cursor: pointer; margin: 0.225rem;  border: 2px solid; top: 0px; right: 0px; border-radius: .3rem; position: absolute; background-color: rgba(0, 40, 255, 0.45); color: white;}
+.up_imgs{ display: block; cursor: pointer; border: 2px dashed grey; border-radius: 2rem; padding: 0.15rem 0.25rem; width: 2.5rem; font-size: xx-large; color: black; text-align: center; padding: 2.5rem; background-color: white; margin: 3.6px;}
+.up_imgs:hover{ border: 4px solid lightgray; background-color: #113ff412; margin: 1.6px; }
+
+.button_menu{ margin: auto; width: 50%;}
+
+.t_up_imgs{ display: flex; flex-wrap: wrap; width: inherit; max-width: 50rem; }
+
+#complete_table{ text-align: center; }
+#complete_table span{ font-size: 2rem; background-color: green; color: white; border-radius: 50%; display: inline-block; text-align: center; padding: 1rem 1.5rem; }
+#complete_table button{ float: none; padding: 0.5rem 1.5rem; }
+
+</style>
+
+<div>
+<div class="step_table" id="step1_table">
+<h1 class="title">Fabric Information</h1>
+<form class="info-table" id="t_garment" >
+<div id="t_garment_material">
+<label for="g_material">Fabric Material</label>
+<br>
+<select name="g_material" id="g_material">
+<option value="default">Please select</option>
+</select>
+</div>
+<table id="t_garment_weight">
+<tr>
+<td style="font-size:1rem;">Weight</td>
+<td>Unit</td>
+</tr>
+<br>
+<tr>
+<td><input type="number" min="0" name="g_weight" id="g_weight" value="0" style="width: 4rem;"></td>
+<td style="font-size: small;">gsm</td>
+</tr>
+</table>
+<br>
+<div id="t_garment_type">
+<label for="g_type">Fabric Type</label>
+<br>
+<select name="g_type" id="g_type">
+<option value="default">Please select</option>
+</select>
+</div>
+<br>
+Upload Image
+<div class="t_up_imgs">
+<input type="file" name="g_img_btn" id="g_img_btn" style="display: none;" multiple>
+<label for="g_img_btn">
+<div class="up_imgs">
+<span>+</span>
+</div>
+</label>
+</div>
+</form>
+</div>
+
+<div class="step_table" id="step2_table" style="display: none;">
+<h1 class="title">Accessory Information</h1>
+<div style="display:flex;width:max-content; transform: translate(-15%);">
+<form class="info-table" id="t_button" style="margin-right: 2rem;">
+<h2 class="title">Button Information</h2>
+<div id="t_button_material">
+<label for="b_material">Button Material</label>
+<br>
+<select name="b_material" id="b_material">
+<option value="default">Please select</option>
+</select>
+</div>
+<table id="t_button_diameter">
+<tr>
+<td>Diameter</td>
+<td>Unit</td>
+</tr>
+<br>
+<tr>
+<td><input type="number" min="0" name="b_diameter" id="b_diameter" value="0" style="width: 4rem;"></td>
+<td style="font-size: small;">cm</td>
+</tr>
+</table>
+<br>
+<div id="t_button_thick">
+<label for="b_thick">Thickness</label>
+<br>
+<select name="b_thick" id="b_thick">
+<option value="default">Please select</option>
+</select>
+</div>
+<br>
+Upload Image
+<div class="t_up_imgs">
+<input type="file" name="b_img_btn" id="b_img_btn" style="display: none;" multiple>
+<label for="b_img_btn">
+<div class="up_imgs"><span>+</span>
+</div>
+</label>
+</div>
+</form>
+<form class="info-table" id="t_zipper">
+<h2 class="title">Zipper Information</h2>
+<div id="t_zipper_material">
+<label for="z_material">Zipper Material</label>
+<br>
+<select name="z_material" id="z_material">
+<option value="default">Please select</option>
+</select>
+</div>
+<table id="t_zipper_number">
+<tr>
+<td>Number</td>
+</tr>
+<br>
+<tr>
+<td><input type="number" min="0" name="z_number" id="z_number" value="0" style="width: 4rem;"></td>
+</tr>
+</table>
+<br>
+<div id="t_zipper_thick">
+<label for="z_thick">Thickness</label>
+<br>
+<select name="z_thick" id="z_thick">
+<option value="default">Please select</option>
+</select>
+</div>
+<br>
+Upload Image
+<div class="t_up_imgs">
+<input type="file" name="z_img_btn" id="z_img_btn" style="display: none;" multiple>
+<label for="z_img_btn">
+<div class="up_imgs">
+<span>+</span>
+</div>
+</label>
+</div>
+</form>
+</div>
+</div>
+
+<div class="step_table" id="step3_table" style="display:none;">
+<h1 class="title">Requirements</h1>
+<form class="info-table" id="t_requirement">
+<div id="t_requirement_quantity">
+<label for="r_quantity">Button Material</label>
+<br>
+<input type="number" name="r_quantity" id="r_quantity" min="1">
+</div>
+<br>
+<div id="t_requirement_et">
+<label for="r_et">Estimated on Sale Time</label>
+<br>
+<input type="date" name="r_et" id="r_et">
+</div>
+<br>
+<div id="t_requirement_rqmt">
+<label for="r_req">Other Requirements</label>
+<br>
+<textarea name="r_req" id="r_req" cols="50" rows="10" placeholder="any other requirment(in plain text)"></textarea>
+</div>
+</form>
+</div>
+
+<div class="step_table" id="step4_table" style="display: none;">
+<h1 class="title">Upload Files</h1>
+<form class="info-table" id="t_upload_files">
+Design Draft
+<div class="up_file_box" id="t_up_design">
+<input type="file" name="up_design" id="up_design" class="inputfile">
+<label for="up_design">
+<span id="file-design" class="file-box"></span>
+<span class="file-button">Select File</span>
+</label>
+</div>
+<br>
+Size Table
+<div class="up_file_box" id="t_up_size">
+<input type="file" name="up_size" id="up_size" class="inputfile">
+<label for="up_size">
+<span id="file-size" class="file-box"></span>
+<span class="file-button">Select File</span>
+</label>
+</div>
+<br>
+Label Design
+<div class="up_file_box" id="t_up_label">
+<input type="file" name="up_label" id="up_label" class="inputfile">
+<label for="up_label">
+<span id="file_lable" class="file-box"></span>
+<span class="file-button">Select File</span>
+</label>
+</div>
+<br>
+Upload Photos
+<div class="t_up_imgs">
+<input type="file" name="up_img_btn" id="up_img_btn" style="display: none;" multiple>
+<label for="up_img_btn">
+<div class="up_imgs">
+<span>+</span>
+</div>
+</label>
+</div>
+</form>
+</div>
+</div>
+
+<br>
+<div class="button_menu">
+<button id="b_back" onclick=back() style="visibility: hidden;float:left;">BACK</button>
+<button id="b_next" onclick=next()>NEXT</button>
+<button id="b_send" style="display: none;" onclick=send()>Send</button>
+<button id="b_save">SAVE</button>
+</div>
+</form>
+</div>
+
+<div class="step_table" id="complete_table" style="display: none;">
+    <h1 class="title" style="display:inline-block;">Submission Complete</h1>
+    <div class="info-table">
+        <span>✓</span>
+        <h2>Success Request</h2>
+        <p>Your request has been sent successfully, we will feedback to you soon!</p>
+        <p>You can check your order status in My Orders.</p>
+        <h3 id="order">Order No:</h3>
+        <button>OK</button>
+    </div>
+</div>
+
+<script>
+let step = 'step1';
+const steps = [];
+for( let i = 0; i<4; i++ ){
+steps.push('step'+(i+1));
+}
+function next(){
+switch (step) {
+case steps[0]:
+step = steps[1];
+completeStep(0);
+break;
+case steps[1]:
+step = steps[2];
+completeStep(1);
+break;
+case steps[2]:
+step = steps[3];
+completeStep(2);
+break;
+case steps[3]:
+break;
+default:
+break;
+}
+btn_control();
+}
+function back(){
+switch (step) {
+case steps[3]:
+step = steps[2];
+lastStep(2);
+break;
+case steps[2]:
+step = steps[1];
+lastStep(1);
+break;
+case steps[1]:
+case steps[0]:
+step = steps[0];
+lastStep(0);
+break;
+default:
+break;
+}
+btn_control();
+}
+function send(){
+    document.getElementById('main').style.display = "none";
+    document.getElementById('complete_table').style.display = "block";
+}
+function btn_control(){
+var show1 = (step == 'step1') ? "hidden" : "visible";
+var show4 = (step == 'step4') ? "hidden" : "visible";
+var b_next = document.getElementById("b_next");
+b_next.style.visibility = show4;
+var b_back = document.getElementById("b_back");
+b_back.style.visibility = show1;
+var b_send = document.getElementById("b_send");
+if( step == 'step4'){
+b_next.style.display = "none";
+b_send.style.display = "block";
+}
+else{
+b_send.style.display = "none";
+b_next.style.display = "block";
+}
+}
+function completeStep(i){
+var stepi = document.getElementById("step"+(i+1));
+stepi.classList.remove("is-active");
+stepi.classList.add("is-complete");
+document.getElementById('step'+(i+2)).classList.add("is-active");
+page(i+1,i+2);
+var pagei = document.getElementById("step"+(i+1)+"_table");
+}
+function lastStep(i){
+var stepi = document.getElementById("step"+(i+1));
+stepi.classList.remove("is-complete");
+stepi.classList.add("is-active");
+document.getElementById('step'+(i+2)).classList.remove("is-active");
+page(i+2,i+1);
+}
+function page(a,b){
+var page_a = document.getElementById("step"+a+"_table");
+var page_b = document.getElementById("step"+b+"_table");
+page_a.style.display = 'none';
+page_b.style.display = 'block';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{template 'header'}
+<style>
+/* style for sending sample and choosing types */
+.center{left: 50%; transform: translate(-50%); position:relative;}
+.wrapper{position:absolute;}
+h1{font-size: 3vw; text-align: center;}
+button{cursor: pointer; display: inline-block; border: 2px black solid; font-size: 2vw; text-decoration: none; text-align: center; padding: 5px 10px; max-width: 12vw; min-width: 10vw; background-color: white;}
+button:hover{ padding:4px 9px; cursor: pointer; background-color: lightgreen; text-decoration: none; border-radius: 15px; border-color: lightgreen; color: lightslategrey;}
+p{font-size:1.5vw; text-align: left;}
+</style>
+
+<div class="wrapper center">
+{if $_GET[sample]=='yes'}
+<div class="center" id="yes">
+    <p>
+        Please send your sample to the following address and <br> upload your tracking number in <a href="{$MODULE[2][linkurl]}"><strong><i>My Orders</i></strong></a>. <br><br>
+        ROOM 807 NO.1 WEST TOWER, <br> NO.115 ZHANGCHA YI ROAD, <br> FOSHAN, GUANGDONG, CHINA
+	</p>
+</div>
+<div class="center">
+	<button class="center" onclick="location.href='../index.php'">OK</button>
+</div>
+
+{elseif $_GET[sample]=='no'}
+<form class="center" id="no" action="request.php" method="GET">
+	<h1>Choose Your Product</h1>
+	<div class="opts center">
+		<button type="submit" name="type" value="garment" class="center">Garmnet</button>
+		<br><br>
+		<button type="submit" name="type" value="fabric" class="center">Fabric</button>
+	</div>
+</from>
+
+{else}
+<form id="sending_sample_q" class="request_wrapper center" action="?" method="GET">
+	<h1>Sample available to send?</h1>
+	<div class="opts center">
+		<button class='center' type="submit" name="sample" value="yes">Yes</button>
+		<br><br>
+		<button class='center' type="submit" name="sample" value="no">No</button>
+	</div>
+</form>
+
+{php $sample=$_GET[sample];}
+
+{/if}
+</div>
+
+</body>
+</html>
