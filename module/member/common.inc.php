@@ -14,6 +14,7 @@ if(defined('DT_ADMIN')) {
 			foreach($keys as $v) {
 				if(isset($post[$v])) $post[$v] = banword($BANWORD, $post[$v]);
 			}
+			
 		}
 	}
 	$group_editor = $MG['editor'];
@@ -27,7 +28,6 @@ if(defined('DT_ADMIN')) {
 	if($MYMODS) {
 		foreach($MYMODS as $k=>$v) {
 			if(!isset($MODULE[$v])) unset($MYMODS[$k]);
-			echo $k.','.$v.'<br>';
 		}
 	}
 	$MENUMODS = $MYMODS;

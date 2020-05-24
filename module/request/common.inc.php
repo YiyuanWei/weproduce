@@ -9,9 +9,13 @@ $table_data = $DT_PRE.$module.'_data_'.$moduleid;
 $table_garment = $DT_PRE.$module.'_garment_'.$moduleid;
 $table_fabric = $DT_PRE.$module.'_fabric_'.$moduleid;
 
-$table_req_fabric = $DT_PRE.'_fabric_'.$REQ;
-$table_req_button = $DT_PRE.'_button_'.$REQ;
-$table_req_zipper = $DT_PRE.'_zipper_'.$REQ;
+$table_req_button = $DT_PRE.'button_'.$REQ;
+$table_req_zipper = $DT_PRE.'zipper_'.$REQ;
 
 $TYPE = explode('|', trim($MOD['type']));
+function new_item(){
+    global $table;
+    $id = DB::count($table)+1;
+    return $id;
+}
 ?>

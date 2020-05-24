@@ -24,14 +24,14 @@ class upload {
 
     function __construct($_file, $savepath, $savename = '', $fileformat = '') {
 		global $DT, $_userid;
-		foreach($_file as $file) {
-			$this->file = $file['tmp_name'];
-			$this->file_name = $file['name'];
-			$this->file_size = $file['size'];
-			$this->file_type = $file['type'];
-			$this->file_error = $file['error'];
-			break;
-		}
+		$file = $_file[0];
+		
+		$this->file = $file['tmp_name'];
+		$this->file_name = $file['name'];
+		$this->file_size = $file['size'];
+		$this->file_type = $file['type'];
+		$this->file_error = $file['error'];
+
 		$this->userid = $_userid;
 		$this->ext = file_ext($this->file_name);
 		$this->fileformat = $fileformat ? $fileformat : $DT['uploadtype'];

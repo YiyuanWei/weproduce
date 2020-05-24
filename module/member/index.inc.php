@@ -2,6 +2,7 @@
 defined('IN_DESTOON') or exit('Access Denied');
 login();
 require DT_ROOT.'/module/'.$module.'/common.inc.php';
+
 if($action == 'logout' && $admin_user) {
 	set_cookie('admin_user', '');
 	dmsg($L['index_msg_logout'], '?reload='.$DT_TIME);
