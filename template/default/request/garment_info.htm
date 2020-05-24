@@ -1,4 +1,53 @@
-{template 'progress-bar','request'}
+{template 'header'}
+
+{if $action==complete}
+<style>
+    button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 0.2rem; padding: 0.3rem 0.5rem; color: white; border: 0.05rem solid lightgray; background-color: rgb(89, 117, 209); }
+    button:hover{ cursor:pointer; }
+    #complete_table{ text-align: center; width:max-content; position:relative; left: 50%; transform: translate(-50%);}
+    #complete_table span{ font-size: 2rem; background-color: green; color: white; border-radius: 50%; display: inline-block; text-align: center; padding: 1rem 1.5rem; }
+    #complete_table button{ float: none; padding: 0.5rem 1.5rem; }
+    </style>
+    
+    <div id="complete_table">
+        <h1 class="title" style="display:inline-block;">Submission Complete</h1>
+        <div>
+            <span>✓</span>
+            <h2>Success Request</h2>
+            <p>Your request has been sent successfully, we will feedback to you soon!</p>
+            <p>You can check your order status in <a href="{$MODULE[2][linkurl]}"><strong><i>My Orders</i></strong></a>.</p>
+            <h3 id="order">Order No: {$itemid}</h3>
+            <button onclick="location.href='../index.php'">OK</button>
+        </div>
+    </div>
+        
+{else}
+<style>
+.progress{ margin-top: 4rem; position: relative; left:50%; transform:translate(-50%); width:80%; display: flex; }
+.progress-track{ position: absolute; top: 0.5rem; width: 100%; height: 0.5rem;background-color: lightgrey; z-index: -1; }
+.progress-step{ position: relative; width: 100%; font-size: 0.7rem; text-align: center; }
+.progress-step::before{ content: "\2713"; display: flex; place-content: center center; margin: 0 auto; margin-bottom: 1rem; width: 1rem; height: 1rem; background: white; border: 0.25rem solid lightgrey; border-radius: 100%; color: white;}
+.progress-step::after{content:""; position: absolute; top:.5rem; left: 50%; width: 0%; transition: width 1s ease-in; height: 5px; background: lightgrey; z-index: -1; }
+
+.is-active{ color: rgb(71, 71, 255); }
+.is-active::before{ border: 4px solid grey; animation: pulse 2s infinite;}
+
+.is-complete{ color: green; }
+.is-complete::before{ color: white; background: green; border: 4px solid transparent; }
+.is-complete::after{ background: rgb(89, 117, 209); animation: nextStep 1s; animation-fill-mode: forwards; }
+
+@keyframes pulse{ 0% { box-shadow: 0 0 0 0 rgba(33,131,211,0.4);} 70% { box-shadow: 0 0 0 1rem rgba(33,131,211,0);} 100% { box-shadow: 0 0 0 0 rgba(33, 131, 211, 0);} }
+@keyframes nextStep{ 0% { width: 0%; } 100% { width: 100%; } }
+
+</style>
+<div id="main">
+<div class="progress">
+<div class="progress-track"></div>
+<div id="step1" class="progress-step is-active">FABRIC INFO</div>
+<div id="step2" class="progress-step">ACCESSORY INFO</div>
+<div id="step3" class="progress-step">REQUIREMENTS</div>
+<div id="step4" class="progress-step">UPLOAD FILES</div>
+</div>
 <style>
 
 button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 0.2rem; padding: 0.3rem 0.5rem; color: white; border: 0.05rem solid lightgray; background-color: rgb(89, 117, 209); }
@@ -21,230 +70,322 @@ input{ padding: 0.4rem; }
 .inputfile { display: none; }
 .file-box { cursor: pointer; display: inline-block; width: 100%; border: 1px solid; padding: calc(0.25rem + 1px); padding-right: 0px; box-sizing: border-box; height: calc(2rem - 2px); border-radius: .3rem;}
 .file-button { cursor: pointer; margin: 0.225rem;  border: 2px solid; top: 0px; right: 0px; border-radius: .3rem; position: absolute; background-color: rgba(0, 40, 255, 0.45); color: white;}
-.up_imgs{ display: block; cursor: pointer; border: 2px dashed grey; border-radius: 2rem; padding: 0.15rem 0.25rem; width: 2.5rem; font-size: xx-large; color: black; text-align: center; padding: 2.5rem; background-color: white; margin: 3.6px;}
+.up_imgs{ display: block; cursor: pointer; border: 2px dashed grey; border-radius: 2rem; width: 2.5rem; font-size: xx-large; color: black; text-align: center; padding: 2.5rem; background-color: white; margin: 3.6px;}
 .up_imgs:hover{ border: 4px solid lightgray; background-color: #113ff412; margin: 1.6px; }
 
 .button_menu{ margin: auto; width: 50%;}
 
-.t_up_imgs{ display: flex; flex-wrap: wrap; width: inherit; max-width: 50rem; }
+.t_up_imgs{ display: flex; flex-wrap: wrap; width: inherit; max-width: 33rem; }
 
-#complete_table{ text-align: center; }
-#complete_table span{ font-size: 2rem; background-color: green; color: white; border-radius: 50%; display: inline-block; text-align: center; padding: 1rem 1.5rem; }
-#complete_table button{ float: none; padding: 0.5rem 1.5rem; }
-
+.t_up_imgs img{ width: 7.5rem; height: 7.5rem; margin:5.6px;}
+.t_up_imgs img:hover{ cursor:pointer; border: 1px solid lightgray; width: calc(7.5rem - 2px); height: calc(7.5rem - 2px);}
 </style>
 
-<div>
-<div class="step_table" id="step1_table">
-<h1 class="title">Fabric Information</h1>
-<form class="info-table" id="t_garment" >
-<div id="t_garment_material">
-<label for="g_material">Fabric Material</label>
-<br>
-<select name="g_material" id="g_material">
-<option value="default">Please select</option>
-</select>
-</div>
-<table id="t_garment_weight">
-<tr>
-<td style="font-size:1rem;">Weight</td>
-<td>Unit</td>
-</tr>
-<br>
-<tr>
-<td><input type="number" min="0" name="g_weight" id="g_weight" value="0" style="width: 4rem;"></td>
-<td style="font-size: small;">gsm</td>
-</tr>
-</table>
-<br>
-<div id="t_garment_type">
-<label for="g_type">Fabric Type</label>
-<br>
-<select name="g_type" id="g_type">
-<option value="default">Please select</option>
-</select>
-</div>
-<br>
-Upload Image
-<div class="t_up_imgs">
-<input type="file" name="g_img_btn" id="g_img_btn" style="display: none;" multiple>
-<label for="g_img_btn">
-<div class="up_imgs">
-<span>+</span>
-</div>
-</label>
-</div>
-</form>
-</div>
-
-<div class="step_table" id="step2_table" style="display: none;">
-<h1 class="title">Accessory Information</h1>
-<div style="display:flex;width:max-content; transform: translate(-15%);">
-<form class="info-table" id="t_button" style="margin-right: 2rem;">
-<h2 class="title">Button Information</h2>
-<div id="t_button_material">
-<label for="b_material">Button Material</label>
-<br>
-<select name="b_material" id="b_material">
-<option value="default">Please select</option>
-</select>
-</div>
-<table id="t_button_diameter">
-<tr>
-<td>Diameter</td>
-<td>Unit</td>
-</tr>
-<br>
-<tr>
-<td><input type="number" min="0" name="b_diameter" id="b_diameter" value="0" style="width: 4rem;"></td>
-<td style="font-size: small;">cm</td>
-</tr>
-</table>
-<br>
-<div id="t_button_thick">
-<label for="b_thick">Thickness</label>
-<br>
-<select name="b_thick" id="b_thick">
-<option value="default">Please select</option>
-</select>
-</div>
-<br>
-Upload Image
-<div class="t_up_imgs">
-<input type="file" name="b_img_btn" id="b_img_btn" style="display: none;" multiple>
-<label for="b_img_btn">
-<div class="up_imgs"><span>+</span>
-</div>
-</label>
-</div>
-</form>
-<form class="info-table" id="t_zipper">
-<h2 class="title">Zipper Information</h2>
-<div id="t_zipper_material">
-<label for="z_material">Zipper Material</label>
-<br>
-<select name="z_material" id="z_material">
-<option value="default">Please select</option>
-</select>
-</div>
-<table id="t_zipper_number">
-<tr>
-<td>Number</td>
-</tr>
-<br>
-<tr>
-<td><input type="number" min="0" name="z_number" id="z_number" value="0" style="width: 4rem;"></td>
-</tr>
-</table>
-<br>
-<div id="t_zipper_thick">
-<label for="z_thick">Thickness</label>
-<br>
-<select name="z_thick" id="z_thick">
-<option value="default">Please select</option>
-</select>
-</div>
-<br>
-Upload Image
-<div class="t_up_imgs">
-<input type="file" name="z_img_btn" id="z_img_btn" style="display: none;" multiple>
-<label for="z_img_btn">
-<div class="up_imgs">
-<span>+</span>
-</div>
-</label>
-</div>
-</form>
-</div>
-</div>
-
-<div class="step_table" id="step3_table" style="display:none;">
-<h1 class="title">Requirements</h1>
-<form class="info-table" id="t_requirement">
-<div id="t_requirement_quantity">
-<label for="r_quantity">Button Material</label>
-<br>
-<input type="number" name="r_quantity" id="r_quantity" min="1">
-</div>
-<br>
-<div id="t_requirement_et">
-<label for="r_et">Estimated on Sale Time</label>
-<br>
-<input type="date" name="r_et" id="r_et">
-</div>
-<br>
-<div id="t_requirement_rqmt">
-<label for="r_req">Other Requirements</label>
-<br>
-<textarea name="r_req" id="r_req" cols="50" rows="10" placeholder="any other requirment(in plain text)"></textarea>
-</div>
-</form>
-</div>
-
-<div class="step_table" id="step4_table" style="display: none;">
-<h1 class="title">Upload Files</h1>
-<form class="info-table" id="t_upload_files">
-Design Draft
-<div class="up_file_box" id="t_up_design">
-<input type="file" name="up_design" id="up_design" class="inputfile">
-<label for="up_design">
-<span id="file-design" class="file-box"></span>
-<span class="file-button">Select File</span>
-</label>
-</div>
-<br>
-Size Table
-<div class="up_file_box" id="t_up_size">
-<input type="file" name="up_size" id="up_size" class="inputfile">
-<label for="up_size">
-<span id="file-size" class="file-box"></span>
-<span class="file-button">Select File</span>
-</label>
-</div>
-<br>
-Label Design
-<div class="up_file_box" id="t_up_label">
-<input type="file" name="up_label" id="up_label" class="inputfile">
-<label for="up_label">
-<span id="file_lable" class="file-box"></span>
-<span class="file-button">Select File</span>
-</label>
-</div>
-<br>
-Upload Photos
-<div class="t_up_imgs">
-<input type="file" name="up_img_btn" id="up_img_btn" style="display: none;" multiple>
-<label for="up_img_btn">
-<div class="up_imgs">
-<span>+</span>
-</div>
-</label>
-</div>
-</form>
-</div>
-</div>
-
-<br>
-<div class="button_menu">
-<button id="b_back" onclick=back() style="visibility: hidden;float:left;">BACK</button>
-<button id="b_next" onclick=next()>NEXT</button>
-<button id="b_send" style="display: none;" onclick=send()>Send</button>
-<button id="b_save">SAVE</button>
-</div>
-</form>
-</div>
-
-<div class="step_table" id="complete_table" style="display: none;">
-    <h1 class="title" style="display:inline-block;">Submission Complete</h1>
-    <div class="info-table">
-        <span>✓</span>
-        <h2>Success Request</h2>
-        <p>Your request has been sent successfully, we will feedback to you soon!</p>
-        <p>You can check your order status in My Orders.</p>
-        <h3 id="order">Order No:</h3>
-        <button>OK</button>
+<form id="info" action="?" method="POST" enctype="multipart/form-data">
+    <div class="step_table" id="step1_table">
+        <h1 class="title">Fabric Information</h1>
+        <div class="info-table">
+            <div>
+                <label for="fmid">Fabric Material</label></span>
+                <br>               
+                 <select name="fmid" id="fmid" onchange="other('fm')">
+                    <option value="default">Please select</option>
+                    <!--{php $tags=tag("table=fabric_material&template=null");}-->
+                    {loop $tags $i $v}
+                    <option value="{$v[fmid]}">{$v[fm]}</option>
+                    {/loop}
+                </select>
+            </div>
+            <div id="fm" style="display:none">
+                <br>
+                <label for="fminput" style="font-size: .75rem;">Others: </label>
+                <input type="text" id='fminput' name="fm"/>
+            </div>
+            <span id='dfmid' class="f_red"></span>
+            <table>
+                <tr>
+                    <td style="font-size:1rem;">Weight</td>
+                    <td>Unit</td>
+                </tr>
+                <br>
+                <tr>
+                    <td><input type="number" min="0" name="fweight" id="fweight" placeholder='0' style="width: 4.5rem;" step='0.01'></td>
+                    <td style="font-size: small;">gsm</td>
+                </tr>
+            </table>
+            <br>
+            <div>
+                <label for="fcatid">Fabric Type</label>
+                <br>
+                <select name="fcatid" id="fcatid" onchange="other('fcat')">
+                    <option value="default">Please select</option>
+                    <!--{php $tags=tag("table=fabric_category&template=null");}-->
+                    {loop $tags $i $v}
+                    <option value="{$v[fcatid]}">{$v[fcat]}</option>
+                    {/loop}
+                </select>
+            </div>
+            <div id="fcat" style="display:none">
+                <br>
+                <label for="fcatinput" style="font-size: .75rem;">Others: </label>
+                <input type="text" id='fcatinput' name="fcat"/>
+            </div>
+            <span id='dfcatid' class="f_red"></span>
+            <br>
+            Upload Image
+            <div class="t_up_imgs">
+                <div class="t_up_imgs" id="fimg_pre"></div>
+                <div class="t_up_imgs">
+                    <input type="file" name="fimg[]" id="fimg" style="display: none;" multiple accept="image/*" onchange="showImage('f')">
+                    <label for="fimg">
+                        <div class="up_imgs">
+                            <span>+</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="step_table" id="step2_table" style="display: none;">
+        <h1 class="title">Accessory Information</h1>
+        <div style="display:flex;width:max-content; transform: translate(-15%);">
+            <div class="info-table" style="margin-right: 2rem;">
+                <h2 class="title">Button Information</h2>
+                <div>
+                    <label for="bmid">Button Material</label>
+                    <br>
+                    <select name="bmid" id="bmid" onchange="other('bm')">
+                        <option value="default">Please select</option>
+                        <!--{php $tags=tag("table=button_material&template=null");}-->
+                        {loop $tags $i $v}
+                        <option value="{$v[bmid]}">{$v[bm]}</option>
+                        {/loop}
+                    </select>
+                </div>
+                <div id="bm" style="display:none">
+                    <br>
+                    <label for="bminput" style="font-size: .75rem;">Others: </label>
+                    <input type="text" id='bminput' name="bm"/>
+                </div>
+                <span id='dbmid' class="f_red"></span>
+                <table>
+                    <tr>
+                        <td>Diameter</td>
+                        <td>Unit</td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <td><input type="number" min="0" name="bdiameter" style="width: 4rem;" id="bdiameter" step="0.01" ></td>
+                        <td style="font-size: small;">cm</td>
+                    </tr>
+                </table>
+                <br>
+                <div>
+                    <label for="btid">Thickness</label>
+                    <br>
+                    <select name="btid" id="btid" onchange="other('bt')">
+                        <option value="default">Please select</option>
+                        <!--{php $tags=tag("table=button_thickness&template=null");}-->
+                        {loop $tags $i $v}
+                        <option value="{$v[btid]}">{$v[btv]} {$v[unit]}</option>
+                        {/loop}
+                    </select>
+                </div>
+                <table id="bt" style="display:none">
+                    <tr>
+                        <td>Value</td>
+                        <td>Unit</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="btv" id="btvinput"/></td>
+                        <td><input type="text" name="btunit" id="btunitinput"/></td>
+                    </tr>
+                </table>
+                <span id='dbtid' class="f_red"></span>
+                <br>
+                Upload Image
+                <div class="t_up_imgs">
+                    <div class="t_up_imgs" id="bimg_pre"></div>
+                    <div class="t_up_imgs">
+                        <input type="file" name="bimg[]" id="bimg" style="display: none;" multiple accept="image/*" onchange="showImage('b')">
+                        <label for="bimg">
+                            <div class="up_imgs">
+                                <span>+</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="info-table">
+                <h2 class="title">Zipper Information</h2>
+                <div>
+                    <label for="zmid">Zipper Material</label>
+                    <br>
+                    <select name="zmid" id="zmid" onchange="other('zm')">
+                        <option value="default">Please select</option>
+                        <!--{php $tags=tag("table=zipper_material&template=null");}-->
+                        {loop $tags $i $v}
+                        <option value="{$v[zmid]}">{$v[zm]}</option>
+                        {/loop}
+                    </select>
+                </div>
+                <div id="zm" style="display:none">
+                    <br>
+                    <label for="zminput" style="font-size: .75rem;">Others: </label>
+                    <input type="text" id='zminput' name="zm"/>
+                </div>
+                <span id='dzmid' class="f_red"></span>
+                <table>
+                    <tr>
+                        <td>Number</td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <td><input type="number" min="0" name="znumber" placeholer='0' id="znumber" style="width:4rem;"></td>
+                    </tr>
+                </table>
+                <br>
+                <div>
+                    <label for="ztid">Thickness</label>
+                    <br>
+                    <select name="ztid" id="ztid"
+                    onchange="other('zt')">
+                        <option value="default">Please select</option>
+                        <!--{php $tags=tag("table=zipper_thickness&template=null");}-->
+                        {loop $tags $i $v}
+                        <option value="{$v[ztid]}">{$v[ztv]} {$v[unit]}</option>
+                        {/loop}
+                    </select>
+                </div>
+                <table id="zt" style="display:none">
+                    <tr>
+                        <td>Value</td>
+                        <td>Unit</td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <td><input type="text" name="ztv" id="ztvinput"/></td>
+                        <td><input type="text" name="ztunit" id="ztunitinput"/></td>
+                    </tr>
+                </table>
+                <span id='dztid' class="f_red"></span>
+                Upload Image
+                <div class="t_up_imgs">
+                    <div class="t_up_imgs" id="zimg_pre"></div>
+                    <div class="t_up_imgs">
+                        <input type="file" name="zimg[]" id="zimg" style="display: none;" multiple accept="image/*" onchange="showImage('z')">
+                        <label for="zimg">
+                            <div class="up_imgs">
+                                <span>+</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step_table" id="step3_table" style="display:none;">
+        <h1 class="title">Requirements</h1>
+        <div class="info-table">
+            <div>
+                <label for="quantity">Quantity</label>
+                <br>
+                <input type="number" name="quantity" id="quantity" min="1">
+            </div>
+            <br>
+            <div id="t_requirement_et">
+                <label for="saletime">Estimated on Sale Time</label>
+                <br>
+                <input type="date" name="saletime" id="saletime">
+            </div>
+            <br>
+            <div>
+                <label for="ftid">Thickness</label>
+                <br>
+                <select name="ftid" id="ftid" onchange="other('ft')">
+                    <option value="default">Please select</option>
+                    <!--{php $tags=tag("table=fabric_thickness&template=null");}-->
+                    {loop $tags $i $v}
+                    <option value="{$v[ftid]}">{$v[ftv]} {$v[unit]}</option>
+                    {/loop}
+                </select>
+            </div>
+            <table id="ft" style="display:none">
+                <tr>
+                    <td>Value</td>
+                    <td>Unit</td>
+                </tr>
+                <br>
+                <tr>
+                    <td><input type="text" name="ftv" id="ftvinput"/></td>
+                    <td><input type="text" name="ftunit" id="ftunitinput"/></td>
+                </tr>
+            </table>
+            <span id='dftid' class="f_red"></span>
+            <div>
+                <label for="others">Other Requirements</label>
+                <br>
+                <textarea name="others" id="others" cols="50" rows="10" placeholder="any other requirment(in plain text)"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="step_table" id="step4_table" style="display: none;">
+        <h1 class="title">Upload Files</h1>
+        <div class="info-table">
+            Design Draft
+            <div class="up_file_box">
+                <input type="file" name="fDesign" id="fDesign" class="inputfile">
+                <label for="fDesign">
+                    <span class="file-box"></span>
+                    <span class="file-button">Select File</span>
+                </label>
+            </div>
+            <br>
+            Size Table
+            <div class="up_file_box">
+                <input type="file" name="fSize" id="fSize" class="inputfile">
+                <label for="fSize">
+                    <span class="file-box"></span>
+                    <span class="file-button">Select File</span>
+                </label>
+            </div>
+            <br>
+            Label Design
+            <div class="up_file_box">
+                <input type="file" name="fLabel" id="fLabel" class="inputfile">
+                <label for="fLabel">
+                    <span class="file-box"></span>
+                    <span class="file-button">Select File</span>
+                </label>
+            </div>
+            <br>
+            Upload Photos
+            <div class="t_up_imgs">
+                <div class="t_up_imgs" id="upimg_pre"></div>
+                <div class="t_up_imgs">
+                    <input type="file" name="upimg[]" id="upimg" style="display: none;" multiple accept="image/*" onchange="showImage('up')">
+                    <label for="upimg">
+                        <div class="up_imgs">
+                            <span>+</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<br>
+
+<div class="button_menu">
+    <button id="b_back" onclick=back() style="visibility: hidden;float:left;">BACK</button>
+    <button id="b_next" onclick=next()>NEXT</button>
+    <button type="submit" name="submit" value="submit" form="info" id="b_send" style="display: none;" onclick=send()>Send</button>
+    <!--<button id="b_save">SAVE</button>-->
 </div>
+{/if}
 
 <script>
 let step = 'step1';
@@ -253,49 +394,22 @@ for( let i = 0; i<4; i++ ){
 steps.push('step'+(i+1));
 }
 function next(){
-switch (step) {
-case steps[0]:
-step = steps[1];
-completeStep(0);
-break;
-case steps[1]:
-step = steps[2];
-completeStep(1);
-break;
-case steps[2]:
-step = steps[3];
-completeStep(2);
-break;
-case steps[3]:
-break;
-default:
-break;
+if(checkvalue(step)){
+var i = steps.indexOf(step);
+if( i < 3 ) {
+    step = steps[i+1];
+    completeStep(i);
 }
 btn_control();
+}
 }
 function back(){
-switch (step) {
-case steps[3]:
-step = steps[2];
-lastStep(2);
-break;
-case steps[2]:
-step = steps[1];
-lastStep(1);
-break;
-case steps[1]:
-case steps[0]:
-step = steps[0];
-lastStep(0);
-break;
-default:
-break;
+var i = steps.indexOf(step);
+if( i > 0 ){
+    step = steps[i-1];
+    lastStep(i-1);
 }
 btn_control();
-}
-function send(){
-    document.getElementById('main').style.display = "none";
-    document.getElementById('complete_table').style.display = "block";
 }
 function btn_control(){
 var show1 = (step == 'step1') ? "hidden" : "visible";
@@ -335,6 +449,129 @@ var page_b = document.getElementById("step"+b+"_table");
 page_a.style.display = 'none';
 page_b.style.display = 'block';
 }
+function showImage(id_pre){
+    var id_btn = id_pre+'img';
+    var id_previewer = id_pre+'img_pre';
+    if( typeof (FileReader) != "undefined" ){
+        var previewer = document.getElementById(id_previewer);
+        var index = previewer.childElementCount;
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+        var btn = document.getElementById(id_btn);
+        for(var i = 0; i < btn.files.length; i++){
+            var file = btn.files[i];
+            if( regex.test(file.name.toLowerCase()) ){
+                var reader = new FileReader();
+                reader.onload = function(e){
+                    var img = document.createElement("IMG");
+                    img.src = e.target.result;
+                    addImg(previewer, img);
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+    else{
+        alert("This browser cannot preview images after you upload them.");
+    }
+}
+function addImg(previewer, img){
+    img.id = ++previewer.childElementCount;
+    img.setAttribute('onclick',"this.parentNode.removeElement(this)");
+    previewer.appendChild(img);
+}
+function other(pre){
+    var v = Dd(pre+'id').value;
+    if( v === '0' ){
+        Dd(pre).style.display = 'block';
+    }
+    else{
+        Dd(pre).style.display = 'none';
+    }
+}
+function checkvalue(step){
+    switch (step) {
+        case steps[0]:
+            if( Dd('fmid').value == 'default' ){
+                Dmsg('Please select a material for your fabric from the list.','fmid');
+                return false;
+            }
+            if( Dd('fmid').value == 0 && Dd('fminput').value.length == 0 ){
+                Dmsg('Please provide the material you want.','fmid');
+                return false;
+            }
+            if( Dd('fcatid').value == 'default' ){
+                Dmsg('Please select a type of the fabric from the list.','fcatid');
+                return false;
+            }
+            if( Dd('fcatid').value == 0 && Dd('fcatinput').value.length == 0 ){
+                Dmsg('Please provide the prefered fabric type.','fcatid');
+                return false;
+            }
+            break;
+        case steps[1]:
+            if( Dd('bmid').value == 'default' ){
+                Dmsg('Please select a button material from the list.', 'bmid');
+                return false;
+            }
+            if( Dd('bmid').value == 0 && Dd('bminput').value.length == 0 ){
+                Dmsg('Please provide the prefered button material.', 'bmid');
+                return false;
+            }
+            if( Dd('btid').value == 'default' ){
+                Dmsg('Please select a button thickness from the list.', 'btid');
+                return false;
+            }
+            if( Dd('btid').value == 0 && (Dd('btvinput').value.length == 0 || Dd('btunitinput').value.length == 0) ){
+                Dmsg('Please provide the prefered thickness of button (value and units are both required).','btid');
+                return false;
+            }
+            if( Dd('zmid').value == 'default' ){
+                Dmsg('Please select a zipepr material from the list.', 'zmid');
+                return false;
+            }
+            if( Dd('zmid').value == 0 && Dd('zminput').value.length == 0 ){
+                Dmsg('Please provide the prefered zipper material.', 'zmid');
+                return false;
+            }
+            if( Dd('ztid').value == 'default' ){
+                Dmsg('Please select a zipper thickness from the list.', 'ztid');
+                return false;
+            }
+            if( Dd('ztid').value == 0 && (Dd('ztvinput').value.length == 0 || Dd('ztunitinput').value.length == 0) ){
+                Dmsg('Please provide the prefered thickness of zipper (value and units are both required).','ztid');
+                return false;
+            }
+            break;
+        case steps[2]:
+            if( Dd('ftid').value == 'default' ){
+                Dmsg('Please select a fabric thickness from the list.','ftid');
+                return false;
+            }
+            if( Dd('ftid').value == 0 && (Dd('ftvinput').value.length == 0 || Dd('ftunitinput').value.length == 0) ){
+                Dmsg('Please provide the prefered thickness of fabrci (value and units are both required).','ftid');
+                return false;
+            }
+            break;
+        default:
+            break;
+    }
+    return true;
+}
+$('document').ready(function(){
+    var form = Dd('info');
+    var selects = form.getElementsByTagName('SELECT');
+    for( var e in selects ){
+        if( selects[e].id != undefined){
+            selects[e].value = 'default';
+        }
+    }
+    var inputs = form.getElementsByTagName('INPUT');
+    for( var e in inputs ){
+        if( inputs[e].id != undefined ){
+            inputs[e].value = '';
+        }
+    }
+});
 </script>
 </body>
 </html>
