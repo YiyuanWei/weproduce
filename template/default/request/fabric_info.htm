@@ -1,178 +1,137 @@
-{template 'header'}
-{if $action==complete}
-<style>
-    button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 0.2rem; padding: 0.3rem 0.5rem; color: white; border: 0.05rem solid lightgray; background-color: rgb(89, 117, 209); }
-    button:hover{ cursor:pointer; }
-    #complete_table{ text-align: center; width:max-content; position:relative; left: 50%; transform: translate(-50%);}
-    #complete_table span{ font-size: 2rem; background-color: green; color: white; border-radius: 50%; display: inline-block; text-align: center; padding: 1rem 1.5rem; }
-    #complete_table button{ float: none; padding: 0.5rem 1.5rem; }
-    </style>
+{template 'header', 'request'}
 
-<div id="complete_table">
-    <h1 class="title" style="display:inline-block;">Submission Complete</h1>
-    <div>
-        <span>✓</span>
-        <h2>Success Request</h2>
-        <p>Your request has been sent successfully, we will feedback to you soon!</p>
-        <p>You can check your order status in <a href="{$MODULE[2][linkurl]}"><strong><i>My Orders</i></strong></a>.</p>
-        <h3 id="order">Order No: {$itemid}</h3>
-        <button onclick="location.href='../index.php'">OK</button>
-    </div>
-</div>
+{if $action==complete}
+
+{template 'complete','request'}
 
 {else}
-<style>
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0; }
-input[type=number]{ -moz-appearance: textfield; }
-.step_table{ position: relative; width: max-content;left:30%; transform: translate(-30%);}
-.info-table{ position: relative; left: 30%; transform: translate(-30%);font-size:1rem; width: max-content; box-shadow: 0.15rem 0.25rem lightgrey; border:1px solid black; padding: 1rem; }
-.info-table select{ padding: 0.4rem; width: 15rem; }
-.info-table table{ width: fit-content; }
-.info-table table td{ padding-right: 1rem; }
-.info-table div{ position: relative; width: fit-content; }
-button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 0.2rem; padding: 0.3rem 0.5rem; color: white; border: 0.05rem solid lightgray; background-color: rgb(89, 117, 209);}
-button:hover{cursor:pointer;}
-.up_imgs{ display: block; cursor: pointer; border: 2px dashed grey; border-radius: 3px; padding: 0.15rem 0.25rem; width: 2.5rem; font-size: xx-large; color: black; text-align: center; padding: 2.5rem; background-color: white; margin: 0.1rem;}
-.up_imgs:hover{ border: 4px solid lightgrey; background: whitesmoke; }
-
-.t_up_imgs{ display: flex; flex-wrap: wrap; width: inherit; max-width: 33rem; }
-
-.t_up_imgs img{ width: 7.5rem; height: 7.5rem; margin:5.6px;}
-.t_up_imgs img:hover{ cursor:pointer; border: 1px solid lightgray; width: calc(7.5rem - 2px); height: calc(7.5rem - 2px);}
-</style>
-<form class="info-table" id="t_fabric" action="?" method="POST" enctype="multipart/form-data"  οnsubmit="return checkValue();">
-<div class="step_table" id="fabric_table">
-<h1 class="title" style="width:max-content;">Fabric Information</h1>
+<div style="padding: 2rem 0;">
+<form id="info" action="?" method="POST" enctype="multipart/form-data">
+    <div class="step_table" id="fabric_table">
+        <h1 class="title" style="width:max-content;">Fabric Information</h1>
+        <div class="info-table">
+            <div>
+                <label for="fmid">Fabric Material</label>
+                <br>
+                <select name="fmid" id="fmid" onchange="other('fm')">
+                    <option value="default">Please select</option>
+                    <!--{php $tags=tag("table=fabric_material&template=null");}-->
+                    {loop $tags $i $v}
+                    <option value="{$v[fmid]}">{$v[fm]}</option>
+                    {/loop}
+                </select>
+            </div>
+            <div id="fm" style="display:none;">
+                <br>
+                <label for="fminput" style="font-size: .75rem;">Others: </label>
+                <input type="text" id='fminput' name="fm" />
+            </div>
+            <span id='dfmid' class="f_red"></span>
+            <table id="f_fabric_weight">
+                <tr>
+                    <td style="font-size: 1rem;">Weight</td>
+                    <td>Unit</td>
+                </tr>
+                <br>
+                <tr>
+                    <td><input type="number" step="0.01" min = 0  name="fweight" id="fweight" placeholder="0" style="width: 4rem;"></td>
+                    <td style="font-size: small;">gsm</td>
+                </tr>
+            </table>
+            <br>
+            <div>
+                <label for="fcatid">Fabric Type</label>
+                <br>
+                <select name="fcatid" id="fcatid" onchange="other('fcat')">
+                    <option value="default">Please select</option>
+                    <!--{php $tags=tag("table=fabric_category&template=null");}-->
+                    {loop $tags $i $v}
+                    <option value="{$v[fcatid]}">{$v[fcat]}</option>
+                    {/loop}
+                </select>
+            </div>
+            <div id="fcat" style="display:none">
+                <br>
+                <label for="fcatinput" style="font-size: .75rem;">Others: </label>
+                <input type="text" id='fcatinput' name="fcat" />
+            </div>
+            <span id='dfcatid' class="f_red"></span>
+            <table id="t_fabric_quantity">
+                <tr>
+                    <td>Quantity</td>
+                    <td>Unit</td>
+                </tr>
+                <br>
+                <tr>
+                    <td><input name="quantity" type="number" step="0.01" id="quantity" min="1" style="width: 4rem;" placeholder="0"></td>
+                    <td><select name="unit" id="unit" style="width: max-content;">
+                        <option value="default">Meters</option>
+                        <option value="meter" style="display: none;">Meters</option>
+                    </select></td>
+                </tr>
+            </table>
+            <br>
+            <div>
+                <label for="req">Requirement</label>
+                <br>
+                <textarea name="req" id="req" cols="50" rows="10" placeholder="Provide fabric details such as color and other specification requirements if any" style="resize:none;" ></textarea>
+            </div>
+            <span id="dreq" class="f_red"></span>
+            <br>
+            Upload Photos<p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
+            <div class="t_up_imgs">
+                <div class="t_up_imgs" id="fimg_pre">
+                </div>
+                <div class="t_up_imgs">
+                    <input type="file" name="fimg[]" id="fimg" multiple accept="image/* " style="display: none;" onchange="showImage('f')">
+                    <label for="fimg">
+                        <div class="up_imgs">
+                            <span>+</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <br>
-        <div id="t_fabric_material">
-            <label for="fmid">Fabric Material</label>
-            <br>
-            <select name="fmid" id="fmid" onchange="other('fm')" required>
-                <option value="">Please select</option>
-                <!--{php $tags=tag("table=fabric_material&template=null");}-->
-                {loop $tags $i $v}
-                <option value="{$v[fmid]}">{$v[fm]}</option>
-                {/loop}
-            </select>
-        </div>
-        <div id="fm" style="display:none;">
-            <br>
-            <label for="fminput" style="font-size: .75rem;">Others: </label>
-            <input type="text" id='fminput' name="fm" />
-        </div>
-        <span id='dfmid' class="f_red"></span>
-        <table id="f_fabric_weight">
-            <tr>
-                <td>Weight</td>
-                <td>Unit</td>
-            </tr>
-            <br>
-            <tr>
-                <td><input type="number" step="0.01" min = 0  name="fweight" id="fweight"  style="width: 4rem;" required></td>
-                <span id="weight_msg"></span>
-                <br/><br/>
-                <td style="font-size: small;">gsm</td>
-            </tr>
-        </table>
-        <br>
-        <div id="t_fabric_type">
-            <label for="fcatid">Fabric Type</label>
-            <br>
-            <select name="fcatid" id="fcatid" onchange="other('fcat')" required>
-                <option value="">Please select</option>
-                <!--{php $tags=tag("table=fabric_category&template=null");}-->
-                {loop $tags $i $v}
-                <option value="{$v[fcatid]}">{$v[fcat]}</option>
-                {/loop}
-            </select>
-        </div>
-        <div id="fcat" style="display:none">
-            <br>
-            <label for="fcatinput" style="font-size: .75rem;">Others: </label>
-            <input type="text" id='fcatinput' name="fcat"/ >
-        </div>
-        <table id="t_fabric_quantity">
-            <tr>
-                <td>Quantity</td>
-                <td>Unit</td>
-            </tr>
-            <br>
-            <tr>
-                <td><input name="quantity" type="number" step="0.01" id="quantity" min="1" style="width: 4rem;" required></td>
-                <td><select name="unit" id="unit" style="width: max-content;">
-                    <option value="meter">Meters</option>
-                </select></td>
-            </tr>
-        </table>
-        <br>
-        <div id="t_fabric_requirement">
-            <label for="req">Requirement</label>
-            <br>
-            <textarea name="req" id="req" cols="50" rows="10" placeholder="Provide fabric details such as color and other specification requirements if any" style="resize:none;" ></textarea>
-        </div>
-        <br>Upload Photos
-        <div class="t_up_imgs">
-            <div class="t_up_imgs" id="fimg_pre"></div>
-        <div class="t_up_imgs">
-            <input type="file" name="fimg[]" id="fimg" multiple accept="image/* " style="display: none;" onchange="showImage('f')">
-                <label for="fimg">
-                    <div class="up_imgs">
-                        <span>+</span>
-                    </div>
-                </label>
-        </div>
-    </form>
-<br>
-    <button type="submit" name="submit" value="submit" form="t_fabric" id="b_send" >Send</button>
+
+<div class="button_menu" style="margin-bottom: 3rem;">
+    <button type="submit" name="submit" value="submit" form="info" onclick="return checkvalue()">Send</button>
     <!--<button id="b_save">SAVE</button>-->
+</div>
+
+</div>
 {/if}
 
 <script>
- 
-function showImage(id_pre){
-    var id_btn = id_pre+'img';
-    var id_previewer = id_pre+'img_pre';
-    if( typeof (FileReader) != "undefined" ){
-        var previewer = document.getElementById(id_previewer);
-        var index = previewer.childElementCount;
-        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
-        var btn = document.getElementById(id_btn);
-        for(var i = 0; i < btn.files.length; i++){
-            var file = btn.files[i];
-            if( regex.test(file.name.toLowerCase()) ){
-                var reader = new FileReader();
-                reader.onload = function(e){
-                    var img = document.createElement("IMG");
-                    img.src = e.target.result;
-                    addImg(previewer, img);
-                }
-            }
-            reader.readAsDataURL(file);
-        }
+function checkvalue(){
+    console.debug('true');
+    if( Dd('fmid').value == 'default' ){
+        Dmsg('Please select a material for your fabric from the list.','fmid');
+        return false;
     }
-    else{
-        alert("This browser cannot preview images after you upload them.");
+    if( Dd('fmid').value == 0 && Dd('fminput').value.length == 0 ){
+        Dmsg('Please provide the material you want.','fmid');
+        return false;
     }
+    if( Dd('fcatid').value == 'default' ){
+        Dmsg('Please select a type of the fabric from the list.','fcatid');
+        return false;
+    }
+    if( Dd('fcatid').value == 0 && Dd('fcatinput').value.length == 0 ){
+        Dmsg('Please provide the prefered fabric type.','fcatid');
+        return false;
+    }
+    if( Dd('req').value == '' ){
+        Dmsg('Please provide some requirement.','req');
+        return false;
+    }
+    if( Dd('unit').value == 'default' ) Dd('unit').value = 'meter';
+    return true;
 }
-
-function addImg(previewer, img){
-    img.id = ++previewer.childElementCount;
-    img.setAttribute('onclick',"this.parentNode.removeElement(this)");
-    previewer.appendChild(img);
-}
-
-function other(pre){
-    var v = document.getElementById(pre+'id').value;
-    if( v === '0' ){
-        document.getElementById(pre).style.display = 'block';
-    }
-    else{
-        document.getElementById(pre).style.display = 'none';
-    }
-}
-
 </script>
-</body>
-</html>
+
+{template 'footer', 'request'}
 
 

@@ -1,25 +1,13 @@
-{template 'header'}
-<style>
-button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 0.2rem; padding: 0.3rem 0.5rem; color: white; border: 0.05rem solid lightgray; background-color: rgb(89, 117, 209); }
-button:hover{ cursor:pointer; }
-
-.step_table{ position: relative; width: max-content;left:30%; transform: translate(-30%);}
-
-#complete_table{ text-align: center; }
-#complete_table span{ font-size: 2rem; background-color: green; color: white; border-radius: 50%; display: inline-block; text-align: center; padding: 1rem 1.5rem; }
-#complete_table button{ float: none; padding: 0.5rem 1.5rem; }
-</style>
-        
-
-<div class="step_table" id="complete_table">
-    <h1 class="title" style="display:inline-block;">Submission Complete</h1>
-    <div>
-        <span>✓</span>
-        <h2>Success Request</h2>
-        <p>Your request has been sent successfully, we will feedback to you soon!</p>
-        <p>You can check your order status in <a href="{$MODULE[2][linkurl]}"><strong><i>My Orders</i></strong></a>.</p>
-        <h3 id="order">Order No:</h3>
-        <button onclick="location.href='../index.php'">OK</button>
+<div style="padding: 2rem 0;">
+    <div id="complete_table">
+        <h1 class="title" style="display:inline-block;">Submission Complete</h1>
+        <div>
+            <span>✓</span>
+            <h2>Success Request</h2>
+            <p>Your request has been sent successfully, we will feedback to you soon!</p>
+            <p>You can check your order status in <a href="{$MODULE[2][linkurl]}"><strong><i>My Orders</i></strong></a>.</p>
+            <h3 id="order">Order No: {$itemid}</h3>
+            <button onclick="location.href='{DT_PATH}'">OK</button>
+        </div>
     </div>
 </div>
-

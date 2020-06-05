@@ -1,45 +1,10 @@
-{template 'header'}
+{template 'header','request'}
 
 {if $action==complete}
-<style>
-    button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 0.2rem; padding: 0.3rem 0.5rem; color: white; border: 0.05rem solid lightgray; background-color: rgb(89, 117, 209); }
-    button:hover{ cursor:pointer; }
-    #complete_table{ text-align: center; width:max-content; position:relative; left: 50%; transform: translate(-50%);}
-    #complete_table span{ font-size: 2rem; background-color: green; color: white; border-radius: 50%; display: inline-block; text-align: center; padding: 1rem 1.5rem; }
-    #complete_table button{ float: none; padding: 0.5rem 1.5rem; }
-</style>
-    
-    <div id="complete_table">
-        <h1 class="title" style="display:inline-block;">Submission Complete</h1>
-        <div>
-            <span>✓</span>
-            <h2>Success Request</h2>
-            <p>Your request has been sent successfully, we will feedback to you soon!</p>
-            <p>You can check your order status in <a href="{$MODULE[2][linkurl]}"><strong><i>My Orders</i></strong></a>.</p>
-            <h3 id="order">Order No: {$itemid}</h3>
-            <button onclick="location.href='../index.php'">OK</button>
-        </div>
-    </div>
-        
+
+{template 'complete','request'}
+
 {else}
-<style>
-.progress{ margin-top: 4rem; position: relative; left:50%; transform:translate(-50%); width:80%; display: flex; }
-.progress-track{ position: absolute; top: 0.5rem; width: 100%; height: 0.5rem;background-color: lightgrey; z-index: -1; }
-.progress-step{ position: relative; width: 100%; font-size: 0.7rem; text-align: center; }
-.progress-step::before{ content: "\2713"; display: flex; place-content: center center; margin: 0 auto; margin-bottom: 1rem; width: 1rem; height: 1rem; background: white; border: 0.25rem solid lightgrey; border-radius: 100%; color: white;}
-.progress-step::after{content:""; position: absolute; top:.5rem; left: 50%; width: 0%; transition: width 1s ease-in; height: 5px; background: lightgrey; z-index: -1; }
-
-.is-active{ color: rgb(71, 71, 255); }
-.is-active::before{ border: 4px solid grey; animation: pulse 2s infinite;}
-
-.is-complete{ color: green; }
-.is-complete::before{ color: white; background: green; border: 4px solid transparent; }
-.is-complete::after{ background: rgb(89, 117, 209); animation: nextStep 1s; animation-fill-mode: forwards; }
-
-@keyframes pulse{ 0% { box-shadow: 0 0 0 0 rgba(33,131,211,0.4);} 70% { box-shadow: 0 0 0 1rem rgba(33,131,211,0);} 100% { box-shadow: 0 0 0 0 rgba(33, 131, 211, 0);} }
-@keyframes nextStep{ 0% { width: 0%; } 100% { width: 100%; } }
-
-</style>
 <div id="main">
 <div class="progress">
 <div class="progress-track"></div>
@@ -48,38 +13,6 @@
 <div id="step3" class="progress-step">REQUIREMENTS</div>
 <div id="step4" class="progress-step">UPLOAD FILES</div>
 </div>
-<style>
-
-button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 0.2rem; padding: 0.3rem 0.5rem; color: white; border: 0.05rem solid lightgray; background-color: rgb(89, 117, 209); }
-button:hover{ cursor:pointer; }
-
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-input[type=number]{ -moz-appearance: textfield; } 
-input{ padding: 0.4rem; }
-
-.step_table{ position: relative; width: max-content;left:30%; transform: translate(-30%);}
-
-.info-table{ position: relative; left: 30%; transform: translate(-30%);font-size:1rem; width: max-content; box-shadow: 0.15rem 0.25rem lightgrey; border:1px solid black; padding: 1rem; }
-.info-table select{ padding: 0.4rem; width: 15rem; }
-.info-table table{ width: fit-content; }
-.info-table table td{ padding-right: 1rem; }
-.info-table div{ position: relative;}
-
-.up_file_box { min-width: 15rem; position: relative; max-width: 20rem; }
-.up_file_box label{ display: flex; }
-.inputfile { display: none; }
-.file-box { cursor: pointer; display: inline-block; width: 100%; border: 1px solid; padding: calc(0.25rem + 1px); padding-right: 0px; box-sizing: border-box; height: calc(2rem - 2px); border-radius: .3rem;}
-.file-button { cursor: pointer; margin: 0.225rem;  border: 2px solid; top: 0px; right: 0px; border-radius: .3rem; position: absolute; background-color: rgba(0, 40, 255, 0.45); color: white;}
-.up_imgs{ display: block; cursor: pointer; border: 2px dashed grey; border-radius: 2rem; width: 2.5rem; font-size: xx-large; color: black; text-align: center; padding: 2.5rem; background-color: white; margin: 3.6px;}
-.up_imgs:hover{ border: 4px solid lightgray; background-color: #113ff412; margin: 1.6px; }
-
-.button_menu{ margin: auto; width: 50%;}
-
-.t_up_imgs{ display: flex; flex-wrap: wrap; width: inherit; max-width: 33rem; }
-
-.t_up_imgs img{ width: 7.5rem; height: 7.5rem; margin:5.6px;}
-.t_up_imgs img:hover{ cursor:pointer; border: 1px solid lightgray; width: calc(7.5rem - 2px); height: calc(7.5rem - 2px);}
-</style>
 
 <form id="info" action="?" method="POST" enctype="multipart/form-data">
     <div class="step_table" id="step1_table">
@@ -88,7 +21,7 @@ input{ padding: 0.4rem; }
             <div>
                 <label for="fmid">Fabric Material</label></span>
                 <br>               
-                 <select name="fmid" id="fmid" required>
+                 <select name="fmid" id="fmid" required onchange="other('fm')">
                     <option value="default">Please select</option>
                     <!--{php $tags=tag("table=fabric_material&template=null");}-->
                     {loop $tags $i $v}
@@ -132,7 +65,7 @@ input{ padding: 0.4rem; }
             </div>
             <span id='dfcatid' class="f_red"></span>
             <br>
-            Upload Image
+            Upload Image<p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
             <div class="t_up_imgs">
                 <div class="t_up_imgs" id="fimg_pre"></div>
                 <div class="t_up_imgs">
@@ -149,7 +82,7 @@ input{ padding: 0.4rem; }
 
     <div class="step_table" id="step2_table" style="display: none;">
         <h1 class="title">Accessory Information</h1>
-        <div style="display:flex;width:max-content; transform: translate(-15%);">
+        <div style="display:flex;width:max-content; transform: translate(-30%);">
             <div class="info-table" style="margin-right: 2rem;">
                 <h2 class="title">Button Information</h2>
                 <div>
@@ -204,7 +137,7 @@ input{ padding: 0.4rem; }
                 </table>
                 <span id='dbtid' class="f_red"></span>
                 <br>
-                Upload Image
+                Upload Image<p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
                 <div class="t_up_imgs">
                     <div class="t_up_imgs" id="bimg_pre"></div>
                     <div class="t_up_imgs">
@@ -270,7 +203,7 @@ input{ padding: 0.4rem; }
                     </tr>
                 </table>
                 <span id='dztid' class="f_red"></span>
-                Upload Image
+                Upload Image<p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
                 <div class="t_up_imgs">
                     <div class="t_up_imgs" id="zimg_pre"></div>
                     <div class="t_up_imgs">
@@ -362,7 +295,7 @@ input{ padding: 0.4rem; }
                 </label>
             </div>
             <br>
-            Upload Photos
+            Upload Photos<p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
             <div class="t_up_imgs">
                 <div class="t_up_imgs" id="upimg_pre"></div>
                 <div class="t_up_imgs">
@@ -382,7 +315,7 @@ input{ padding: 0.4rem; }
 <div class="button_menu" style="margin-bottom: 3rem;">
     <button id="b_back" onclick=back() style="visibility: hidden;float:left;">BACK</button>
     <button id="b_next" onclick=next()>NEXT</button>
-    <button type="submit" name="submit" value="submit" form="info" id="b_send" style="display: none;" onclick=send()>Send</button>
+    <button type="submit" name="submit" value="submit" form="info" id="b_send" style="display: none;">Send</button>
     <!--<button id="b_save">SAVE</button>-->
 </div>
 {/if}
@@ -391,102 +324,63 @@ input{ padding: 0.4rem; }
 let step = 'step1';
 const steps = [];
 for( let i = 0; i<4; i++ ){
-steps.push('step'+(i+1));
+    steps.push('step'+(i+1));
 }
 function next(){
-if(checkvalue(step)){
-var i = steps.indexOf(step);
-if( i < 3 ) {
-    step = steps[i+1];
-    completeStep(i);
-}
-btn_control();
-}
+    if(checkvalue(step)){
+    var i = steps.indexOf(step);
+    if( i < 3 ) {
+        step = steps[i+1];
+        completeStep(i);
+    }
+    btn_control();
+    }
 }
 function back(){
-var i = steps.indexOf(step);
-if( i > 0 ){
-    step = steps[i-1];
-    lastStep(i-1);
-}
-btn_control();
+    var i = steps.indexOf(step);
+    if( i > 0 ){
+        step = steps[i-1];
+        lastStep(i-1);
+    }
+    btn_control();
 }
 function btn_control(){
-var show1 = (step == 'step1') ? "hidden" : "visible";
-var show4 = (step == 'step4') ? "hidden" : "visible";
-var b_next = document.getElementById("b_next");
-b_next.style.visibility = show4;
-var b_back = document.getElementById("b_back");
-b_back.style.visibility = show1;
-var b_send = document.getElementById("b_send");
-if( step == 'step4'){
-b_next.style.display = "none";
-b_send.style.display = "block";
-}
-else{
-b_send.style.display = "none";
-b_next.style.display = "block";
-}
+    var show1 = (step == 'step1') ? "hidden" : "visible";
+    var show4 = (step == 'step4') ? "hidden" : "visible";
+    var b_next = document.getElementById("b_next");
+    b_next.style.visibility = show4;
+    var b_back = document.getElementById("b_back");
+    b_back.style.visibility = show1;
+    var b_send = document.getElementById("b_send");
+    if( step == 'step4'){
+        b_next.style.display = "none";
+        b_send.style.display = "block";
+    }
+    else{
+        b_send.style.display = "none";
+        b_next.style.display = "block";
+    }
 }
 function completeStep(i){
-var stepi = document.getElementById("step"+(i+1));
-stepi.classList.remove("is-active");
-stepi.classList.add("is-complete");
-document.getElementById('step'+(i+2)).classList.add("is-active");
-page(i+1,i+2);
-var pagei = document.getElementById("step"+(i+1)+"_table");
+    var stepi = document.getElementById("step"+(i+1));
+    stepi.classList.remove("is-active");
+    stepi.classList.add("is-complete");
+    document.getElementById('step'+(i+2)).classList.add("is-active");
+    page(i+1,i+2);
+    var pagei = document.getElementById("step"+(i+1)+"_table");
 }
 function lastStep(i){
-var stepi = document.getElementById("step"+(i+1));
-stepi.classList.remove("is-complete");
-stepi.classList.add("is-active");
-document.getElementById('step'+(i+2)).classList.remove("is-active");
-page(i+2,i+1);
+    var stepi = document.getElementById("step"+(i+1));
+    stepi.classList.remove("is-complete");
+    stepi.classList.add("is-active");
+    document.getElementById('step'+(i+2)).classList.remove("is-active");
+    page(i+2,i+1);
 }
 function page(a,b){
-var page_a = document.getElementById("step"+a+"_table");
-var page_b = document.getElementById("step"+b+"_table");
-page_a.style.display = 'none';
-page_b.style.display = 'block';
-}
-function showImage(id_pre){
-    var id_btn = id_pre+'img';
-    var id_previewer = id_pre+'img_pre';
-    if( typeof (FileReader) != "undefined" ){
-        var previewer = document.getElementById(id_previewer);
-        var index = previewer.childElementCount;
-        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
-        var btn = document.getElementById(id_btn);
-        for(var i = 0; i < btn.files.length; i++){
-            var file = btn.files[i];
-            if( regex.test(file.name.toLowerCase()) ){
-                var reader = new FileReader();
-                reader.onload = function(e){
-                    var img = document.createElement("IMG");
-                    img.src = e.target.result;
-                    addImg(previewer, img);
-                }
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-    else{
-        alert("This browser cannot preview images after you upload them.");
-    }
-}
-function addImg(previewer, img){
-    img.id = ++previewer.childElementCount;
-    img.setAttribute('onclick',"this.parentNode.removeElement(this)");
-    previewer.appendChild(img);
-}
-function other(pre){
-    var v = Dd(pre+'id').value;
-    if( v === '0' ){
-        Dd(pre).style.display = 'block';
-    }
-    else{
-        Dd(pre).style.display = 'none';
-    }
+    var page_a = document.getElementById("step"+a+"_table");
+    var page_b = document.getElementById("step"+b+"_table");
+    page_a.style.display = 'none';
+    page_b.style.display = 'block';
 }
 function checkvalue(step){
     switch (step) {
@@ -557,21 +451,6 @@ function checkvalue(step){
     }
     return true;
 }
-$('document').ready(function(){
-    var form = Dd('info');
-    var selects = form.getElementsByTagName('SELECT');
-    for( var e in selects ){
-        if( selects[e].id != undefined){
-            selects[e].value = 'default';
-        }
-    }
-    var inputs = form.getElementsByTagName('INPUT');
-    for( var e in inputs ){
-        if( inputs[e].id != undefined ){
-            inputs[e].value = '';
-        }
-    }
-});
 </script>
 
-{template 'footer'}
+{template 'footer', 'request'}
