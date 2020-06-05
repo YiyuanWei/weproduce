@@ -3,7 +3,7 @@
 	This is NOT a freeware, use is subject to license.txt
 */
 /* global */
-* {word-break:break-all;font-family:"Microsoft Yahei",Tahoma,Verdana,Arial;-webkit-text-size-adjust:none;}
+* {word-break:keep-all;font-family:"Microsoft Yahei",Tahoma,Verdana,Arial;-webkit-text-size-adjust:none;}
 body {margin:0;font-size:12px;color:#333333;background:#FFFFFF;}
 form,input,select,textarea,td,th {font-size:12px;}
 input,textarea,select {padding:6px;}

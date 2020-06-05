@@ -7,7 +7,7 @@
     #complete_table{ text-align: center; width:max-content; position:relative; left: 50%; transform: translate(-50%);}
     #complete_table span{ font-size: 2rem; background-color: green; color: white; border-radius: 50%; display: inline-block; text-align: center; padding: 1rem 1.5rem; }
     #complete_table button{ float: none; padding: 0.5rem 1.5rem; }
-    </style>
+</style>
     
     <div id="complete_table">
         <h1 class="title" style="display:inline-block;">Submission Complete</h1>
@@ -88,7 +88,7 @@ input{ padding: 0.4rem; }
             <div>
                 <label for="fmid">Fabric Material</label></span>
                 <br>               
-                 <select name="fmid" id="fmid" onchange="other('fm')">
+                 <select name="fmid" id="fmid" required>
                     <option value="default">Please select</option>
                     <!--{php $tags=tag("table=fabric_material&template=null");}-->
                     {loop $tags $i $v}
@@ -379,7 +379,7 @@ input{ padding: 0.4rem; }
 </form>
 <br>
 
-<div class="button_menu">
+<div class="button_menu" style="margin-bottom: 3rem;">
     <button id="b_back" onclick=back() style="visibility: hidden;float:left;">BACK</button>
     <button id="b_next" onclick=next()>NEXT</button>
     <button type="submit" name="submit" value="submit" form="info" id="b_send" style="display: none;" onclick=send()>Send</button>
@@ -573,5 +573,5 @@ $('document').ready(function(){
     }
 });
 </script>
-</body>
-</html>
+
+{template 'footer'}
