@@ -1,4 +1,26 @@
 {template 'header'}
+{if $action==complete}
+<style>
+    button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 0.2rem; padding: 0.3rem 0.5rem; color: white; border: 0.05rem solid lightgray; background-color: rgb(89, 117, 209); }
+    button:hover{ cursor:pointer; }
+    #complete_table{ text-align: center; width:max-content; position:relative; left: 50%; transform: translate(-50%);}
+    #complete_table span{ font-size: 2rem; background-color: green; color: white; border-radius: 50%; display: inline-block; text-align: center; padding: 1rem 1.5rem; }
+    #complete_table button{ float: none; padding: 0.5rem 1.5rem; }
+    </style>
+
+<div id="complete_table">
+    <h1 class="title" style="display:inline-block;">Submission Complete</h1>
+    <div>
+        <span>✓</span>
+        <h2>Success Request</h2>
+        <p>Your request has been sent successfully, we will feedback to you soon!</p>
+        <p>You can check your order status in <a href="{$MODULE[2][linkurl]}"><strong><i>My Orders</i></strong></a>.</p>
+        <h3 id="order">Order No: {$itemid}</h3>
+        <button onclick="location.href='../index.php'">OK</button>
+    </div>
+</div>
+
+{else}
 <style>
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0; }
 input[type=number]{ -moz-appearance: textfield; }
@@ -12,18 +34,33 @@ button{ float: right; position: relative; border-radius: 0.3rem; margin-inline: 
 button:hover{cursor:pointer;}
 .up_imgs{ display: block; cursor: pointer; border: 2px dashed grey; border-radius: 3px; padding: 0.15rem 0.25rem; width: 2.5rem; font-size: xx-large; color: black; text-align: center; padding: 2.5rem; background-color: white; margin: 0.1rem;}
 .up_imgs:hover{ border: 4px solid lightgrey; background: whitesmoke; }
+
+.t_up_imgs{ display: flex; flex-wrap: wrap; width: inherit; max-width: 33rem; }
+
+.t_up_imgs img{ width: 7.5rem; height: 7.5rem; margin:5.6px;}
+.t_up_imgs img:hover{ cursor:pointer; border: 1px solid lightgray; width: calc(7.5rem - 2px); height: calc(7.5rem - 2px);}
 </style>
+<form class="info-table" id="t_fabric" action="?" method="POST" enctype="multipart/form-data"  οnsubmit="return checkValue();">
 <div class="step_table" id="fabric_table">
 <h1 class="title" style="width:max-content;">Fabric Information</h1>
 <br>
-    <form class="info-table" id="t_fabric">
         <div id="t_fabric_material">
-            <label for="f_material">Fabric Material</label>
+            <label for="fmid">Fabric Material</label>
             <br>
-            <select name="f_material" id="f_material">
-                <option value="default">Please select</option>
+            <select name="fmid" id="fmid" onchange="other('fm')" required>
+                <option value="">Please select</option>
+                <!--{php $tags=tag("table=fabric_material&template=null");}-->
+                {loop $tags $i $v}
+                <option value="{$v[fmid]}">{$v[fm]}</option>
+                {/loop}
             </select>
         </div>
+        <div id="fm" style="display:none;">
+            <br>
+            <label for="fminput" style="font-size: .75rem;">Others: </label>
+            <input type="text" id='fminput' name="fm" />
+        </div>
+        <span id='dfmid' class="f_red"></span>
         <table id="f_fabric_weight">
             <tr>
                 <td>Weight</td>
@@ -31,17 +68,28 @@ button:hover{cursor:pointer;}
             </tr>
             <br>
             <tr>
-                <td><input type="number" min="0" name="f_weight" value="0" style="width: 4rem;"></td>
+                <td><input type="number" step="0.01" min = 0  name="fweight" id="fweight"  style="width: 4rem;" required></td>
+                <span id="weight_msg"></span>
+                <br/><br/>
                 <td style="font-size: small;">gsm</td>
             </tr>
         </table>
         <br>
         <div id="t_fabric_type">
-            <label for="f_type">Fabric Type</label>
+            <label for="fcatid">Fabric Type</label>
             <br>
-            <select name="f_type" id="f_type">
-                <option value="default">Please select</option>
+            <select name="fcatid" id="fcatid" onchange="other('fcat')" required>
+                <option value="">Please select</option>
+                <!--{php $tags=tag("table=fabric_category&template=null");}-->
+                {loop $tags $i $v}
+                <option value="{$v[fcatid]}">{$v[fcat]}</option>
+                {/loop}
             </select>
+        </div>
+        <div id="fcat" style="display:none">
+            <br>
+            <label for="fcatinput" style="font-size: .75rem;">Others: </label>
+            <input type="text" id='fcatinput' name="fcat"/ >
         </div>
         <table id="t_fabric_quantity">
             <tr>
@@ -50,7 +98,7 @@ button:hover{cursor:pointer;}
             </tr>
             <br>
             <tr>
-                <td><input name="f_quantity" type="number" id="f_quantity" min="1" value="1" style="width: 4rem;"></td>
+                <td><input name="quantity" type="number" step="0.01" id="quantity" min="1" style="width: 4rem;" required></td>
                 <td><select name="unit" id="unit" style="width: max-content;">
                     <option value="meter">Meters</option>
                 </select></td>
@@ -58,23 +106,73 @@ button:hover{cursor:pointer;}
         </table>
         <br>
         <div id="t_fabric_requirement">
-            <label for="f_requirement">Requirement</label>
+            <label for="req">Requirement</label>
             <br>
-            <textarea name="f_requirement" id="f_requirement" cols="50" rows="10" placeholder="Provide fabric details such as color and other specification requirements if any" style="resize:none;"></textarea>
+            <textarea name="req" id="req" cols="50" rows="10" placeholder="Provide fabric details such as color and other specification requirements if any" style="resize:none;" ></textarea>
         </div>
         <br>Upload Photos
-<div class="t_up_imgs">
-<input type="file" name="up_img_btn" id="up_img_btn" style="display: none;" multiple>
-<label for="up_img_btn">
-<div class="up_imgs">
-<span>+</span>
-</div>
-</label>
-</div>
+        <div class="t_up_imgs">
+            <div class="t_up_imgs" id="fimg_pre"></div>
+        <div class="t_up_imgs">
+            <input type="file" name="fimg[]" id="fimg" multiple accept="image/* " style="display: none;" onchange="showImage('f')">
+                <label for="fimg">
+                    <div class="up_imgs">
+                        <span>+</span>
+                    </div>
+                </label>
+        </div>
     </form>
 <br>
-    <button id="b_send">SEND</button>
-    <button id="b_save">SAVE</button>
-    </div>
+    <button type="submit" name="submit" value="submit" form="t_fabric" id="b_send" >Send</button>
+    <!--<button id="b_save">SAVE</button>-->
+{/if}
+
+<script>
+ 
+function showImage(id_pre){
+    var id_btn = id_pre+'img';
+    var id_previewer = id_pre+'img_pre';
+    if( typeof (FileReader) != "undefined" ){
+        var previewer = document.getElementById(id_previewer);
+        var index = previewer.childElementCount;
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+        var btn = document.getElementById(id_btn);
+        for(var i = 0; i < btn.files.length; i++){
+            var file = btn.files[i];
+            if( regex.test(file.name.toLowerCase()) ){
+                var reader = new FileReader();
+                reader.onload = function(e){
+                    var img = document.createElement("IMG");
+                    img.src = e.target.result;
+                    addImg(previewer, img);
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+    else{
+        alert("This browser cannot preview images after you upload them.");
+    }
+}
+
+function addImg(previewer, img){
+    img.id = ++previewer.childElementCount;
+    img.setAttribute('onclick',"this.parentNode.removeElement(this)");
+    previewer.appendChild(img);
+}
+
+function other(pre){
+    var v = document.getElementById(pre+'id').value;
+    if( v === '0' ){
+        document.getElementById(pre).style.display = 'block';
+    }
+    else{
+        document.getElementById(pre).style.display = 'none';
+    }
+}
+
+</script>
 </body>
 </html>
+
+
