@@ -42,7 +42,7 @@ if($DT_PC) {
 	$editdate = timetodate($edittime, 3);
 	$linkurl = $MOD['linkurl'].$linkurl;
 	$thumbs = get_albums($item);
-	$albums = get_albums($item, 1);
+	$albums = get_big(get_albums($item, 1));
 	$promos = get_promos($username);
 	$fee = get_fee($item['fee'], $MOD['fee_view']);
 	$update = '';
@@ -67,6 +67,7 @@ if($DT_PC) {
 	}
 	view_log($item);
 	if($EXT['mobile_enable']) $head_mobile = str_replace($MOD['linkurl'], $MOD['mobile'], $linkurl);
+	$last = last($itemid);
 } else {
 	$itemid or dheader($MOD['mobile']);
 	$item = $db->get_one("SELECT * FROM {$table} WHERE itemid=$itemid");
@@ -101,10 +102,23 @@ if($DT_PC) {
 	$back_link = $MOD['mobile'].$CAT['linkurl'];
 	$head_name = $CAT['catname'];
 	$foot = '';
+	$last = last($itemid);
 }
 if(!$DT_BOT) include DT_ROOT.'/include/update.inc.php';
 $seo_file = 'show';
 include DT_ROOT.'/include/seo.inc.php';
 $template = $item['template'] ? $item['template'] : ($CAT['show_template'] ? $CAT['show_template'] : ($MOD['template_show'] ? $MOD['template_show'] : 'show'));
 include template($template, $module);
+function last($itemid){
+	global $table,$db;
+	$last_item = $db->get_one("SELECT * FROM {$table} ORDER BY itemid DESC LIMIT 1");
+	$last_id = $last_item['itemid'];
+	return $last_id == $itemid;
+}
+function get_big($albums){
+	foreach ($albums as $k => $album) {
+		$albums[$k] = substr($album,0,strlen($album)-strlen(".middle.jpg"));
+	}
+	return $albums;
+}
 ?>

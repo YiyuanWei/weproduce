@@ -48,7 +48,7 @@ class upload {
 		include load('include.lang');
         if($this->file_error) return $this->_('Error(21)'.$L['upload_failed'].' ('.$L['upload_error_'.$this->file_error].')');
 		if($this->maxsize > 0 && $this->file_size > $this->maxsize) return $this->_('Error(22)'.$L['upload_size_limit'].' ('.intval($this->maxsize/1024).'Kb)');
-        if(!$this->is_allow()) return $this->_('Error(23)'.$L['upload_not_allow']);
+        if(!$this->is_allow()) return $this->_('Error(23)'.$L['upload_not_allow'].$this->fileformat.'a');
         $this->set_savepath($this->savepath);
         $this->set_savename($this->savename);
         if(!is_writable(DT_ROOT.'/'.$this->savepath)) return $this->_('Error(24)'.$L['upload_unwritable']);
@@ -61,7 +61,8 @@ class upload {
 
     function is_allow() {
 		if(!$this->fileformat) return false;
-		if(!preg_match("/^(".$this->fileformat.")$/i", $this->ext)) return false;
+		if(!preg_match("/^(".$this->fileformat.")$/i", $this->ext)){
+			return false;}
 		if(preg_match("/^(php|phtml|php3|php4|jsp|exe|dll|cer|shtml|shtm|asp|asa|aspx|asax|ashx|cgi|fcgi|pl)$/i", $this->ext)) return false;
 		if($this->savename) {
 			$ext = file_ext($this->savename);

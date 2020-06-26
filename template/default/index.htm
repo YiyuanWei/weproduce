@@ -20,7 +20,7 @@
     word-break: keep-all;
   }
   #aboutus .btn:hover{
-    background: rgb(18, 43, 92);
+    background: var(--background-color);
     color: white;
   }
   #aboutus p{
@@ -36,7 +36,7 @@
       <div style="align-self: center;">
         <p style="margin: 0 auto auto; font-size: 2rem;">About Us</p>
         <p>WeProduce is a platform to connect designers worldwide with over 3000 factories in Asia, covering fabric, button, zipper, graphic printing, garment manufactory.</p>
-        <div class="btn" onclick="location.href='{DT_PATH}about'" style="margin:auto auto;border-color: rgb(18, 43, 92);">Learn More</div>
+        <div class="btn" onclick="location.href='{DT_PATH}about'" style="margin:auto auto;border-color: var(--background-color);">Learn More</div>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@
     font-size: 1.2rem;
   }
   #steps p{
-    font-family: cursive;
+    font-family: 'Dancing Script';
     font-style: italic;
     font-size: 1rem;
   }
@@ -99,10 +99,10 @@
     font-style: italic;
     font-size: 1rem;
     padding: .5rem 1rem;
-    color:rgb(18, 43, 92);
+    color: var(--background-color);
   }
   #mall .btn:hover{
-    background-color: rgb(18, 43, 92);
+    background-color: var(--background-color);
     color: white;
   }
   .products{
@@ -150,9 +150,10 @@
   .trigger .wrapper{
     opacity: 0.5;
     font-size: 1.2rem;
-    font-family: cursive;
+    font-family: 'Dancing Script';
     font-style: italic;
-    padding: .5rem 0;
+    padding: 3% 0;
+    height: 100%;
   }
   .product:hover .trigger{
     height: 20%;
@@ -186,19 +187,19 @@
   .prev:hover, .next:hover{
     opacity: .1;
     background: white;
-    color: rgb(18, 43, 92);
+    color: var(--background-color);
   }
 </style>
 {php $mid = 16;}
+<!--{php $tags=tag("moduleid=$mid&condition=status=3&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=18&template=null");}-->
 <div id="mall" class="wrapper">
   <div class="prev" onclick="show(-1)">&#10094;</div>
   <div class="products">
-    <!--{php $tags=tag("moduleid=$mid&condition=status=3&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_mall]."&template=null");}-->
     {loop $tags $i $t}
-    <div class="product clickable hide" id="product-{$t[itemid]}">
+    <div class="product clickable hide" id="product-{$t[itemid]}" onclick="showproduct('{$t[itemid]}')">
       <div style="position: relative;">
         <img src="{$t[thumb]}" alt="">
-        <div class="trigger"><div class="wrapper">Quick View</div></div>
+        <div class="trigger"><div class="wrapper" onclick="quickview('{$t[itemid]}','{$t[title]}','{$t[price]}','{$t[thumb]}','{$t[thumb1]}','{$t[thumb2]}')" onmouseover="qv(true)" onmouseout="qv(false)">Quick View</div></div>
       </div>
       <br>
       <h3>{$t[title]}</h3>
@@ -210,6 +211,8 @@
   <div class="next" onclick="show(1)">&#10095;</div>
   <div class="btn" style="grid-area: more;">Show More</div>
 </div>
+
+{template 'quickview','mall'}
 
 <script>
   var products = document.getElementsByClassName('products')[0].getElementsByClassName('product'); // products is a list 
@@ -238,5 +241,14 @@
   $(document).ready(function(){
     show(0);
   });
+</script>
+<script>
+  var onquickview = false;
+    function qv(bool){
+        onquickview = bool;
+    }
+    function showproduct(id){
+        if(!onquickview) location.href= '{$MODULE[16][linkurl]}show.php?itemid='+id;
+    }
 </script>
 {template 'footer'}
