@@ -1,7 +1,12 @@
 <?php defined('IN_DESTOON') or exit('Access Denied');?><?php include template('header','mall');?>
 <style>
+    .products{
+        display: grid;
+        grid-template-rows: auto auto auto auto auto;
+        grid-template-columns: 25% 25% 25% 25%;
+    }
     .product{
-        width: 20%;
+        width: 90%;
         padding: .5rem;
     }
     .product img{
@@ -70,7 +75,7 @@
     <div class="product clickable" id="product-<?php echo $t['itemid'];?>" onclick="show('<?php echo $t['itemid'];?>')">
       <div style="position: relative;">
         <img src="<?php echo $t['thumb'];?>" alt="">
-        <div class="trigger"><div class="wrapper" onclick="quickview('<?php echo $t['itemid'];?>','<?php echo $t['title'];?>','<?php echo $t['price'];?>','<?php echo $t['thumb'];?>','<?php echo $t['thumb1'];?>','<?php echo $t['thumb2'];?>')" onmouseover="qv(true)" onmouseout="qv(false)">Quick View</div></div>
+        <!-- <div class="trigger"><div class="wrapper" onclick="quickview('<?php echo $t['itemid'];?>','<?php echo $t['title'];?>','<?php echo $t['price'];?>','<?php echo $t['thumb'];?>','<?php echo $t['thumb1'];?>','<?php echo $t['thumb2'];?>')" onmouseover="qv(true)" onmouseout="qv(false)">Quick View</div></div> -->
       </div>
       <h3><?php echo $t['title'];?></h3>
       <p>$<?php echo $t['price'];?></p>

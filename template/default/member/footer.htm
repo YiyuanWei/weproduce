@@ -1,9 +1,34 @@
-</td>
-</tr>
-</table>
+</div>
+</div>
+<div class="b32"></div>
+<div class="b32"></div>
+</div>
+<style>
+    .contact{
+        padding: 1rem 0;
+    }
+    .contact li{
+        text-align: center;
+        padding: 1rem;
+        color: white;
+        font-size: 1rem;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    #map{
+        display: none;
+        width:100%;
+        height:650px;
+        text-align:center;
+    }
+</style>
+<div class="wrapper">
+    <ul class="contact">
+        <li>Tel : +61-452-509-529</li>
+        <li><a href="https://instagram.com/we.produce?igshid=11sf7okfxqd1h"><img src="{DT_SKIN}image/ins.png" style="width: 2rem;" alt=""></a></li>
+    </ul>
 </div>
 <!--[以下为系统关键代码，请勿删除]-->
-<div class="back2top"><a href="javascript:void(0);" title="返回顶部">&nbsp;</a></div>
+<div class="back2top"><a href="javascript:void(0);" title="Back to Top">&nbsp;</a></div>
 <script type="text/javascript">
 $(function(){
 var h1 = $(window).height(),h2 = $('#main').height();
@@ -18,10 +43,10 @@ if(window.location.href.indexOf('message.php') == -1) $('#destoon_space').html(s
 if(window.location.href.indexOf('im.php') == -1) $('#destoon_space').html(sound('chat_new'));
 {/if}
 {if $_message}
-Dnotification('new_message', '{$MODULE[2][linkurl]}message.php', '{useravatar($_username, 'large')}', '站内信 ({$_message})', '收到新的站内信件，点击查看');
+Dnotification('new_message', '{$MODULE[2][linkurl]}message.php', '{useravatar($_username, 'large')}', 'Message ({$_message})', 'A new message received, click to check.');
 {/if}
 {if $_chat}
-Dnotification('new_chat', '{$MODULE[2][linkurl]}im.php', '{useravatar($_username, 'large')}', '新交谈 ({$_chat})', '收到新的对话请求，点击交谈');
+Dnotification('new_chat', '{$MODULE[2][linkurl]}im.php', '{useravatar($_username, 'large')}', 'New Conversation ({$_chat})', 'New request for conversation，click to engage.');
 {/if}
 {if $_userid && $DT[pushtime]}
 window.setInterval('PushNew()',{$DT[pushtime]}*1000);

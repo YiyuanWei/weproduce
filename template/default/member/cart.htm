@@ -1,80 +1,120 @@
-{if $DT_PC}
-{template 'header'}
-{else}
-{template 'header', 'member'}
-{/if}
+{template header}
 {if $action == 'show'}
 <div class="m">
-	<div class="nav">
-		<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="?mid={$mid}">购物车</a>
-	</div>
 	{if $code > 0}
-	<div class="cart-msg"><img src="image/ok.gif" alt="" align="absmiddle"/>  商品已成功加入购物车！ 
-	&nbsp;&nbsp;&nbsp;&nbsp;<a href="{DT_PATH}api/redirect.php?mid={$moduleid}&itemid={$code}" class="b">返回商品</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="?mid={$mid}" class="b">去购物车结算</a></div>
+	<div class="cart-msg"><img src="image/ok.gif" alt="" align="absmiddle"/>  Item is added to your cart 
+	<br>
+	<a href="{DT_PATH}api/redirect.php?mid={$moduleid}&itemid={$code}" class="b">Back to Shopping</a>
+	<br>
+	<a href="?mid={$mid}" class="b">View the Cart</a></div>
 	{else}
 	<div class="cart-msg">
 	<img src="image/ko.gif" alt="" align="absmiddle"/>
-	添加失败！
+	Failed to add the item
 	{if $code == -1}
-	商品已经下架
-	{elseif $code == -2}
-	商品由您自己发布
+	Item has no stock
 	{else}
-	商品已经下架或由您自己发布
+	Item is no longer available
 	{/if}
-	&nbsp;&nbsp;&nbsp;&nbsp;<a href="{if $code == -1}{$MOD[linkurl]}{else}{DT_PATH}api/redirect.php?mid={$moduleid}&itemid={$id}{/if}" class="b">重新挑选</a>
+	&nbsp;&nbsp;&nbsp;&nbsp;<a href="{$MOD[linkurl]}" class="b">Back to Shopping</a>
 	</div>
 	{/if}
 </div>
 {else}
 <script type="text/javascript">var errimg = '{DT_SKIN}image/nopic50.gif';</script>
+<style>
+	#main{
+		display: grid;
+		grid-template-columns: 65% 35%;
+		grid-template-areas: "cart summary";
+		margin: 8rem auto;
+	}
+	#main input[type=submit]{
+		border: none;
+		background-color: #dc4f3e;
+		width: 100%;
+		color: white;
+		font-size: 1.5rem;
+		font-family: var(--we-font);
+		padding: 1rem;
+	}
+	#main input[type=submit]:hover{
+		opacity: .8;
+	}
+	#order-cart{
+		grid-area: cart;
+		width: 95%;
+		margin: auto;
+		margin-top: 0;
+		border-collapse: collapse;
+	}
+	#order-cart td{
+		padding: 2rem 0;
+		border-bottom: 1px solid var(--background-color);
+	}
+	#order-cart td div{
+		height: 100px;
+	}
+	#order-summary{
+		grid-area: summary;
+		width: 95%;
+		margin: auto;
+		margin-top: 0;
+	}
+	.page-title{
+		color: var(--background-color);
+		font-size: 2rem;
+		font-family: 'Dancing Script';
+		width: 100%;
+		text-align: left;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--background-color);
+	}
+	.cart-order{
+		padding: 2rem 0;
+		border-bottom: 1px solid var(--background-color);
+	}
+	.cart-order input[type=number]{
+		height: fit-content;
+		width: 50px;
+		padding: 1rem .5rem;
+	}
+	.cart-order *{
+		margin-top: 0;
+	}
+	.cart-order p{
+		font-size: 1.5rem;
+		margin-top: 0;
+	}
+	p, span{
+		font-family: 'Dancing Script';
+		color: var(--background-color);
+	}
+	p.clickable:hover, span.clickable:hover{
+		color: var(--background-color);
+		opacity: .8;
+	}
+	#summary-main{
+		padding: 2rem 0;
+	}
+</style>
 <div class="m">
-	<div class="nav">
-		{if $lists}<div><a href="?mid={$mid}&action=clear" onclick="return confirm('确定要清空购物车吗？');" class="b">清空</a></div>{/if}
-		<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="?mid={$mid}">购物车</a>
-	</div>
 	{if $lists}
-	<form method="post" action="buy.php" onsubmit="return Mcheck();">
+	<form id="main" method="post" action="buy.php">
 	<input type="hidden" name="from" value="cart"/>
 	<input type="hidden" name="mid" value="{$mid}"/>
-	<table cellpadding="16" cellspacing="0" class="tb">
-	<tr>
-	<th width="20"><input type="checkbox" checked="checked" id="check-all" onclick="Ccheck();calculate();"/></th>
-	<th width="50">图片</th>
-	<th>商品</th>
-	<th width="60">库存</th>
-	<th width="60">单价</th>
-	<th width="100">数量</th>
-	<th width="100">小计</th>
-	<th width="60">删除</th>
-	</tr>
+	<table id="order-cart" cellspacing="0" class="tb">
+		<caption class="page-title">My Cart</caption>
+		<tr>
+			<th width="120px"></th>
+			<th width="300px"></th>
+		</tr>
 	{loop $lists $tags}
 	{loop $tags $i $t}
-	{if $i == 0}
-	<tr align="center" bgcolor="#FAFAFA">
-	<td><input type="checkbox" checked="checked" id="check-{$t[username]}" onclick="Ccheck('{$t[username]}');calculate();" data-check="{$t[username]}"/></td>
-	<td align="left" colspan="3">
-	{if $t[vip]}<img src="{DT_SKIN}image/vip_{$t[vip]}.gif" alt="{VIP}" title="{VIP}:{$t[vip]}级" align="absmiddle"/> {/if}<a href="{userurl($t[username])}" target="_blank">{$t[company]}</a>
-	{if $DT[im_web]}{im_web($t[username].'&mid='.$t[mid].'&itemid='.$t[itemid])}&nbsp;{/if}
-	{if $t[qq] && $DT[im_qq]}{im_qq($t[qq])}&nbsp;{/if}
-	{if $t[wx] && $DT[im_wx]}{im_wx($t[wx], $t[username])}&nbsp;{/if}
-	{if $t[ali] && $DT[im_ali]}{im_ali($t[ali])}&nbsp;{/if}
-	{if $t[skype] && $DT[im_skype]}{im_skype($t[skype])}</a>&nbsp;{/if}
-	</td>
+	<tr class="cart-order" id="{$t[key]}">
 	<td>
-	{php $promos = get_promos($t[username]);}
-	{if $promos}
-	<a href="{$MODULE[2][linkurl]}coupon.php?username={$t[username]}" target="_blank"><div class="cart-promo">优惠券</div></a>
-	{/if}
-	</td>
-	<td></td>
-	<td><span class="f_price px16" id="total-{$t[username]}" data-user="{$t[username]}">0.00</span></td>
-	<td></td>
-	</tr>
-	{/if}
-	<tr align="center" id="tr_{$t[key]}">
-	<td>
-	<input type="checkbox" name="cart[]" value="{$t[key]}" checked="checked" onclick="calculate()" id="check_{$t[key]}" data-check="{$t[username]}"/>
+	<input type="hidden" name="cart[]" value="{$t[key]}" data-check="{$t[username]}">
+	<input type="hidden" id="total_good">
 	<input type="hidden" id="a1_{$t[key]}" value="{$t[a1]}"/>
 	<input type="hidden" id="a2_{$t[key]}" value="{$t[a2]}"/>
 	<input type="hidden" id="a3_{$t[key]}" value="{$t[a3]}"/>
@@ -82,75 +122,95 @@
 	<input type="hidden" id="p2_{$t[key]}" value="{$t[p2]}"/>
 	<input type="hidden" id="p3_{$t[key]}" value="{$t[p3]}"/>
 	<input type="hidden" id="amount_{$t[key]}" value="{$t[amount]}"/>
-	</td>
-	<td><a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="50" alt="{$t[alt]}"  onerror="this.src=errimg;"/></a></td>
-	<td align="left" style="line-height:24px;color:#666666;"><a href="{$t[linkurl]}" target="_blank" class="b" title="{$t[alt]}">{$t[title]}</a><br/>
-	品牌:{if $t[brand]}{$t[brand]}{else}未填写{/if}&nbsp;{if $t[m1]}{$t[n1]}:{$t[m1]}&nbsp;{/if}{if $t[m2]}{$t[n2]}:{$t[m2]}&nbsp;{/if}{if $t[m3]}{$t[n3]}:{$t[m3]}&nbsp;{/if}
-	</td>
-	<td>{$t[amount]}</td>
-	<td title="{if $t[a2]}{$t[a1]}-{$t[a2]}{$t[unit]} {$DT[money_sign]}{$t[p1]}&#10;{if $t[a3]}{$t[a2]+1}-{$t[a3]}{$t[unit]} {$DT[money_sign]}{$t[p2]}&#10;{$t[a3]}{$t[unit]}以上 {$DT[money_sign]}{$t[p3]}{else}{$t[a2]+1}{$t[unit]}以上 {$DT[money_sign]}{$t[p2]}{/if}{else}{$DT[money_sign]}{$t[p1]}{/if}"><span class="f_b" id="price_{$t[key]}">{$t[price]}</span></td>
-	<td><img src="{DT_SKIN}image/arrow_l.gif" width="16" height="8" alt="减少" class="c_p" onclick="alter('{$t[key]}', '-');"/><input type="text" name="amounts[{$t[key]}]" value="{$t[a]}" id="number_{$t[key]}" size="3" onblur="calculate();" class="cc_inp"/> <img src="{DT_SKIN}image/arrow_r.gif" width="16" height="8" alt="增加" class="c_p" onclick="alter('{$t[key]}', '+');"/></td>
-	<td><span class="f_price" id="total_{$t[key]}" total-{$t[username]}="1">{$t[price]}</span></td>
-	<td class="c_p" onclick="if(confirm('确定要删除此商品吗？')) move('{$t[key]}');">删除</a></td>
+	<a href="{$t[linkurl]}"><img src="{$t[thumb]}" width="100" alt="{$t[alt]}" onerror="this.src=errimg;"/></a></td>
+	<td><div>
+		<p>{$t[title]}</p>
+		<p style="font-size: .8rem;">$ <span id="price_{$t[key]}">{$t[price]}</span></p>
+		{if $note}
+		<p style="font-size: .8rem;">Bulk Order: {php print_r($t);}</p>
+		{/if}
+	</div></td>
+	<td><div><input type="number" name="amounts[{$t[key]}]" value="{$t[a]}" id="number_{$t[key]}" onblur="calculate();" onchange="calculate();" min="1"/></div></td>
+	<td><div style="margin: 0 auto;"><p style="font-size: 1.2rem;">$<span id="total_{$t[key]}" total-{$t[username]}="1">{$t[price]}</span></p></div></td>
+	<td><div><span style="justify-self: right;font-size: 1.2rem;height:fit-content" class="clickable" onclick="move('{$t[key]}');">&#x2715;</span></div></td>
 	</tr>
 	{/loop}
 	{/loop}
 	</table>
-	<div class="cart-foot">
-		<table cellpadding="0" cellspacing="0" width="100%">
-		<tr>
-		<td><a href="javascript:;" onclick="move_muti();">删除选中商品</a></td>
-		<td><p>已选商品 <span class="f_red f_b px16" id="total_good"></span> 件&nbsp;&nbsp;&nbsp;&nbsp;合计(不含运费)： <span class="f_red f_b px16" id="total_amount"></span> 元</p></td>
-		<td width="96"><input type="submit" value="结算"/></td>
-		</tr>
+	<style>
+		#summary-main table{
+			width: 100%;
+			border-collapse: collapse;
+		}
+		#summary-main *:not(caption){
+			font-size: 1.2rem;
+			font-family: 'Dancing Script';
+			color: var(--background-color);
+		}
+		#summary-main th{
+			float: left;
+			font-weight: normal;
+		}
+		#summary-main td{
+			float: right;
+		}
+		#address{
+			border-bottom: 1px solid var(--background-color);
+			padding-bottom: 2rem;
+			width: 100%;
+			text-align: left;
+		}
+		#address a{
+			text-decoration: underline;
+			font-style: italic;
+			font-size: 1rem;
+		}
+	</style>
+	<div id="order-summary">
+		<table id="summary-main" cellpadding="0" cellspacing="0" width="100%">
+			<caption class="page-title">Order Summary</caption>
+			<tr>
+				<th>Subtotal</th>
+				<td>$<span id="total_amount"></span></td>
+			</tr>
+			<tr class="b20"></tr>
+			<tr>
+				<th>Shipping</th>
+				<td>$<span id="shipping">{$shipping}</span></td>
+			</tr>
+			<tr class="b10"></tr>
+			<tr><th colspan="2" id="address"><a href="{$MODULE[linkurl]}address.php">{$_address}</a></th></tr>
+			<tr>
+				<th style="margin-top: 1.5rem">Total</th>
+				<td style="margin-top: 1.5rem">$<span id="total"></span></td>
+			</tr>
 		</table>
+		<input type="submit" value="Checkout" class="clickable">
 	</div>
 	</form>
 	{else}
-		<div class="cart-msg"><img src="{DT_SKIN}image/cart_empty.png" width="57" height="49" alt="" align="absmiddle"/> 您的 <span class="f_orange">购物车</span> 还是空的，赶快行动吧！马上去 <a href="{$MOD[linkurl]}" class="b">挑选商品</a></div>
+	<div style="padding: 8rem 0;">
+		<div class="page-title">My Cart</div>
+		<div style="width: 100%; height: 500px; border-bottom: 1px solid var(--background-color);">
+			<style>
+			</style>
+			<div style="width: fit-content; height: fit-content; margin:auto; padding-top: 135px;">
+				<p style="font-size: 2rem">Cart is empty</p>
+				<a href="{$MOD[linkurl]}"><p class="clickable" style="font-size: 1.4rem; text-decoration: underline;">Continue Shopping</p></a>
+			</div>
+		</div>
+	</div>
 	{/if}
 </div>
 {/if}
 <script type="text/javascript">
-function Ccheck(key) {
-	$(key ? '[data-check="'+key+'"]' : '[data-check]').each(function(){
-		$(this).prop('checked', $('#check-'+(key ? key : 'all')).prop('checked') ? true : false);
-	});
-}
-function Mcheck() {
-	if(Dd('total_good').innerHTML == '0') {
-		alert('最少需要挑选1件商品');
-		window.scroll(0, 0);
-		return false;
-	}
-    return true;
-}
-function move_muti() {
-	if(Dd('total_good').innerHTML == '0') {
-		alert('未选择商品');
-		return;
-	}
-	if(confirm('确定要删除选中商品吗？')) {
-		var par = 'action=delete&mid={$mid}&ajax=1';
-		$(':checked').each(function(i) {
-			if($(this).attr('id').indexOf('check_') != -1) {
-				par += '&key[]='+$(this).val();
-			}
-		});		
-		$.post('?', par, function(data) {
-			Go('?mid={$mid}&rand={$DT_TIME}');
-		});
-	}
-}
 function move(i) {
-	Dd('check_'+i).checked = false;
-	Dd('check_'+i).disabled = true;
-	Dh('tr_'+i);
+	Dh(i);
 	calculate();
 	$.post('?', 'action=delete&mid={$mid}&ajax=1&key='+i, function(data) {
 		var cart_num = get_cart();
 		$('#destoon_cart').html(cart_num > 0 ? '<strong>'+cart_num+'</strong>' : '0');
-		if(data == 1 && Dd('total_good').innerHTML == '0') Go('?mid={$mid}&rand={$DT_TIME}');
+		if(data == 1 && Dd('total_good').value == '0') Go('?mid={$mid}&rand={$DT_TIME}');
 	});
 }
 function alter(i, t) {
@@ -170,43 +230,36 @@ function get_price(i) {
 		if(Dd('a3_'+i).value > 1 && parseInt(Dd('number_'+i).value) > parseInt(Dd('a3_'+i).value)) return Dd('p3_'+i).value;
 		if(Dd('a2_'+i).value > 1 && parseInt(Dd('number_'+i).value) > parseInt(Dd('a2_'+i).value)) return Dd('p2_'+i).value;
 	}
-	return Dd('p1_'+i).value
+	return Dd('p1_'+i).value;
 }
 function calculate() {
 	var _good = _amount = _total = 0;
-	$(':checked').each(function(i) {
-		if($(this).attr('id').indexOf('check_') != -1) {
-			var key = $(this).val();
-			var num, good, maxa, mina, price;
-			num = parseInt(Dd('number_'+key).value);
-			maxa = parseInt(Dd('amount_'+key).value);
-			mina = parseInt(Dd('a1_'+key).value);
-			if(num < mina) Dd('number_'+key).value = num = mina;
-			if(num > maxa) Dd('number_'+key).value = num = maxa;
-			if(isNaN(num) || num < 0) Dd('number_'+key).value = num = mina;
-			_good++;
-			price = parseFloat(get_price(key));
-			_total = price*num;
-			_amount += _total;
-			Dd('price_'+key).innerHTML = price.toFixed(2);
-			Dd('total_'+key).innerHTML = _total.toFixed(2);
-		}
-	});
-	Dd('total_good').innerHTML = _good;
+	var items = document.getElementsByClassName("cart-order");
+	for( var i in items ){
+		var item = items[i];
+		var key = item.id;
+		if( key == undefined ) continue;
+		if( item.style.display == 'none') continue;
+		var num, price, good;
+		num = parseInt(Dd('number_'+key).value);
+		price = parseInt(Dd('price_'+key).innerHTML);
+		_total = num*price;
+		Dd('total_'+key).innerHTML = _total;
+		_amount += _total;
+		_good += 1;
+	}
 	Dd('total_amount').innerHTML = _amount.toFixed(2);
-	$('[data-user]').each(function() {
+	Dd('total').innerHTML = (_amount + parseInt(Dd('shipping').innerHTML)).toFixed(2);
+	Dd('total_good').value = _good;
+/* 	$('[data-user]').each(function() {
 		var user = $(this).attr('data-user');
 		var tt = 0;
 		$('[total-'+user+']').each(function() {
 			tt += parseFloat($(this).html());
 		});
 		$(this).html(tt.toFixed(2));
-	});
+	}); */
 }
 {if $lists}$(function(){calculate();});{/if}
 </script>
-{if $DT_PC}
 {template 'footer'}
-{else}
-{template 'footer', 'member'}
-{/if}

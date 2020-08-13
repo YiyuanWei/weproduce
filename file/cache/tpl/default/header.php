@@ -1,83 +1,13 @@
-<?php defined('IN_DESTOON') or exit('Access Denied');?><!DOCTYPE>
-<html>
-<head>
-<meta charset="<?php echo DT_CHARSET;?>"/>
-<title><?php if($seo_title) { ?><?php echo $seo_title;?><?php } else { ?><?php if($head_title) { ?><?php echo $head_title;?><?php echo $DT['seo_delimiter'];?><?php } ?>
-<?php if($city_sitename) { ?><?php echo $city_sitename;?><?php } else { ?><?php echo $DT['sitename'];?><?php } ?>
-<?php } ?>
-</title>
-<?php if($head_keywords) { ?>
-<meta name="keywords" content="<?php echo $head_keywords;?>"/>
-<?php } ?>
-<?php if($head_description) { ?>
-<meta name="description" content="<?php echo $head_description;?>"/>
-<?php } ?>
-<?php if($head_mobile) { ?>
-<meta http-equiv="mobile-agent" content="format=html5;url=<?php echo $head_mobile;?>">
-<?php } ?>
-<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
-<link rel="shortcut icon" type="image/x-icon" href="<?php echo DT_STATIC;?>favicon.ico"/>
-<link rel="bookmark" type="image/x-icon" href="<?php echo DT_STATIC;?>favicon.ico"/>
-<?php if($head_canonical) { ?>
-<link rel="canonical" href="<?php echo $head_canonical;?>"/>
-<?php } ?>
-<?php if($EXT['archiver_enable']) { ?>
-<link rel="archives" title="<?php echo $DT['sitename'];?>" href="<?php echo $EXT['archiver_url'];?>"/>
-<?php } ?>
-<link rel="stylesheet" type="text/css" href="<?php echo DT_SKIN;?>style.css"/>
-<?php if($moduleid>1) { ?>
-<link rel="stylesheet" type="text/css" href="<?php echo DT_SKIN;?><?php echo $module;?>.css"/>
-<?php } ?>
-<?php if($CSS) { ?>
-<?php if(is_array($CSS)) { foreach($CSS as $css) { ?>
-<link rel="stylesheet" type="text/css" href="<?php echo DT_SKIN;?><?php echo $css;?>.css"/>
-<?php } } ?>
-<?php } ?>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!--[if lte IE 6]>
-<link rel="stylesheet" type="text/css" href="<?php echo DT_SKIN;?>ie6.css"/>
-<![endif]-->
-<?php if(!DT_DEBUG) { ?><script type="text/javascript">window.onerror=function(){return true;}</script><?php } ?>
-<script type="text/javascript" src="<?php echo DT_STATIC;?>lang/<?php echo DT_LANG;?>/lang.js"></script>
-<script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/config.js"></script>
-<!--[if lte IE 9]><!-->
-<script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/jquery-1.5.2.min.js"></script>
-<!--<![endif]-->
-<!--[if (gte IE 10)|!(IE)]><!-->
-<script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/jquery-2.1.1.min.js"></script>
-<!--<![endif]-->
-<script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/common.js"></script>
-<script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/page.js"></script>
-<?php if($lazy) { ?><script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/jquery.lazyload.js"></script><?php } ?>
-<?php if($JS) { ?>
-<?php if(is_array($JS)) { foreach($JS as $js) { ?>
-<script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/<?php echo $js;?>.js"></script>
-<?php } } ?>
-<?php } ?>
-<?php $searchid = ($moduleid > 3 && $MODULE[$moduleid]['ismenu'] && !$MODULE[$moduleid]['islink']) ? $moduleid : 5;?>
-<script type="text/javascript">
-<?php if($head_mobile && $EXT['mobile_goto']) { ?>
-GoMobile('<?php echo $head_mobile;?>');
-<?php } ?>
-var searchid = <?php echo $searchid;?>;
-<?php if($itemid && $DT['anticopy']) { ?>
-document.oncontextmenu=function(e){return false;};
-document.onselectstart=function(e){return false;};
-<?php } ?>
-</script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine|Dancing Script|Great Vibes">
+<?php defined('IN_DESTOON') or exit('Access Denied');?><?php include template('head');?>
 <style>
-   :root{
-      --background-color: rgb(18, 43, 92);
-   }
    .clickable{
       cursor: pointer;
    }
    .clickable:hover{
-      color: rgb(220, 79, 62);
+      opacity: .8;
    }
    a:hover{
-      color: rgb(220, 79, 62);
+      color: var(--we-red)
    }
    #banner{
       display: grid;
@@ -125,6 +55,7 @@ document.onselectstart=function(e){return false;};
       width: 2.5rem;
       height: 2.5rem;
       border-radius: 50%;
+      margin: 0 .5rem;
    }
    #user-info li {
       overflow: hidden;
@@ -154,7 +85,8 @@ document.onselectstart=function(e){return false;};
    }
    #menu{
       grid-area: menu;
-      display: flex;
+      display: block;
+      width: 400px;
       justify-self: end;
    }
    #menu li{
@@ -170,7 +102,7 @@ document.onselectstart=function(e){return false;};
       align-self: start;
    }
    #usermenu{
-      width: 9rem; 
+      width: fit-content; 
       border: 1px solid white; 
       background-color: white;
       margin: 0 auto;
@@ -179,11 +111,16 @@ document.onselectstart=function(e){return false;};
       justify-self: end;
    }
    #usermenu li{
-      color : black;
+      color : var(--background-color);
+      padding: .5rem;
+      font-weight: 100;
+   }
+   #usermenu li:hover{
+      color: var(--background-color);
    }
    #usermenu *{
       font-size: 1rem; 
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Arial;
       margin: .5rem;
    }
    #usermenu a{
@@ -197,16 +134,28 @@ document.onselectstart=function(e){return false;};
    .wrapper{
       background-color: var(--background-color);
    }
+   .active, #usermenu .active{
+      color: var(--we-red);
+   }
+   .inactive{
+      color: var(--background-color);
+   }
+.we_f1, .we_f1_0{color: var(--background-color);font-size: 1rem;font-family: var(--we-font);}
+.we_f1_2{color: var(--background-color);font-size: 1.2rem;font-family: var(--we-font);}
+.we_f1_5{color: var(--background-color);font-size: 1.5rem;font-family: var(--we-font);}
+.we_f2, .we_f2_0.we_f1_5{color: var(--background-color);font-size: 2rem;font-family: var(--we-font);}
+.f_i{font-style: italic;}
+.f_un{text-decoration: underline;}
 </style>
 </head>
 <body>
-   <div id="banner" class="wrapper">
-      <div id="head">
+   <div id="banner" class="wrapper" >
+      <div id="head" style="padding-top: 1rem;">
          
          <!----------用户区块----------------->
          <div id="user-menu">
             <div id="user-panel">
-               <div id='user-info' class="clickable" onclick="$('#usermenu').toggle()">
+               <div id='user-info' class="clickable" onclick="if(get_cookie('auth')) $('#usermenu').toggle()">
                   <script type="text/javascript">
                      var destoon_uname = get_cookie('username');
                      document.write('<img src="'+DTPath+'api/avatar/show.php?size=large&reload=<?php echo DT_TIME;?>&username='+destoon_uname+'"/>');
@@ -230,10 +179,12 @@ document.onselectstart=function(e){return false;};
                </div>
                <div id="usermenu" style="display: none;">
                   <ul>
-                     <li>My Orders</li>
-                     <li>My Addresses</li>
-                     <li>My Wallet</li>
-                     <li>My Account</li>
+                     <a href="<?php echo $MODULE['2']['linkurl'];?>order.php" class="clickable"><li class="inactive" id="my-order">My Orders</li></a>
+                     <!-- <li class="inactive" id="my-request">My Requests</li> -->
+                     <a href="<?php echo $MODULE['2']['linkurl'];?>address.php" class="clickable"><li class="inactive" id="my-address">My Addresses</li></a>
+                     <!-- <li class="inactive" id="my-wallet">My Wallet</li> -->
+                     <a href="<?php echo $MODULE['2']['linkurl'];?>account.php"><li class="inactive" id="my-account">My Account</li></a>
+                     <!-- <li class="inactive" id="my-message">My Messages</li> -->
                      <div class="break"></div>
                      <a class="clickable" href="<?php echo $MODULE['2']['linkurl'];?>logout.php"><li>Log Out</li></a>
                   </ul>
@@ -254,7 +205,7 @@ document.onselectstart=function(e){return false;};
          <!----------LOGO区块----------------------->
          <div id='menu'>
             <ul>
-               <li>Past Items</li>
+               <a class="clickable" href="<?php echo $MODULE['2']['linkurl'];?>cart.php?mid=16" id="menu-cart"><li>My Cart</li></a>
                <a class="clickable" href="<?php echo DT_PATH;?>about"><li>About</li></a>
                <a class="clickable" href="<?php echo $MODULE['16']['linkurl'];?>"><li>Shop</li></a>
                <a class="clickable" href="<?php echo $MODULE['100']['linkurl'];?>"><li>Request</li></a>
@@ -267,9 +218,13 @@ document.onselectstart=function(e){return false;};
    
 <script>
 $(document).ready(function(){
-   if(get_cookie('auth')) $('#showsub').css('display','block')
-   else $('#showsub').css('display','none')
+   if(get_cookie('auth')){
+      $('#showsub').css('display','block');
+      $('#menu-cart').css('display','block');
+   }
+   else{
+      $('#showsub').css('display','none');
+      $('#menu-cart').css('display','none');
+   }
 })
 </script>
-</body>
-</html>

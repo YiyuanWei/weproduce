@@ -1,18 +1,309 @@
 {template 'header'}
-<div class="m m1">
-	<div class="m1l">
-		<h1 class="title bd-b">{$title}</h1>
-		<div class="content" id="content">{$content}</div>
-	</div>
-	<div class="m1r side">
-		<ul>
-		<!--{php $tags=tag("table=webpage&condition=item='$_item'&areaid=$cityid&pagesize=99&order=listorder desc,itemid desc&template=null");}-->
-		{loop $tags $k $t}
-		<li class="side_li" id="webpage_{$t[itemid]}"><a href="{if $t[domain]}{$t[domain]}{else}{linkurl($t[linkurl], 1)}{/if}">{$t[title]}</a></li>
-		{/loop}
-		</ul>
-	</div>
-	<div class="c_b"></div>
+<style>
+.mauto{margin: auto;}
+.m0auto{margin: 0 auto;}
+.mt05{margin-top: .5rem;}
+.mt1{margin-top: 1rem;}
+.mt2{margin-top: 2rem;}
+.mt5{margin-top: 5rem;}
+
+.w00{width: fit-content;}
+.w50{width: 50%;}
+.w60{width: 80%;}
+.w70{width: 70%;}
+.w80{width: 80%;}
+.w90{width: 90%;}
+.w100{width: 100%;}
+
+.h00{height: fit-content;}
+.ftd{font-family: 'Dancing Script', serif;}
+.fta{font-family: Arial, Helvetica, sans-serif;}
+.ftt{font-family: 'Times New Roman', Times, serif;}
+.fti{font-style: italic;}
+.fs1{font-weight: bold;}
+.fs2{font-weight: 800;}
+.fs3{font-weight: 1000;}
+.fs0{font-weight: normal;}
+.fs05{font-weight: 200;}
+.fs01{font-weight: 100;}
+
+.bbb{background-color: var(--background-color);}
+.bbw{background-color: white;}
+.cblue{color: var(--background-color);}
+.cwhite{color: white;}
+
+.f12{font-size: 12px;}
+.f15{font-size: 15px;}
+.f18{font-size: 18px;}
+.f20{font-size: 20px;}
+.f24{font-size: 24px;}
+.f28{font-size: 28px;}
+.f36{font-size: 36px;}
+
+.dgrid{display: grid;}
+.dblock{display: block;}
+.dhide{display: hide;}
+.g1{grid-template-columns: auto; grid-template-rows: auto; grid-template-areas: "c1";}
+.g2{grid-template-columns: auto auto; grid-template-rows: auto; grid-template-areas: "c1 c2";}
+.g3{grid-template-columns: auto auto auto; grid-template-rows: auto; grid-template-areas: "c1 c2 c3";}
+
+.textc{text-align: center;}
+
+.mc80 *{background-color: var(--background-color);}
+
+.m0 p{margin: .5rem auto;letter-spacing: normal;;}
+
+.next, .prev{cursor: pointer;font-size: 32px;color: white;justify-self: center;}
+.next:hover, .prev:hover{color: grey;}
+
+.aboutform input[type=textarea], .aboutform input[type=text], .aboutform input[type=number]{border-bottom: 1px white solid; padding: 8px; color: white;}
+.aboutform input[type=submit]{background-color:white;color: var(--background-color);font-family: 'Dancing Script',serif;font-size: 16px;}
+.aboutform input[type=submit]:hover{opacity: .5;color: white;}
+.aboutform input[type=textarea]:focus, .aboutform input[type=text]:focus, .aboutform input[type=number]:hover{border: 1px white solid;}
+
+	.com-background{
+		margin:0 auto;
+		background-position:center;
+		text-align:center;
+	}
+	.com-background p{
+		display:inline;
+		padding:0 180px;
+		line-height:60px;
+		font-size:26px;
+		text-align:center;
+		color:white;
+		top:280px;
+	}
+	.com-introduction{
+		width:100%;height:500px;
+		background-color:rgba(18,43,92);
+		text-align:center;
+		color:white;
+	}
+	.sliderDiv{
+		width: 1120px;
+		height: 500px;
+		border:none;
+		margin: 0 auto;
+		position: relative;
+	}
+	.slider img{
+		width: 1120px;
+		height: 420px;
+		border:none;
+		text-align :center;
+	}
+	.slider a{
+		display: none;
+	}
+	.slider a.on{
+		display: block;
+	}
+	.sliderDiv lable, .sliderDiv span{
+		width:40px;height:50px; background:transparent; position:absolute;top:180px;font-size:37px;color:#fff;text-align:center;
+		cursor:pointer;
+		filter:alpha(opacity = 50);
+		-moz-opacity:0.50;
+		opacity:0.50;
+		z-index:9;
+	}
+	.sliderDiv lable{left:0;background-color: rgba(0,0,0,0.2);}
+	.sliderDiv span{right:0;background-color: rgba(0,0,0,0.2);}
+	.sliderDiv lable:hover{
+		filter:alpha(opacity = 90);
+		-moz-opacity:0.90;
+		opacity:0.90;
+	}
+	.sliderDiv span:hover{
+		filter:alpha(opacity = 90);
+		-moz-opacity:0.90;
+		opacity:0.90;
+	}
+
+	.item{
+		position: absolute;
+		bottom: 5px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	.item li{
+		float: left;
+		width: 10px;
+		height: 10px;
+		list-style: none;
+		border-radius: 50%;
+		background-color: #fff;
+		margin-right: 10px;
+	}
+	.item li.current{
+		background-color: yellow;
+	}
+	.cus-message{
+		width:100%;height:700px;
+		background-color:#F6F6F6;
+		margin:20px auto;
+	}
+	.contact{
+		float:left;
+		width:50%;
+		height:100%;
+		text-align:center;
+		background-color:rgba(18,43,92);
+		margin:auto;
+		color:white;
+		
+	}
+	.msg{
+		float:right;
+		width:50%;
+		height:100%;
+		background-color:rgba(18,43,92);
+	}
+	.msg-form{
+		width:240px; height:200px；
+	}
+	input,textarea{
+		outline-style: none;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		padding: 6px 10px;
+		width: 418px;
+		font-size: 18px;
+		font-family: "Microsoft soft";
+		background-color: transparent;
+	}
+	input::-webkit-input-placeholder {
+		color: #C0C0C0;
+		font-size: 16px;
+	}
+	textarea::-webkit-input-placeholder {
+		color: #C0C0C0;
+		font-size: 16px;
+	}
+	input:focus{
+		border-color: #66afe9;
+		outline: 0;
+		-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+	}
+	textarea:focus{
+		border-color: #66afe9;
+		outline: 0;
+		-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+	}
+	button{
+		color: #444444;
+		background: #F3F3F3;
+		border: 1px #DADADA solid;
+		padding: 14px 195px;
+		border-radius: 2px;
+		font-weight: bold;
+		font-size: 9pt;
+		outline: none;
+	}
+	button:hover {
+		border: 1px #C6C6C6 solid;
+		box-shadow: 1px 1px 1px #EAEAEA;
+		color: #333333;
+		background: #F7F7F7;
+	}
+	button:active {
+		box-shadow: inset 1px 1px 1px #DFDFDF;
+	}
+	.maps{
+		width:100%;
+		height:650px;
+		text-align:center;
+	}
+</style>
+<div class="mc80 wrapper">
+	<div class="m0" id="content">{$content}</div>
 </div>
 <script type="text/javascript">$(function(){$('#webpage_{$itemid}').attr('class', 'side_on');});</script>
+<script type="text/javascript">
+var showmap = true;
+	//获取元素
+	var sliderArea=document.querySelector('.sliderDiv');
+	var as=document.querySelector('.slider').querySelectorAll('a');
+	var lis=document.querySelector('.item').querySelectorAll('li');
+	var leftArrow=document.querySelector('.left');
+	var rightArrow=document.querySelector('.right');
+	
+	var index=0;//保存当前展示的轮播图的索引，默认0
+	var len=as.length;
+	var t;
+	
+	//自动轮播
+	t=setInterval(moveNext,2000);
+	//鼠标经过，停止轮播
+	sliderArea.onmouseover=function(){
+		clearInterval(t);
+		sliderArea.style.cursor='pointer';
+		leftArrow.style.display='block';
+		rightArrow.style.display='block';
+	};
+
+//鼠标离开，继续轮播
+	sliderArea.onmouseout=function(){
+	t=setInterval(moveNext,2000);
+	leftArrow.style.display='none';
+	rightArrow.style.display='none';
+};
+
+//指示器轮播
+for(var i=0;i<lis.length;i++){
+	lis[i]._index=i;//新增属性，保存位置
+	//为每一个li追加点击事件
+	lis[i].onclick=function(){
+		//当前显示的li，修改为未选中状态
+		lis[index].className='';
+		as[index].className='';//当前显示的轮播图改为不显示
+		
+		this.className='current';//被点击的li，改为选中状态
+		as[this._index].className='on';//轮播显示为对应
+		
+		//修改index值
+		index=this._index;
+		
+	};
+}
+
+//箭头轮播
+//左箭头
+leftArrow.onclick=function(){
+	movePre();
+};
+
+//右箭头
+rightArrow.onclick=function(){
+	moveNext();
+};
+
+//切换下一张
+function moveNext(){
+	as[index].className='';//当前显示的轮播图改为不显示
+	lis[index].className='';//当前指示器不显示
+	index++;//索引递增
+	if (index==len) {
+		index=0;//最后一张切换为第一张
+	}
+	as[index].className='on';//下一张显示
+	lis[index].className='current';
+}
+
+//切换上一张
+function movePre(){
+	as[index].className='';
+	lis[index].className='';
+	index--;
+	if (index==-1) {
+		index=len-1;//第一张时，修改为最后一张
+	}
+	//上一张展示
+	as[index].className='on';
+	lis[index].className='current';
+}
+</script>
 {template 'footer'}

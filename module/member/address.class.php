@@ -8,7 +8,7 @@ class address {
 
     function __construct() {
 		$this->table = DT_PRE.'address';
-		$this->fields = array('areaid','address','postcode','truename','telephone','mobile','username','addtime','editor','edittime','listorder','note');
+		$this->fields = array('areaid','address','postcode','truename','telephone','mobile','username','addtime','editor','edittime','listorder','note','city','address_2');
     }
 
     function address() {
@@ -18,11 +18,10 @@ class address {
 	function pass($post) {
 		global $L;
 		if(!is_array($post)) return false;
-		if(!$post['areaid']) return $this->_($L['pass_areaid']);
-		if(!$post['address']) return $this->_($L['pass_address']);
-		if(!$post['postcode']) return $this->_($L['pass_postcode']);
-		if(!$post['truename']) return $this->_($L['pass_truename']);
-		if(!$post['mobile']) return $this->_($L['pass_mobile']);
+		$tests = array('areaid','address','postcode','truename','mobile','city');
+		foreach ($tests as $k => $v) {
+			if(!$post[$v]) return $this->_($L["pass_$v"].$v);
+		}
 		return true;
 	}
 
@@ -32,13 +31,21 @@ class address {
 		if(substr($post['address'], 0, strlen($pos)) == $pos) $post['address'] = substr($post['address'], strlen($pos));
 		$post['edittime'] = DT_TIME;
 		$post['editor'] = $_username;
+		$tests = DB::query("SELECT itemid, listorder from {$this->table} WHERE username='$_username' AND listorder=0");
+		if( count($tests) ){
+			if( intval($post['listorder']) == 0 ){
+				foreach($tests as $k=>$test){
+					DB::query("UPDATE {$this->table} SET listorder=1 WHERE itemid={$test['itemid']}");
+				}
+			}
+		}
 		$post['listorder'] = intval($post['listorder']);
 		if($this->itemid) {
-			//$post['editor'] = $_username;
+			// $post['editor'] = $_username;
 		} else {
 			$post['addtime'] = DT_TIME;
 		}
-		$post = dhtmlspecialchars($post);		
+		$post = dhtmlspecialchars($post);
 		return array_map("trim", $post);
 	}
 
@@ -61,7 +68,7 @@ class address {
 		while($r = DB::fetch_array($result)) {
 			$r['adddate'] = timetodate($r['addtime'], 5);
 			$r['editdate'] = timetodate($r['edittime'], 5);
-			if($r['areaid']) $r['address'] = area_pos($r['areaid'], '').$r['address'];
+			$r['truename'] = str_replace("/"," ",$r['truename']);
 			$lists[] = $r;
 		}
 		return $lists;
@@ -71,7 +78,10 @@ class address {
 		$post = $this->set($post);
 		$sqlk = $sqlv = '';
 		foreach($post as $k=>$v) {
-			if(in_array($k, $this->fields)) { $sqlk .= ','.$k; $sqlv .= ",'$v'"; }
+			if(in_array($k, $this->fields)) { 
+				$sqlk .= ','.$k; 
+				$sqlv .= ",'$v'"; 
+			}
 		}
         $sqlk = substr($sqlk, 1);
         $sqlv = substr($sqlv, 1);

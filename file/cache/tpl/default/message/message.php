@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="<?php echo DT_CHARSET;?>"/>
-<title>提示信息<?php echo $DT['seo_delimiter'];?><?php echo $DT['sitename'];?></title>
+<title>Information <?php echo $DT['seo_delimiter'];?><?php echo $DT['sitename'];?></title>
 <meta name="robots" content="noindex,nofollow"/>
 <meta name="generator" content="DESTOON B2B - www.destoon.com"/>
 <style type="text/css">
@@ -27,12 +27,12 @@ input{color:#000000;}
 <?php } else { ?>
 <body onkeydown="if(event.keyCode==13) window.history.back();">
 <div class="msg">
-<div class="head">提示信息</div>
+<div class="head">Information</div>
 <div class="main"><?php echo $dmessage;?></div>
 <?php if($dforward == 'goback') { ?>
-<a href="javascript:window.history.back();"><div class="foot">点这里返回上一页</div></a>
+<a href="javascript:window.history.back();"><div class="foot">Click to go back</div></a>
 <?php } else { ?>
-<a href="<?php echo $dforward;?>"><div class="foot">如果您的浏览器没有自动跳转，请点击这里</div></a>
+<a href="<?php echo $dforward;?>"><div class="foot">If your broswer does not go back automatically, Click here</div></a>
 <meta http-equiv="refresh" content="<?php echo $dtime;?>;URL=<?php echo $dforward;?>">
 <?php } ?>
 </div>

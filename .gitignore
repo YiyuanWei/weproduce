@@ -1,2 +1,5 @@
 /replace.bat
 /config.inc.php
+file/cache/
+file/upload/
+file/session/

@@ -1,0 +1,115 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta charset="{DT_CHARSET}"/>
+<title>{if $seo_title}{$seo_title}{else}{if $head_title}{$head_title}{$DT[seo_delimiter]}{/if}{if $city_sitename}{$city_sitename}{else}{$DT[sitename]}{/if}{/if}</title>
+{if $head_keywords}
+<meta name="keywords" content="{$head_keywords}"/>
+{/if}
+{if $head_description}
+<meta name="description" content="{$head_description}"/>
+{/if}
+{if $head_mobile}
+<meta http-equiv="mobile-agent" content="format=html5;url={$head_mobile}">
+{/if}
+<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
+<link rel="shortcut icon" type="image/x-icon" href="{DT_STATIC}favicon.ico"/>
+<link rel="bookmark" type="image/x-icon" href="{DT_STATIC}favicon.ico"/>
+{if $head_canonical}
+<link rel="canonical" href="{$head_canonical}"/>
+{/if}
+{if $EXT[archiver_enable]}
+<link rel="archives" title="{$DT[sitename]}" href="{$EXT[archiver_url]}"/>
+{/if}
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}style.css"/>
+{if $moduleid>1}
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}{$module}.css"/>
+{/if}
+{if $CSS}
+{loop $CSS $css}
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}{$css}.css"/>
+{/loop}
+{/if}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}ie6.css"/>
+<![endif]-->
+{if !DT_DEBUG}<script type="text/javascript">window.onerror=function(){return true;}</script>{/if}
+<script type="text/javascript" src="{DT_STATIC}lang/{DT_LANG}/lang.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/config.js"></script>
+<!--[if lte IE 9]><!-->
+<script type="text/javascript" src="{DT_STATIC}file/script/jquery-1.5.2.min.js"></script>
+<!--<![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!-->
+<script type="text/javascript" src="{DT_STATIC}file/script/jquery-2.1.1.min.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="{DT_STATIC}file/script/common.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/page.js"></script>
+{if $lazy}<script type="text/javascript" src="{DT_STATIC}file/script/jquery.lazyload.js"></script>{/if}
+{if $JS}
+{loop $JS $js}
+<script type="text/javascript" src="{DT_STATIC}file/script/{$js}.js"></script>
+{/loop}
+{/if}
+{php $searchid = ($moduleid > 3 && $MODULE[$moduleid]['ismenu'] && !$MODULE[$moduleid]['islink']) ? $moduleid : 5;}
+<script type="text/javascript">
+{if $head_mobile && $EXT[mobile_goto]}
+GoMobile('{$head_mobile}');
+{/if}
+var searchid = {$searchid};
+{if $itemid && $DT[anticopy]}
+document.oncontextmenu=function(e){return false;};
+document.onselectstart=function(e){return false;};
+{/if}
+</script>
+
+<!--[以上为系统关键代码，除非您明确其含义，否则请勿修改或删除，否则会导致系统错误]-->
+<!--[模板中所有带id的元素，请勿修改或删除，否则会导致部分JS代码无法运行]-->
+<!--[以上类似的注释，在编译模板时，系统会自动移除，不会显示在实际际的页面中]-->
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine|Dancing Script|Great Vibes">
+<style>
+:root{--background-color: rgb(18, 43, 92);--we-red: rgb(220, 79, 62);}
+.clickable{cursor: pointer;}
+.clickable:hover, a:hover{color: var(--we-red);}
+.overlay{width: 100%; background-color: rgba(255, 255, 255, 0.5);font-family: Arial, Helvetica, sans-serif;text-align: center;}
+.ma{margin: auto;}
+.w50{width: 50%;}
+.w60{width: 60%;}
+.w70{width: 70%;}
+.w80{width: 80%;}
+.w90{width: 90%;}
+.w100{width: 100%;}
+.wf{width: fit-content;}
+.h34{height: 75%;}
+.h44{height: 100%;}
+.mt8{margin-top: 8%;}
+.mt8p{margin-top: 8px;}
+.mt10p{margin-top: 10px;}
+.mt15p{margin-top: 15px;}
+.mt20p{margin-top: 20px;}
+.mt30p{margin-top: 30px;}
+.mt5r{margin-top: 5rem;}
+.f_white{color: white;}
+.padd_8{padding: 8px;}
+.padd_5{padding: 5px;}
+.padd_3{padding: 3px;}
+.padd_10{padding:10px;}
+.padd_15{padding:15px;}
+.padd_1r{padding: 1rem;}
+.padd_1r5{padding: 1.5rem;}
+.padd_2r{padding: 2rem;}
+.padd_3r{padding: 3rem;}
+.fsize_10{font-size: 10px;}
+.fsize_20{font-size: 20px;}
+.fsize_15{font-size: 15px;}
+.href{text-decoration: underline;}
+#back{font-size: xx-large; position: absolute; right: 5%; top: 30px; color: grey;}
+#back:hover{color: lightgrey;}
+table td{vertical-align: middle; text-align: center; width: 80%;}
+form input[type=text], form input[type=password]{padding-left: 20px; width: 100%;}
+.submit{background-color: var(--background-color);color: white; width: 100%; border: none;}
+.submit:hover{opacity: .5;}
+.go{border: 1px grey solid;}
+.go:hover{background-color: var(--we-red);color: white; border-color: white;}
+</style>

@@ -159,3 +159,36 @@ INSERT INTO ds_fabric_category (fcatid, fcat) VALUES (1, 'No Requirement');
 INSERT INTO ds_fabric_thickness (ftid, ftv, unit) VALUES (1, null, 'No Requirement');
 INSERT INTO ds_button_thickness (btid, btv, unit) VALUES (1, null, 'No Requirement');
 INSERT INTO ds_zipper_thickness (ztid, ztv, unit) VALUES (1, null, 'No Requirement');
+
+ALTER TABLE ds_member ADD COLUMN first_name text;
+ALTER TABLE ds_member ADD COLUMN last_name text;
+ALTER TABLE ds_member ADD COLUMN contact_email text;
+ALTER TABLE ds_member ADD COLUMN contact_mobile text;
+
+ALTER TABLE ds_member DROP INDEX `username`;
+
+ALTER TABLE ds_area ADD COLUMN region VARCHAR(20) NOT NULL;
+ALTER TABLE ds_area ADD COLUMN country text NOT NULL;
+ALTER TABLE ds_area ADD COLUMN region_code VARCHAR(8) NOT NULL;
+ALTER TABLE ds_area ADD COLUMN country_code VARCHAR(8) NOT NULL;
+ALTER TABLE ds_address ADD COLUMN city VARCHAR(20) NOT NULL;
+ALTER TABLE ds_address ADD COLUMN address_2 text NOT NULL;
+-- done
+
+CREATE TABLE ds_feedback LIKE ds_message;
+ALTER TABLE ds_feedback DROP touser, DROP style, DROP typeid, DROP isread, DROP issend, DROP feedback, DROP groupids;
+ALTER TABLE ds_feedback CHANGE COLUMN title subject varchar(100) not null;
+alter table ds_feedback Add COLUMN email VARCHAR(100) NOT NULL;
+ALTER TABLE ds_feedback ADD COLUMN phone VARCHAR(100) NOT NULL;
+ALTER TABLE ds_feedback DROP ip;
+
+ALTER TABLE `ds_member` 
+CHANGE `pass` `pass` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, 
+CHANGE `first_name` `first_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, 
+CHANGE `last_name` `last_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, 
+CHANGE `contact_email` `contact_email` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, 
+CHANGE `contact_mobile` `contact_mobile` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+
+ALTER TABLE `ds_member` ADD UNIQUE( `email`);
+ALTER TABLE ds_member DROP INDEX `passport`;
+

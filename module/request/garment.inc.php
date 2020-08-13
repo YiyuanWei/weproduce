@@ -5,6 +5,7 @@ if ($submit){
     $itemid = new_item();
     // handling files
     $newpost=$_POST;
+    
     unset($newpost['submit']);
 
     require DT_ROOT.'/include/upload.class.php';
@@ -81,7 +82,7 @@ function upload($file, $catname, $i=-1){
     }
     else{
         if($DT_PC) message($upload->errmsg);
-			exit('{"error":1,"message":"'.$upload->errmsg.'"}');
+		exit('{"error":1,"message":"'.$upload->errmsg.'"}');
     }
 }
 function uploadFile( $catname ){

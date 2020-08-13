@@ -100,7 +100,7 @@ class member {
 	function is_password($password, $cpassword) {
 		global $MOD, $L;
 		if(!$password) return $this->_($L['member_password_null']);
-		if($password != $cpassword) return $this->_($L['member_password_match']);
+		if($password != $cpassword) return $this->_($L['member_password_match'].'password:'.$password.';cpassword:'.$cpassword);
 		if(!$MOD['minpassword']) $MOD['minpassword'] = 6;
 		if(!$MOD['maxpassword']) $MOD['maxpassword'] = 20;
 		if(strlen($password) < $MOD['minpassword'] || strlen($password) > $MOD['maxpassword']) return $this->_(lang($L['member_password_len'], array($MOD['minpassword'], $MOD['maxpassword'])));
@@ -316,7 +316,7 @@ class member {
         $misc_sqlk = substr($misc_sqlk, 1);
         $misc_sqlv = substr($misc_sqlv, 1);
         $company_sqlk = substr($company_sqlk, 1);
-        $company_sqlv = substr($company_sqlv, 1);
+		$company_sqlv = substr($company_sqlv, 1);
 		DB::query("INSERT INTO {$this->table_member} ($member_sqlk,regip,regtime,loginip,logintime)  VALUES ($member_sqlv,'".DT_IP."','".DT_TIME."','".DT_IP."','".DT_TIME."')");
 		$this->userid = DB::insert_id();
 		if(!$this->userid) return 0;
@@ -412,7 +412,6 @@ class member {
 
 	function login($login_username, $login_password, $login_cookietime = 0, $admin = false) {
 		global $MOD, $MODULE, $L;
-		if(!check_name($login_username)) return $this->_($L['member_login_username_bad']);
 		if(!$MOD || !isset($MOD['login_times'])) $MOD = cache_read('module-2.php');
 		$login_lock = ($MOD['login_times'] && $MOD['lock_hour']) ? true : false;
 		$LOCK = array();

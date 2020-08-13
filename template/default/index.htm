@@ -1,10 +1,27 @@
 {template 'header'}
 
 <script>
+    var banner = document.createElement('div');
+    banner.setAttribute('style','grid-area: banner; z-index: 1; max-width: fit-content; place-self: stretch; place-items: center; display: grid; grid-template-columns: auto; grid-template-rows: auto;');
     var img = new Image();
     img.src = '{DT_SKIN}image/banner.jpg';
-    img.style = "grid-area: banner; z-index: 1; max-width: 100%; place-self: stretch";
-    $("#banner").append(img);
+    img.style = "grid-area: 1 / 1 / 2 / 2;";
+    banner.append(img);
+
+    var title = document.createElement('div');
+    title.setAttribute('style','text-align: center; grid-area: 1 / 1 / 2 / 2; place-self: center;')
+    var h1 = document.createElement('h1');
+    h1.setAttribute('style','font-size: 4rem; color: white;font-weight: normal;');
+    h1.textContent = "Experience WeProduce";
+    title.append(h1);
+
+    var p = document.createElement('p');
+    p.setAttribute('style',"font-family: 'Dancing Script', sans-serif; font-size: 1.5rem; color: white; font-weight: normal;");
+    p.textContent = "Your Online One-Step Manufacturing Service Provider";
+    title.append(p);
+
+    banner.append(title);
+    $("#banner").append(banner);
 </script>
 
 <style>
@@ -107,9 +124,13 @@
   }
   .products{
     margin-bottom: 1rem;
+    padding: 0 0.5%;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 16.5% 16.5% 16.5% 16.5% 16.5% 16.5%;
   }
   .product{
-    width: 15%;
+    width: 90%;
     padding: .5rem;
   }
   .product img{
@@ -154,12 +175,13 @@
     font-style: italic;
     padding: 3% 0;
     height: 100%;
+    color: white;
   }
   .product:hover .trigger{
     height: 20%;
   }
   .hide{
-    display:none;
+    display: none;
   }
   .show{
     display: block;
@@ -196,10 +218,10 @@
   <div class="prev" onclick="show(-1)">&#10094;</div>
   <div class="products">
     {loop $tags $i $t}
-    <div class="product clickable hide" id="product-{$t[itemid]}" onclick="showproduct('{$t[itemid]}')">
+    <div class="product clickable hide" id="product-{$i}" onclick="showproduct('{$t[itemid]}')">
       <div style="position: relative;">
         <img src="{$t[thumb]}" alt="">
-        <div class="trigger"><div class="wrapper" onclick="quickview('{$t[itemid]}','{$t[title]}','{$t[price]}','{$t[thumb]}','{$t[thumb1]}','{$t[thumb2]}')" onmouseover="qv(true)" onmouseout="qv(false)">Quick View</div></div>
+        <!-- <div class="trigger"><div class="wrapper" onclick="quickview('{$t[itemid]}','{$t[title]}','{$t[price]}','{$t[thumb]}','{$t[thumb1]}','{$t[thumb2]}')" onmouseover="qv(true)" onmouseout="qv(false)">Quick View</div></div> -->
       </div>
       <br>
       <h3>{$t[title]}</h3>
@@ -209,7 +231,7 @@
     {/loop}
   </div>
   <div class="next" onclick="show(1)">&#10095;</div>
-  <div class="btn" style="grid-area: more;">Show More</div>
+  <div class="btn" style="grid-area: more;" onclick="location.href='{$MODULE[16][linkurl]}'">Show More</div>
 </div>
 
 {template 'quickview','mall'}
@@ -226,7 +248,7 @@
     var max = now*6;
     var min = max-6;
     for( var i = 0 ; i < max_products; i++ ){
-      if( min <= i < max ){
+      if( min <= i && i < max ){
         products[i].classList.remove('hide');
         products[i].classList.add('show');
       }

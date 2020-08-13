@@ -43,8 +43,13 @@
         width: 4rem;
         height: 4rem;
         position: relative;
+        cursor: pointer;
     }
     .ImageSlider .ab_on{
+        border-color: var(--background);
+        background: var(--background-color);
+    }
+    .ImageSlider .ab_im{
         border-color: var(--background-color);
         background: var(--background-color);
     }
@@ -130,12 +135,12 @@
         <div id="price"></div>
         <form style="margin-top: 0;" method="post" class="quickview-form" action="?">
             <div style="display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto auto; margin-top: 0;">
-            <label style="grid-area: 1 / 1 / 1 / 3;"for="bulk">Bulk Order <span class="f_optional">(Optional)</span></label>
-            <textarea style="grid-area: 2 / 1 / 4 / 3;" name="bulk" id="bulk" style="width: 100%;" maxlength="100" autocomplete="off" onkeyup="count(this)"></textarea>
+            <!-- <label style="grid-area: 1 / 1 / 1 / 3;"for="bulk">Bulk Order <span class="f_optional">(Optional)</span></label>
+            <textarea style="grid-area: 2 / 1 / 4 / 3;" name="bulk" id="bulk" style="width: 100%;" maxlength="100" autocomplete="off" onkeyup="count(this)"></textarea> -->
             <span style="grid-area: 3 / 2 / 4 / 3;justify-self: end;" class="text_len">100</span>
             </div>
-            <label for="quantity">Quantity</label><br>
-            <input type="number" name="quantity" id="quantity" value="1" min="1"><br>
+            <label for="a">Quantity</label><br>
+            <input type="number" name="a" id="a" value="1" onchange="changeA()" onfocus="this.value=''" onblur="setA()" min="1"><br>
             <button type="submit" name="submit" value="cart">ADD TO CART</button>
         </form>
     </div>
@@ -153,15 +158,18 @@
             element = (element == '') ? "{DT_SKIN}image/nopic60.gif" : element 
         );
 
-        mid_pic.src = thumb1.substring(0,thumb1.length - ".thumb.jpg".length);
+        mid_pic.src = thumb1.substring(0,thumb1.lastIndexOf("thumb"));
 
         for( var i = 0; i < thumbs.length; i++ ){
             var img = document.createElement("IMG");
             img.src = thumbs[i];
-            img.onclick = function(){
-                if(this.src.indexOf('nopic60.gif')==-1) Album(i,thumbs[i]);
-            }
-            img.className = (i == 0) ? 'ab_im' : 'ab_on';
+            img.width = 60;
+            img.height = 60;
+            var n = thumbs[i].lastIndexOf("thumb");
+            if( n != -1 ) thumbs[i] = thumbs[i].substring(0,n) + thumbs[i].slice(n).replace("thumb","middle");
+            img.setAttribute('onclick',"if(this.src.indexOf('nopic60.gif')==-1) Album("+i+", '"+thumbs[i]+"');");
+            img.className = (i == 0) ? 'ab_on' : 'ab_im';
+            img.id = "t_"+i;
             document.getElementsByClassName('ImageSlider')[0].append(img);
         }
 
@@ -184,7 +192,15 @@
         document.getElementsByClassName('ImageSlider')[0].innerHTML = '';
 
         Dd('bulk').value = '';
-        Dd('quantity').value = 1;
+        Dd('a').value = 1;
         Dd('quickview').style.display = 'none';
     }
+var a;
+function changeA(){
+	a = Dd('a').value;
+}
+function setA(){
+	Dd('a').value = a;
+}
 </script>
+<script type="text/javascript" src="{DT_STATIC}file/script/album.js"></script>

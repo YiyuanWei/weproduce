@@ -1,0 +1,326 @@
+{template header}
+<style>
+    .com-background{
+        font-size:26px;
+        color:white;
+        top:280px;
+    }
+    .com-introduction{
+        width:100%;height:500px;
+        background-color:rgba(18,43,92);
+        text-align:center;
+        color:white;
+    }
+    .sliderDiv{
+        width: 90%;
+        border:none;
+        margin: 0 auto;
+        position: relative;
+    }
+    .slider .slide{
+        display: none;
+        width: 80%;
+        margin: auto;
+        grid-template-columns: 50% 50%;
+        grid-template-areas: "img content";
+        place-items: center;
+        padding-bottom: 3rem;
+    }
+    .slider .slide .content{
+       grid-area: content;
+       text-align: center;
+       font-family: sans-serif;
+       word-spacing: normal;
+       color: white;
+    }
+    .slider .slide .content h2{
+       font-weight: normal;
+    }
+    .slider .slide .content p{
+       font-size: 12px;
+    }
+    .slider .slide img{
+       grid-area: img;
+    }
+    .slider div.on{
+        display: grid;
+    }
+    .sliderDiv span{
+        width:40px;height:50px; background:transparent; position:absolute;top:180px;font-size:37px;color:#fff;text-align:center;
+        cursor:pointer;
+        filter:alpha(opacity = 50);
+        -moz-opacity:0.50;
+        opacity:0.50;
+        z-index:9;
+    }
+    .sliderDiv .left{left:0;background-color: rgba(0,0,0,0.2);}
+    .sliderDiv .right{right:0;background-color: rgba(0,0,0,0.2);}
+    .sliderDiv span:hover{
+        filter:alpha(opacity = 90);
+        -moz-opacity:0.90;
+        opacity:0.90;
+    }
+    .item{
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .item li{
+        float: left;
+        width: 10px;
+        height: 10px;
+        list-style: none;
+        border-radius: 50%;
+        background-color: #fff;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    .item li.current{
+        background-color: yellow;
+    }
+    input,textarea{
+    }
+    input::-webkit-input-placeholder {
+        color: #C0C0C0;
+        font-size: 16px;
+    }
+    textarea::-webkit-input-placeholder {
+        color: #C0C0C0;
+        font-size: 16px;
+    }
+    input:focus{
+        border-color: #66afe9;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+    textarea:focus{
+        border-color: #66afe9;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+ </style><!--公司背景图-->
+ <div class="wrapper" style="display: grid; height: fit-content;">
+    <div class="com-background" style="grid-area: 1 / 1 / 2 / 2;">
+       <img src="{DT_SKIN}image/about_banner.jpg" width="100%" alt="">
+    </div>
+    <div class="com-background wrapper" style="grid-area: 1 / 1 / 2 / 2; opacity: .2;"></div>
+    <div class="com-background" style="grid-area: 1 / 1 / 2 / 2; z-index: 2; place-self: center;">
+        <h1 style="font-weight: normal;">Company Introduction</h1>
+    </div>
+ </div>
+ <div class="b16 wrapper"></div>
+ <!--公司介绍-->
+ <div class="wrapper">
+ <div class = "com-introduction">
+     <br>
+     <h2 style="font-family: 'Dancing Script'; font-weight: normal;">Your Online One-Stop Manufacturing Service Provider</h2>
+     <br>
+     <p>WeProduce is a platform to </p>
+     <p>connect designers worldwide</p>
+     <p>with factories in Asia.​</p>
+     <br>
+     <p>We are an Australia based service group, </p>
+     <p>opening to worldwide </p>
+     <p>matieral/manufacture/shipping </p>
+     <p>method seekers. </p>
+     <br>
+     <p>We have over 3000 factories in Asia covers from fabric, button, zipper, graphic</p>
+     <p>printing to manufactory.</p>
+ </div>
+ </div>
+ <div class="wrapper">
+ <!--轮播图-->
+ <div class="sliderDiv">
+     <!-----  轮播区  ----->
+     <div class="slider">
+        <div class="slide on wrapper">
+           <img src="{DT_SKIN}image/about1.jpg" alt="" style="grid-area: img;">
+           <div class="content">
+              <h2>Fabric and Accessories</h2>
+              <p>There are various types of fabrics and accessories for designers to choose, for generating ideas or making samples...</p>
+           </div>
+        </div>
+        <div class="slide wrapper">
+           <img src="{DT_SKIN}image/about2.jpg" alt="">
+           <div class="content">
+              <h2>Garment Factories</h2>
+              <p>Designers can choose garment factories from preferred countries with selected fabrics and accessories.</p>
+           </div>
+        </div>
+        <div class="slide wrapper">
+           <img src="{DT_SKIN}image/about3.jpg" alt="">
+           <div class="content">
+              <h2>Quality Control</h2>
+              <p>Fabrics and accessories for bulk production strictly follow the samples. We will check the sample quality first with our client then proceed order.</p>
+           </div>
+        </div>
+        <div class="slide wrapper">
+           <img src="{DT_SKIN}image/about4.jpg" alt="">
+           <div class="content">
+              <h2>Tax Return and Custom Clearance</h2>
+              <p>We take care of tax return and custom processes for clients, where the tax rate will directly been reduced from from our quote.</p>
+           </div>
+        </div>
+        <div class="slide wrapper">
+           <img src="{DT_SKIN}image/about5.jpg" alt="">
+           <div class="content">
+              <h2>Unified Shipment</h2>
+              <p>We gather orders of the same country and arrange shipment together. The price will be better for each client.</p>
+           </div>
+        </div>
+     </div>
+     <ul class="item">
+         <li class="current"></li>
+         <li></li>
+         <li></li>
+         <li></li>
+         <li></li>
+     </ul>
+     <span class="left"><</span>
+     <span class="right">></span>
+ </div>
+ </div>
+ <!--用户留言-->
+ <style>
+    .cus-message{
+        display: grid;
+        grid-template-columns: 50% 50%;
+        width: 70%;
+        margin: auto;
+        color: white;
+    }
+    .cus-message .contact{
+        float: left;
+        text-align: left;
+        padding-top: 0;
+        width: 100%;
+        font-size: 14px;
+    }
+    .cus-message .contact p{
+        margin: 0;
+    }
+    #msg input, #msg textarea{
+        color: white;
+        font-family: sans-serif;
+        width: calc(100% - 26px);
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 6px 12px;
+        font-size: 14px;
+        background-color: transparent;
+        margin: 5px auto;
+    }
+    #msg input::-webkit-input-placeholder, #msg textarea::-webkit-input-placeholder{
+        font-family: var(--we-font);
+    }
+    #msg button{
+        background-color: transparent;
+        color: #ccc;
+        font-size: 18px;
+        width: 100%;
+        padding: 6px;
+        border: 1px #ccc solid;
+        font-family: var(--we-font);
+    }
+ </style>
+ <div class="wrapper" style="padding: 10rem 0;">
+    <div class="cus-message">
+        <div class="contact">
+            <h1 style="font-size: xx-large; font-weight: normal; margin-top: 0;">Contact</h1>
+            <br>
+            <p>4015/601 Little Lonsdale Street, Melbourne, VIC, Australia</p><br>
+            <p>business@weproducemoda.com</p><br>
+            <p>+61452509529</p><br>
+        </div>
+        <form id="msg" action="?" method="POST" onsubmit="check()">
+            <table style="width: 100%;">
+                <tr><td><input type="text" name="post[fromuser]" id="name" placeholder="Name" required></td></tr>
+                <tr><td><input type="text" name="post[email]" id="email" placeholder="Email" required></td></tr>
+                <tr><td><input type="text" name="post[phone]" id="phone" placeholder="Phone" required></td></tr>
+                <tr><td><input type="text" name="post[subject]" id="subject" placeholder="Subject" required></td></tr>
+                <tr><td><textarea name="post[content]" id="message" cols="50" rows="5" placeholder="Type your message here..." required></textarea></td></tr>
+                <tr><td><button type="submit" class="clickable" form="msg" name="submit" value="submit">Send</button></td></tr>
+            </table>
+        </form>
+    </div>
+ </div>
+ </div>
+ <script>
+ </script>
+ <script type="text/javascript">$(function(){$('#webpage_6').attr('class', 'side_on');});</script>
+ <script type="text/javascript">
+ var showmap = true;
+ //获取元素
+ var sliderArea=document.querySelector('.sliderDiv');
+ var as=document.querySelector('.slider').querySelectorAll('.slide');
+ var lis=document.querySelector('.item').querySelectorAll('li');
+ var leftArrow=document.querySelector('.left');
+ var rightArrow=document.querySelector('.right');
+ 
+ var index=0;//保存当前展示的轮播图的索引，默认0
+ var len=as.length;
+ var t;
+ 
+ //自动轮播
+ t=setInterval(moveNext,2000);
+ //鼠标经过，停止轮播
+ sliderArea.onmouseover=function(){
+ clearInterval(t);
+ };
+ //鼠标离开，继续轮播
+ sliderArea.onmouseout=function(){
+ t=setInterval(moveNext,2000);
+ };
+ //指示器轮播
+ for(var i=0;i<lis.length;i++){
+ lis[i]._index=i;//新增属性，保存位置
+ //为每一个li追加点击事件
+ lis[i].onclick=function(){
+ //当前显示的li，修改为未选中状态
+ lis[index].className='';
+ as[index].classList.remove('on');//当前显示的轮播图改为不显示
+ 
+ this.className='current';//被点击的li，改为选中状态
+ as[this._index].classList.add('on');//轮播显示为对应
+ 
+ //修改index值
+ index=this._index;
+ 
+ };
+ }
+ //箭头轮播
+ //左箭头
+ leftArrow.onclick=function(){
+ movePre();
+ };
+ //右箭头
+ rightArrow.onclick=function(){
+ moveNext();
+ };
+ //切换下一张
+ function moveNext(){
+ as[index].classList.remove('on');//当前显示的轮播图改为不显示
+ lis[index].className='';//当前指示器不显示
+ index++;//索引递增
+ if (index==len) {
+ index=0;//最后一张切换为第一张
+ }
+ as[index].classList.add('on');//下一张显示
+ lis[index].className='current';
+ }
+ //切换上一张
+ function movePre(){
+ as[index].classList.remove('on');
+ lis[index].className='';
+ index--;
+ if (index==-1) {
+ index=len-1;//第一张时，修改为最后一张
+ }
+ //上一张展示
+ as[index].classList.add('on');
+ lis[index].className='current';
+ }
+ </script>
+ {template footer}

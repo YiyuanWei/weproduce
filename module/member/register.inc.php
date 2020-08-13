@@ -31,101 +31,17 @@ $could_verify = $MOD['checkuser'] < 2 ? 1 : 0;
 isset($sid) or $sid = '';
 $_sid = md5(md5(session_id().DT_KEY));
 $timeout = 180;
-$stepid = 1;
 switch($action) {
-	case 'verify':
-		($could_verify && $sid == $_sid) or message($L['register_msg_error']);
-		if(!$DT_PC && $MOD['question_register']) $MOD['question_register'] = 0;
-		if($submit) {
-			captcha($captcha, $MOD['captcha_register']);
-			question($answer, $MOD['question_register']);
-			$_SESSION['verify'] = '1';
-			dheader('?reload='.$DT_TIME);
-		}
-	break;
-	case 'mail':
-		($could_mail && $sid == $_sid) or message($L['register_msg_error']);
-		if($submit) {
-			(is_email($email) && preg_match("/^[0-9]{6}$/", $code) && isset($_SESSION['email_code']) && $_SESSION['email_code'] == md5($email.'|'.$code)) or message('验证失败');
-			$user = $db->get_one("SELECT userid FROM {$DT_PRE}member WHERE email='$email'");
-			if($user) message($L['member_email_reg']);
-			$_SESSION['email_code'] = '';
-			$_SESSION['verify'] = $email;
-			dheader('?reload='.$DT_TIME);
-		}
-	break;
-	case 'sendmail':
-		($could_mail && $sid == $_sid) or exit('close');
-		is_email($email) or exit('format');
-		$msg = captcha($captcha, 1, true);
-		if($msg) exit('captcha');
-		$user = $db->get_one("SELECT userid FROM {$DT_PRE}member WHERE email='$email'");
-		if($user) exit('exist');
-		isset($_SESSION['email_send']) or $_SESSION['email_send'] = 0;
-		isset($_SESSION['email_time']) or $_SESSION['email_time'] = 0;
-		if($_SESSION['email_send'] > 4) exit('max');
-		if($_SESSION['email_time'] && (($DT_TIME - $_SESSION['email_time']) < $timeout)) exit('fast');
-		$emailcode = random(6, '0123456789');
-		$_SESSION['email_code'] = md5($email.'|'.$emailcode);
-		$_SESSION['email_time'] = $DT_TIME;
-		$_SESSION['email_send'] = $_SESSION['email_send'] + 1;
-		$title = $L['register_msg_emailcode'];
-		$content = ob_template('emailcode', 'mail');
-		send_mail($email, $title, stripslashes($content));
-		#log_write($content, 'mail', 1);
-		exit('ok');
-	break;
-	case 'sms':
-		($could_sms && $sid == $_sid) or message($L['register_msg_error']);
-		if($submit) {
-			(is_mobile($mobile) && preg_match("/^[0-9]{6}$/", $code) && isset($_SESSION['mobile_code']) && $_SESSION['mobile_code'] == md5($mobile.'|'.$code)) or message('验证失败');
-			$user = $db->get_one("SELECT userid FROM {$DT_PRE}member WHERE mobile='$mobile'");
-			if($user) message($L['member_mobile_reg']);
-			$_SESSION['mobile_code'] = '';
-			$_SESSION['verify'] = $mobile;
-			dheader('?reload='.$DT_TIME);
-		}
-	break;
-	case 'sendsms':
-		($could_sms && $sid == $_sid) or exit('close');
-		is_mobile($mobile) or exit('format');
-		$msg = captcha($captcha, 1, true);
-		if($msg) exit('captcha');
-		$user = $db->get_one("SELECT userid FROM {$DT_PRE}member WHERE mobile='$mobile'");
-		if($user) exit('exist');
-		isset($_SESSION['mobile_send']) or $_SESSION['mobile_send'] = 0;
-		isset($_SESSION['mobile_time']) or $_SESSION['mobile_time'] = 0;
-		if($_SESSION['mobile_send'] > 4) exit('max');
-		if($_SESSION['mobile_time'] && (($DT_TIME - $_SESSION['mobile_time']) < $timeout)) exit('fast');
-		if(max_sms($mobile)) exit('max');
-		$mobilecode = random(6, '0123456789');
-		$_SESSION['mobile_code'] = md5($mobile.'|'.$mobilecode);
-		$_SESSION['mobile_time'] = $DT_TIME;
-		$_SESSION['mobile_send'] = $_SESSION['mobile_send'] + 1;
-		$content = lang('sms->sms_code', array($mobilecode, $MOD['auth_days']*10)).$DT['sms_sign'];
-		send_sms($mobile, $content);
-		#log_write($content, 'sms', 1);
-		exit('ok');
-	break;
 	case 'success':
 		$_auth = isset($auth) ? decrypt($auth, DT_KEY.'LOGIN') : '';
 		substr($_auth, 0, 5) == 'LOGIN' or dheader($DT_PC ? DT_PATH : DT_MOB);
-		$stepid = 3;
 		$url = $DT['file_login'].'?auth='.$auth.'&forward='.urlencode($DT_PC ? $MOD['linkurl'] : DT_MOB.'my.php');
+		dheader($url);
 	break;
 	case 'read':
 		exit(include template('agreement', $module));
 	break;
 	default:
-		if($MOD['checkuser'] == 4) {
-			(is_email($_SESSION['verify']) || is_mobile($_SESSION['verify'])) or dheader('?action=sms&sid='.$_sid);
-		} elseif($MOD['checkuser'] == 3) {
-			is_mobile($_SESSION['verify']) or dheader('?action=sms&sid='.$_sid);
-		} elseif($MOD['checkuser'] == 2) {
-			is_email($_SESSION['verify']) or dheader('?action=mail&sid='.$_sid);
-		} else {
-			$_SESSION['verify'] or dheader('?action=verify&sid='.$_sid);
-		}
 		$FD = $MFD = cache_read('fields-member.php');
 		$CFD = cache_read('fields-company.php');
 		isset($post_fields) or $post_fields = array();
@@ -134,12 +50,6 @@ switch($action) {
 		if($submit) {
 			if($sid != $_sid) message($L['check_sign']);
 			$post['passport'] = isset($post['passport']) && $post['passport'] ? $post['passport'] : $post['username'];
-			if($MOD['passport'] == 'uc') {
-				$passport = convert($post['passport'], DT_CHARSET, $MOD['uc_charset']);
-				require DT_ROOT.'/api/uc.inc.php';
-				list($uid, $rt_username, $rt_password, $rt_email) = uc_user_login($passport, $post['password']);
-				if($uid == -2) message($L['register_msg_passport']);
-			}
 			$RG = array();
 			foreach($GROUP as $k=>$v) {
 				if($k > 4 && $v['vip'] == 0) $RG[] = $k;
@@ -147,11 +57,9 @@ switch($action) {
 			in_array($post['regid'], $RG) or message($L['register_pass_groupid']);
 			if(!$GROUP[$post['regid']]['type']) $post['company'] = $post['truename'];
 			$post['groupid'] = $MOD['checkuser'] == 1 ? 4 : $post['regid'];
-			if(is_email($_SESSION['verify'])) $post['email'] = $_SESSION['verify'];
-			if(is_mobile($_SESSION['verify'])) $post['mobile'] = $_SESSION['verify'];
 			$post['content'] = $post['introduce'] = $post['thumb'] = $post['banner'] = $post['catid'] = $post['catids'] = '';
 			$post['edittime'] = 0;
-			$inviter = get_cookie('inviter');
+			$inviter = get_cookie('inviter'); 
 			$post['inviter'] = $inviter ? decrypt($inviter, DT_KEY.'INVITER') : '';
 			check_name($post['inviter']) or $post['inviter'] = '';
 			if($do->add($post)) {
@@ -180,15 +88,6 @@ switch($action) {
 						if($MOD['welcome_email'] && $DT['mail_type'] != 'close') send_mail($email, $title, $content);
 					}
 				}
-				if(is_email($_SESSION['verify'])) {
-					$db->query("UPDATE {$DT_PRE}member SET vemail=1 WHERE userid=$userid");
-					$db->query("INSERT INTO {$DT_PRE}validate (type,username,ip,addtime,status,title,editor,edittime) VALUES ('email','$username','$DT_IP','$DT_TIME','3','$email','register','$DT_TIME')");
-				}
-				if(is_mobile($_SESSION['verify'])) {
-					$db->query("UPDATE {$DT_PRE}member SET vmobile=1 WHERE userid=$userid");
-					$db->query("INSERT INTO {$DT_PRE}validate (type,username,ip,addtime,status,title,editor,edittime) VALUES ('mobile','$username','$DT_IP','$DT_TIME','3','$mobile','register','$DT_TIME')");
-				}
-				$_SESSION['verify'] = '';
 				dheader('?action=success&auth='.encrypt('LOGIN|'.$username.'|'.$post['password'].'|'.$DT_TIME, DT_KEY.'LOGIN'));
 			} else {
 				message($do->errmsg);

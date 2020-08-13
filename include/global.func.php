@@ -1147,7 +1147,7 @@ function lang($str, $arr = array()) {
 
 function check_name($username) {
 	if(strpos($username, '__') !== false || strpos($username, '--') !== false) return false; 
-	return preg_match("/^[a-z0-9]{1}[a-z0-9_\-]{0,}[a-z0-9]{1}$/", $username);
+	return preg_match("/^[a-zA-Z0-9]{1}[a-zA-Z0-9_\-]{0,}[a-zA-Z0-9]{1}$/", $username);
 }
 
 function check_post() {

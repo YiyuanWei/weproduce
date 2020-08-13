@@ -14,6 +14,7 @@ switch($action) {
 			if($r['num'] >= $MG['address_limit']) dalert(lang($L['limit_add'], array($MG['address_limit'], $r['num'])), 'goback');
 		}
 		if($submit) {
+			$post['truename'] = $post['firstname'].'/'.$post['lastname'];
 			if($do->pass($post)) {
 				$post['username'] = $_username;
 				$do->add($post);
@@ -28,12 +29,30 @@ switch($action) {
 			$head_title = $L['address_title_add'];
 		}
 	break;
+	case 'default':
+		$itemid or message();
+		$do->itemid = $itemid;
+		$r = $do->get_one();
+		$r['listorder'] = 0;
+		if($do->pass($r)){
+			$do->edit($post);
+			dmsg($L['op_edit_success'], $forward);
+		}
+		else{
+			message($do->errmsg);
+		}
+		extract($r);
+		$head_title = $L['address_title_edit'];
+	break;
 	case 'edit':
 		$itemid or message();
 		$do->itemid = $itemid;
 		$r = $do->get_one();
+		$r['firstname']=explode("/", $r['truename'])[0];
+		$r['lastname']=explode("/", $r["truename"])[1];
 		if(!$r || $r['username'] != $_username) message();
 		if($submit) {
+			$post['truename'] = $post['firstname'].'/'.$post['lastname'];
 			if($do->pass($post)) {
 				$post['username'] = $_username;
 				$do->edit($post);

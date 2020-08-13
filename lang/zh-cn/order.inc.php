@@ -63,28 +63,28 @@ $L['group_pay_order_success'] = '订单支付成功';
 $L['group_pay_order_title'] = '订单支付';
 
 $L['trade_status'] = array(
-	'<span style="color:#008080;">待确认</span>',
-	'<span style="color:#FF6600;">待付款</span>',
-	'<span style="color:#0000FF;">待发货</span>',
-	'<span style="color:#FF0000;">已发货</span>',
-	'<span style="color:#008000;">交易成功</span>',
-	'<span style="color:#FF0000;text-decoration:underline;">申请退款</span>',
-	'<span style="color:#0000FF;text-decoration:underline;">已退款</span>',
-	'<span style="color:#008080;">货到付款</span>',
-	'<span style="color:#888888;text-decoration:line-through;">买家关闭</span>',
-	'<span style="color:#888888;text-decoration:line-through;">卖家关闭</span>',
+	'<span style="color:#008080;">Confirmation Pending</span>',
+	'<span style="color:#FF6600;">Payment Pending</span>',
+	'<span style="color:#0000FF;">Shippment Pending</span>',
+	'<span style="color:#FF0000;">Shipped</span>',
+	'<span style="color:#008000;">Delivered</span>',
+	'<span style="color:#FF0000;text-decoration:underline;">Request Refund</span>',
+	'<span style="color:#0000FF;text-decoration:underline;">Refund Received</span>',
+	'<span style="color:#008080;">Pay on Delivery</span>',
+	'<span style="color:#888888;text-decoration:line-through;">Closed by Buyer</span>',
+	'<span style="color:#888888;text-decoration:line-through;">Closed by Seller</span>',
 );
 $L['trade_dstatus'] = array(
-	'待确认',
-	'待付款',
-	'待发货',
-	'已发货',
-	'交易成功',
-	'申请退款',
-	'已退款',
-	'货到付款',
-	'买家关闭',
-	'卖家关闭',
+	'Confirmation Pending',
+	'Payment Pending',
+	'Shippment Pending',
+	'Shipped',
+	'Delivered',
+	'Request Refund',
+	'Refund Received',
+	'Pay on Delivery',
+	'Closed by Buyer',
+	'Closed by Seller',
 );
 $L['trade_msg_deny'] = '您无权进行此操作';
 $L['trade_msg_null'] = '订单不存在';

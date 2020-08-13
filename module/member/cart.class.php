@@ -52,7 +52,6 @@ class cart {
 			$r = DB::get_one("SELECT username,status FROM ".get_table($mid)." WHERE itemid=$itemid");
 			if(!$r) return -1;
 			if($r['status'] != 3) return -1;
-			if($r['username'] == $_username) return -4;
 			$k = $mid.'-'.$itemid.'-'.$s1.'-'.$s2.'-'.$s3;
 			if(isset($cart[$k])) {
 				$cart[$k] = $cart[$k] + $a;

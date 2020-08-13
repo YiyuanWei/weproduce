@@ -22,7 +22,7 @@ if(is_array($itemid) && !$_userid) {
 		$DT_URL .= '&itemid[]='.$id;
 	}
 }
-require DT_ROOT.'/module/mall/global.func.php';
+require DT_ROOT.'/module/mall/common.inc.php';
 require DT_ROOT.'/module/member/cart.class.php';
 include load('misc.lang');
 $do = new cart();
@@ -30,6 +30,9 @@ $do->max = intval($DT['max_cart']);
 $cart = $do->get();
 if($itemid) $action = 'add';
 $lists = array();
+$query = "SELECT address FROM ds_address WHERE username='".$_username."'";
+$_address = DB::get_one($query)['address'];
+isset($shipping) or $shipping=0;
 switch($action) {
 	case 'add':
 		$s1 = isset($s1) ? intval($s1) : 0;

@@ -1,135 +1,190 @@
 {template 'header', 'member'}
-<div class="menu">
-<table cellpadding="0" cellspacing="0">
-<tr>
-<td class="tab" id="add"><a href="?action=add"><span>添加地址</span></a></td>
-<td class="tab" id="s3"><a href="?action=index"><span>收货地址</span></a></td>
-</tr>
-</table>
+<script>
+	page('address');
+</script>
+<style>
+	.address-detail{
+		border-bottom: 1px solid var(--background-color);
+		padding: 1rem 0;
+	}
+	.address-detail p{
+		font-size: 1rem;
+		margin: 10px;
+		margin-left: 0px;
+	}
+	.address-detail a{
+		text-decoration: underline;
+		font-family: var(--we-font);
+		color: var(--background-color);
+	}
+</style>
+<div class="tt">
+	<div class="b16"></div>
+	<p>Add and manage the addresses you use often
+	{if $MG[address_limit]}
+	<span class="f_r"><span class="f_b we_f1">{$limit_used}</span> / <span class="we_f1">{$MG[address_limit]}</span> <br></span>
+	{/if}
+	</p>
+	<div class="break"></div>
+	{if $lists}
+	<div class="addresses">
+	{loop $lists $k $v}
+	<!-- {php $area=tag("table=ds_address&condition=areaid=$areaid")} -->
+	<div id="address_{$itemid}" class="address-detail">
+		<p>{$v[truename]}</p>
+		<p>{$v[address]}, {$v[address_2]}</p>
+		<p>{$v[city]}, {$area[region]} {$v[postcode]}</p>
+		<p>{$area[country]}</p>
+		<p>{$v[mobile]}</p>
+		<div class="b10"></div>
+		<p><span><a href="?action=edit&itemid={$v[itemid]}">Edit</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><a href="?action=delete&itemid={$v[itemid]}">Remove</a></span><span class="f_r">{if $v[listorder]}<a href="?action=default&itemid={$v[itemid]}">Make this default</a>{else}&check;&nbsp;<a>Default Address</a>{/if}</span></p>
+	</div>
+	{/loop}
+	</div>
+	<div class="btn_r clickable" style="color: white; font-size: 1.2rem; font-family: var(--we-font); text-align: center; padding: 1rem 3rem; width: fit-content; margin: 3rem 0" onclick="Go('?action=add')">
+		Add New Address
+	</div>
+	{else}
+	<div style="padding-top: 8rem;">
+		<div style="width: fit-content; margin: auto;">
+			<p style="font-size: 2rem;">You haven't saved any address yet.</p>
+			<div class="btn_r clickable" style="color: white; font-size: 1.2rem; font-family: var(--we-font); text-align: center; padding: 1rem 3rem; width: fit-content; margin: 3rem auto" onclick="Go('?action=add')">
+				Add New Address
+			</div>
+		</div>
+	</div>
+	{/if}
 </div>
 {if $action=='add' || $action=='edit'}
-<form method="post" action="?" id="dform" onsubmit="return check();">
-<input type="hidden" name="action" value="{$action}"/>
-<input type="hidden" name="itemid" value="{$itemid}"/>
-<input type="hidden" name="forward" value="{$forward}"/>
-<table cellpadding="10" cellspacing="1" class="tb">
-
-<tr>
-<td class="tl"><span class="f_red">*</span> 详细地址</td>
-<td class="tr">{ajax_area_select('post[areaid]', '请选择', $areaid)}<input name="post[address]" type="text" id="title" size="60" value="{$address}"/> <span id="dareaid" class="f_red"></span><span id="dtitle" class="f_red"></span></td>
-</tr>
-
-<tr>
-<td class="tl"><span class="f_red">*</span> 邮政编码</td>
-<td class="tr"><input name="post[postcode]" type="text" id="postcode" size="10" value="{$postcode}" /> <span id="dpostcode" class="f_red"></span></td>
-</tr>
-
-<tr>
-<td class="tl"><span class="f_red">*</span> 真实姓名</td>
-<td class="tr"><input name="post[truename]" type="text" id="truename" size="10" value="{$truename}"/> <span id="dtruename" class="f_red"></span></td>
-</tr>
-
-
-<tr>
-<td class="tl"><span class="f_red">*</span> 手机号码</td>
-<td class="tr"><input name="post[mobile]" type="text" id="mobile" size="20" value="{$mobile}"/> <span id="dmobile" class="f_red"></span></td>
-</tr>
-
-<tr>
-<td class="tl">电话号码</td>
-<td class="tr"><input name="post[telephone]" type="text" id="telephone" size="20" value="{$telephone}"/> <span id="dtelephone" class="f_red"></span></td>
-</tr>
-
-<tr>
-<td class="tl">显示顺序</td>
-<td class="tr f_gray"><input name="post[listorder]" type="text" id="listorder" size="4" value="{$listorder}"/> 数字越小越靠前<span id="dlistorder" class="f_red"></span></td>
-</tr>
-
-<tr>
-<td class="tl">备注信息</td>
-<td class="tr"><input name="post[note]" type="text" id="note" size="60" value="{$note}"/> <span id="dnote" class="f_red"></span></td>
-</tr>
-<tr>
-<td class="tl">&nbsp;</td>
-<td class="tr" height="50"><input type="submit" name="submit" value="{if $action=='add'}添 加{else}修 改{/if}" class="btn_g"/></td>
-</tr>
-</table>
-</form>
+<style>
+    .overlay-layer{
+        background-color: rgba(0, 0, 0, .3);
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 2;
+	}
+	#dform{
+		width: 800px;
+		height: 600px;
+		margin: 2rem auto;
+		background-color: white;
+		position: relative;
+		overflow-y: scroll;
+	}
+	#dform table{
+		width: 700px;
+		margin: auto;
+	}
+	#dform caption{
+		font-size: 2rem;
+		color: var(--background-color);
+		font-family: 'Dancing Script';
+		text-align: left;
+		margin-top: 2rem;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--background-color);
+	}
+	#dform th{
+		padding-top: 1.5rem;
+		text-align: left;
+		font-family: var(--we-font);
+		color: var(--background-color);
+		font-size: 1.5rem;
+		font-weight: normal;
+		padding-left: .5rem;
+	}
+	#dform td{
+		margin-top: 1rem;
+	}
+	#dform td input, #dform td select{
+		padding: .5rem 1rem;
+		width: calc(100% - 2rem);
+		font-size: 1rem;
+		font-family: var(--we-font);
+		color: var(--background-color);
+		-webkit-box-sizing: content-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: content-box;    /* Firefox, other Gecko */
+		box-sizing: content-box;         /* Opera/IE 8+ */
+	}
+	#dform td input:focus{
+		border-color: var(--background-color);
+	}
+	.wf span{
+		border: none;
+		width: 333px;
+	}
+	#dform input[type=submit]{
+		font-family: var(--we-font);
+		color: white;
+		font-size: 1.2rem;
+		background-color: var(--we-red);
+		border: none;
+		cursor: pointer;
+	}
+	#dform input[type=submit]:hover{
+		opacity: .8;
+	}
+#back{font-size: xx-large; position: absolute; right: 5%; top: 30px; color: grey;}
+#back:hover{color: lightgrey;}
+</style>
+<div class="overlay-layer">
+	<form action="?" method="post" id="dform" onsubmit="return check()">
+		<input type="hidden" name="action" value="{$action}">
+		<input type="hidden" name="itemid" value="{$itemid}">
+		<input type="hidden" name="forward" value="{$forward}">
+		<table cellspacing="10">
+			<caption>Add New Address</caption>
+			<tr>
+				<th><span class="we_f1">*</span> First Name</th>
+				<th><span class="we_f1">*</span> Last Name</th>
+			</tr>
+			<tr>
+				<td><input type="text" name="post[firstname]" id="firstname" value="{$firstname}"></td>
+				<td><input type="text" name="post[lastname]" id="lastname" value="{$lastname}"></td>
+			</tr>
+			<tr>
+				<th><span class="we_f1">*</span> Address</th>
+				<th>Address - Line 2</th>
+			</tr>
+			<tr>
+				<td><input type="text" name="post[address]" id="address" value="{$address}"></td>
+				<td><input type="text" name="post[address_2]" id="address_2" value="{$address_2}"></td>
+			</tr>
+			<tr>
+				<th><span class="we_f1">*</span> City</th>
+				<th><span class="we_f1">*</span> Area</th>
+			</tr>
+			<tr>
+				<td><input type="text" name="post[city]" id="city" value="{$city}"></td>
+				<td><div class="wf">{ajax_area_select('post[areaid]','Choose', $areaid)}</div></td>
+			</tr>
+			<tr>
+				<th>Zip / Postal Code</th>
+				<th>Phone</th>
+			</tr>
+			<tr>
+				<td><input type="text" name="post[postcode]" id="postcode" value="{$postcode}"></td>
+				<td><input type="text" name="post[mobile]" id="mobile" value="{$mobile}"></td>
+			</tr>
+			<tr></tr><tr></tr>
+			<tr><td colspan="2"><div class="clickable" style="float: left; display: inline-flex; width: 100%;" onclick="Dd('listorder').checked=!(Dd('listorder').checked);console.log(Dd('listorder').checked);"><input type="checkbox" name="post[listorderr]" id="listorder" style="width: auto;" value="{$listorder}"><span class="we_f1">Make this my default address</span></div></td></tr>
+			<tr></tr><tr></tr>
+			<tr><td><input type="submit" name="submit" value="Add Address"></td></tr>
+		</table>
+		<div id="back" class="clickable" onclick="Go('{$MOD[linkurl]}address.php')">&#x2715;</div>
+	</form>
+</div>
+<script>
+	function check(){
+		if( Dd('listorder').checked ) Dd('listorder').value = 0;
+		else Dd('listorder').value = 1;
+	}
+</script>
 <script type="text/javascript">s('addr');m({if $action=='add'}'add'{else}'s3'{/if});</script>
-{else}
-<form method="post">
-<div class="ls">
-<table cellpadding="10" cellspacing="0" class="tb">
-<tr>
-<th width="20"><input type="checkbox" onclick="checkall(this.form);"/></th>
-<th>地址</th>
-<th>姓名</th>
-<th>手机</th>
-<th>添加时间</th>
-<th>排序</th>
-<th width="40">修改</th>
-<th width="40">删除</th>
-</tr>
-{loop $lists $k $v}
-<tr align="center">
-<td><input type="checkbox" name="itemid[]" value="{$v[itemid]}"/></td>
-<td height="30" align="left"{if $v[note]} title="备注:{$v[note]}"{/if}>&nbsp;&nbsp{$v[address]}</td>
-<td>{$v[truename]}</td>
-<td>{$v[mobile]}</td>
-<td class="f_gray" title="更新时间 {$v[editdate]}">{$v[adddate]}</td>
-<td class="f_gray">{$v[listorder]}</td>
-<td><a href="?action=edit&itemid={$v[itemid]}"><img width="16" height="16" src="image/edit.png" title="修改" alt=""/></a></td>
-<td><a href="?action=delete&itemid={$v[itemid]}" onclick="return confirm('确定要删除吗？此操作将不可撤销');"><img width="16" height="16" src="image/delete.png" title="删除" alt=""/></a></td>
-</tr>
-{/loop}
-</table>
-</div>
-<div class="btns">
-<input type="submit" value=" 删除选中 " class="btn" onclick="if(confirm('确定要删除选中地址吗？')){this.form.action='?action=delete'}else{return false;}"/>
-</div>
-</form>
-{if $MG[address_limit]}
-<div class="limit">总共可加 <span class="f_b f_red">{$MG[address_limit]}</span> 条&nbsp;&nbsp;&nbsp;当前已加 <span class="f_b">{$limit_used}</span> 条&nbsp;&nbsp;&nbsp;还可以加 <span class="f_b f_blue">{$limit_free}</span> 条</div>
 {/if}
 <div class="pages">{$pages}</div>
 <script type="text/javascript">s('addr');m('s3');</script>
-{/if}
-{if $action=='add' || $action=='edit'}
-<script type="text/javascript">
-function check() {
-	var l;
-	var f;
-	f = 'areaid_1';
-	if(Dd(f).value == 0) {
-		Dmsg('请选择所在地区', 'areaid', 1);
-		return false;
-	}
-	f = 'title';
-	l = Dd(f).value.length;
-	if(l < 5) {
-		Dmsg('请填写详细地址', f);
-		return false;
-	}
-	f = 'postcode';
-	l = Dd(f).value.length;
-	if(l < 6) {
-		Dmsg('请填写邮政编码', f);
-		return false;
-	}
-	f = 'truename';
-	l = Dd(f).value.length;
-	if(l < 2) {
-		Dmsg('请填写真实姓名', f);
-		return false;
-	}
-	f = 'mobile';
-	l = Dd(f).value.length;
-	if(l < 11) {
-		Dmsg('请填写手机号码', f);
-		return false;
-	}
-	return true;
-}
-</script>
-{/if}
 {template 'footer', 'member'}

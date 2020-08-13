@@ -1,0 +1,634 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>test_DESTOON B2B网站管理系统</title>
+<meta http-equiv="mobile-agent" content="format=html5;url=http://localhost/destoon/mobile/about/index.html">
+<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
+<link rel="shortcut icon" type="image/x-icon" href="http://localhost/destoon/favicon.ico"/>
+<link rel="bookmark" type="image/x-icon" href="http://localhost/destoon/favicon.ico"/>
+<link rel="archives" title="DESTOON B2B网站管理系统" href="http://localhost/destoon/archiver/"/>
+<link rel="stylesheet" type="text/css" href="http://localhost/destoon/skin/default/style.css"/>
+<link rel="stylesheet" type="text/css" href="http://localhost/destoon/skin/default/extend.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" href="http://localhost/destoon/skin/default/ie6.css"/>
+<![endif]-->
+<script type="text/javascript">window.onerror=function(){return true;}</script><script type="text/javascript" src="http://localhost/destoon/lang/zh-cn/lang.js"></script>
+<script type="text/javascript" src="http://localhost/destoon/file/script/config.js"></script>
+<!--[if lte IE 9]><!-->
+<script type="text/javascript" src="http://localhost/destoon/file/script/jquery-1.5.2.min.js"></script>
+<!--<![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!-->
+<script type="text/javascript" src="http://localhost/destoon/file/script/jquery-2.1.1.min.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="http://localhost/destoon/file/script/common.js"></script>
+<script type="text/javascript" src="http://localhost/destoon/file/script/page.js"></script>
+<script type="text/javascript">
+GoMobile('http://localhost/destoon/mobile/about/index.html');
+var searchid = 5;
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine|Dancing Script|Great Vibes">
+<style>
+   :root{
+      --background-color: rgb(18, 43, 92);
+   }
+   .clickable{
+      cursor: pointer;
+   }
+   .clickable:hover{
+      color: rgb(220, 79, 62);
+   }
+   a:hover{
+      color: rgb(220, 79, 62);
+   }
+   #banner{
+      display: grid;
+      grid-template-columns: auto;
+      grid-template-rows: auto;
+      grid-template-areas: "banner";
+      padding-bottom: 1rem;
+   }
+   #head {
+      margin: 0 5%;
+      grid-area: 1 / 1 / 2 / 2;
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-template-rows: 4rem 1rem auto;
+      grid-template-areas: 
+         ". . user"
+         "break break break"
+         "logo . menu";
+      color: white;
+      z-index: 2;
+      font-size:1rem;
+   }
+   #head a, #head a:visited, #head a:link{
+      color: white;
+   }
+   #user-menu{
+      display: flex;
+      grid-area: user;
+      justify-self: end;
+   }
+   #user-panel{
+      display: grid;
+      grid-template-rows: auto auto;
+   }
+   #user-info {
+      float: right;
+      display: flex; 
+      margin-top: 1rem; 
+      margin-bottom: .5rem;
+   }
+   #user-info *{
+      margin: auto;
+   }
+   #user-info img{
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      margin: 0 .5rem;
+   }
+   #user-info li {
+      overflow: hidden;
+      float: left;
+   }
+   #user-info strong {
+      font-size: 1rem;
+   }
+   #user-info em{
+      font-size: 1rem;
+      font-style: normal;
+      float: right;
+      padding: 0 0.5rem;
+   }
+   #user-info i {
+      font-style: normal;
+      color: #999999;
+   }
+   #logo{
+      grid-area: logo;
+      margin-left: 5%;
+      margin-top: 1rem;
+      float: left;
+   }
+   #logo img{
+      height: 4rem;
+   }
+   #menu{
+      grid-area: menu;
+      display: flex;
+      justify-self: end;
+   }
+   #menu li{
+      float: right;
+      font-size: 1rem;
+      margin: 1.5rem .75rem;
+   }
+   .break{
+      grid-area: break;
+      margin: auto 0;
+      border: .2px solid rgba(255, 255, 255, 0.75);
+      border-radius: 100%;
+      align-self: start;
+   }
+   #usermenu{
+      width: 9rem; 
+      border: 1px solid white; 
+      background-color: white;
+      margin: 0 auto;
+      z-index: 100; 
+      grid-row-start: 2; 
+      justify-self: end;
+   }
+   #usermenu li{
+      color : black;
+   }
+   #usermenu *{
+      font-size: 1rem; 
+      font-family: Arial, Helvetica, sans-serif;
+      margin: .5rem;
+   }
+   #usermenu a{
+      margin: 0;
+   }
+   #usermenu .break{
+      margin: .3rem; 
+      grid-area: 2 / 1 / 3 / 2;
+      border-color: rgba(0, 0, 0, 0.25);
+   }
+   .wrapper{
+      background-color: var(--background-color);
+      color: white;
+   }
+</style>
+</head>
+<body>
+   <div id="banner" class="wrapper" >
+      <div id="head" style="padding-top: 1rem;">
+         
+         <!----------用户区块----------------->
+         <div id="user-menu">
+            <div id="user-panel">
+               <div id='user-info' class="clickable" onclick="if(get_cookie('auth')) $('#usermenu').toggle()">
+                  <script type="text/javascript">
+                     var destoon_uname = get_cookie('username');
+                     document.write('<img src="'+DTPath+'api/avatar/show.php?size=large&reload=1593602127&username='+destoon_uname+'"/>');
+                     document.write('<ul style="height:fit-content;">');
+                     if(get_cookie('auth')) {
+                        var string = '<li>';
+                        string += '<em>Hello '+destoon_uname+'</em>';
+                        string += '</li>';
+                        document.write(string);
+                     } else {
+                        if(destoon_uname) {
+                           document.write('<li><em><a href="http://localhost/destoon/member/login.php">Login</a></em><a href="http://localhost/destoon/member/"><strong>Hi,'+destoon_uname+'</strong></a></li>');
+                        } else {
+                           document.write('<li><em><a href="http://localhost/destoon/member/login.php"><strong>Log In</strong></em></a></li>');
+                        }
+                     }
+                     //document.write('<li></i><a href="http://localhost/destoon/member/biz.php" class="b">商户后台</a></li>');
+                     document.write('</ul>');
+                  </script>
+                  <span id='showsub' style="display: inline-block;transform: scale(1,.5);font-size: 2rem;">&or;</span>
+               </div>
+               <div id="usermenu" style="display: none;">
+                  <ul>
+                     <li>My Orders</li>
+                     <li>My Addresses</li>
+                     <li>My Wallet</li>
+                     <li>My Account</li>
+                     <div class="break"></div>
+                     <a class="clickable" href="http://localhost/destoon/member/logout.php"><li>Log Out</li></a>
+                  </ul>
+               </div>
+            </div>
+            <ul style="margin-top: 1.2rem;">
+               <a href="http://localhost/destoon/member/cart.php"><li><i class="fa fa-shopping-cart" style="font-size:2.5rem;"></i></li></a>
+            </ul>
+         </div>
+         <!----------用户区块----------------->
+         <div class="break"></div>
+         <!-----------LOGO区块------------------------>
+         <!-- <img src="http://localhost/destoon/skin/default/image/logo.gif" />--->
+         <!---上面是取自后台设置的logo,但像素限定了180x60--->
+         <div id='logo'><a href="http://localhost/destoon/"><img src="http://localhost/destoon/skin/default/image/logo.gif"/></a></div>
+         <!----http://localhost/destoon/skin/default/ =  /skin/default/image/  ---->
+         <!----------LOGO区块----------------------->
+         <div id='menu'>
+            <ul>
+               <li>Past Items</li>
+               <a class="clickable" href="http://localhost/destoon/about"><li>About</li></a>
+               <a class="clickable" href="http://localhost/destoon/mall/"><li>Shop</li></a>
+               <a class="clickable" href="http://localhost/destoon/request/"><li>Request</li></a>
+               <a class="clickable" href="http://localhost/destoon/"><li>Home</li></a>
+            </ul>
+         </div>
+         
+      </div>
+   </div>
+   
+<script>
+$(document).ready(function(){
+   if(get_cookie('auth')) $('#showsub').css('display','block')
+   else $('#showsub').css('display','none')
+})
+</script>
+</body>
+</html><style>
+   .com-background{
+       font-size:26px;
+       color:white;
+       top:280px;
+   }
+   .com-introduction{
+       width:100%;height:500px;
+       background-color:rgba(18,43,92);
+       text-align:center;
+       color:white;
+   }
+   .sliderDiv{
+       width: 90%;
+       border:none;
+       margin: 0 auto;
+       position: relative;
+   }
+   .slider .slide{
+       display: none;
+       width: 80%;
+       margin: auto;
+       grid-template-columns: 50% 50%;
+       grid-template-areas: "img content";
+       place-items: center;
+       padding-bottom: 3rem;
+   }
+   .slider .slide .content{
+      grid-area: content;
+      text-align: center;
+      font-family: sans-serif;
+      word-spacing: normal;
+   }
+   .slider .slide .content h2{
+      font-weight: normal;
+   }
+   .slider .slide .content p{
+      font-size: 15px;
+   }
+   .slider .slide img{
+      grid-area: img;
+   }
+   .slider div.on{
+       display: grid;
+   }
+   .sliderDiv span{
+       width:40px;height:50px; background:transparent; position:absolute;top:180px;font-size:37px;color:#fff;text-align:center;
+       cursor:pointer;
+       filter:alpha(opacity = 50);
+       -moz-opacity:0.50;
+       opacity:0.50;
+       z-index:9;
+   }
+   .sliderDiv .left{left:0;background-color: rgba(0,0,0,0.2);}
+   .sliderDiv .right{right:0;background-color: rgba(0,0,0,0.2);}
+   .sliderDiv span:hover{
+       filter:alpha(opacity = 90);
+       -moz-opacity:0.90;
+       opacity:0.90;
+   }
+
+   .item{
+       position: absolute;
+       left: 50%;
+       transform: translateX(-50%);
+   }
+   .item li{
+       float: left;
+       width: 10px;
+       height: 10px;
+       list-style: none;
+       border-radius: 50%;
+       background-color: #fff;
+       margin-right: 10px;
+       cursor: pointer;
+   }
+   .item li.current{
+       background-color: yellow;
+   }
+   .cus-message{
+       width:100%;height:500px;
+       background-color:#F6F6F6;
+       padding:20px auto;
+   }
+   .cus-message .contact{
+       float:left;
+       width:50%;
+       height:100%;
+       text-align:center;
+       background-color:rgba(18,43,92);
+       margin:auto;
+       color:white;   
+   }
+   .msg{
+       float:right;
+       width:50%;
+       height:100%;
+       background-color:rgba(18,43,92);
+   }
+   .msg-form{
+       width:240px; height:200px；
+   }
+   input,textarea{
+       outline-style: none;
+       border: 1px solid #ccc;
+       border-radius: 3px;
+       padding: 6px 10px;
+       width: 418px;
+       font-size: 18px;
+       font-family: "Microsoft soft";
+       background-color: transparent;
+   }
+   input::-webkit-input-placeholder {
+       color: #C0C0C0;
+       font-size: 16px;
+   }
+   textarea::-webkit-input-placeholder {
+       color: #C0C0C0;
+       font-size: 16px;
+   }
+   input:focus{
+       border-color: #66afe9;
+       outline: 0;
+       -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+       box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+   }
+   textarea:focus{
+       border-color: #66afe9;
+       outline: 0;
+       -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+       box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+   }
+   button{
+       color: var(--background-color);
+       font-family: 'Dancing Script';
+       background: #F3F3F3;
+       border: 1px #DADADA solid;
+       padding: 14px 195px;
+       border-radius: 2px;
+       font-size: 1rem;
+       outline: none;
+       cursor: pointer;
+   }
+   button:hover {
+       border: 1px #C6C6C6 solid;
+       box-shadow: 1px 1px 1px #EAEAEA;
+       color: #333333;
+       background: #F7F7F7;
+   }
+   button:active {
+       box-shadow: inset 1px 1px 1px #DFDFDF;
+   }
+</style><!--公司背景图-->
+<div class="wrapper" style="display: grid; height: fit-content;">
+   <div class="com-background" style="grid-area: 1 / 1 / 2 / 2;">
+      <img src="../skin/default/image/banner.jpg" alt="">
+   </div>
+   <div class="com-background" style="grid-area: 1 / 1 / 2 / 2; z-index: 2; place-self: center;">
+      Company Introduction
+   </div>
+</div>
+<div class="b16 wrapper"></div>
+<!--公司介绍-->
+<div class="wrapper">
+<div class = "com-introduction">
+    <br>
+    <h2 style="font-family: 'Dancing Script'; font-weight: normal;">Your Online One-Stop Manufacturing Service Provider</h2>
+    <br>
+    <p>WeProduce is a platform to </p>
+    <p>connect designers worldwide</p>
+    <p>with factories in Asia.​</p>
+    <br>
+    <p>We are an Australia based service group, </p>
+    <p>opening to worldwide </p>
+    <p>matieral/manufacture/shipping </p>
+    <p>method seekers. </p>
+    <br>
+    <p>We have over 3000 factories in Asia covers from fabric, button, zipper, graphic</p>
+    <p>printing to manufactory.</p>
+</div>
+</div>
+<div class="wrapper">
+<!--轮播图-->
+<div class="sliderDiv">
+    <!-----  轮播区  ----->
+    <div class="slider">
+       <div class="slide on wrapper">
+          <img src="../skin/default/image/about1.jpg" alt="" style="grid-area: img;">
+          <div class="content">
+             <h2>Fabric and Accessories</h2>
+             <p>There are various types of fabrics and accessories for designers to choose, for generating ideas or making samples...</p>
+          </div>
+       </div>
+       <div class="slide wrapper">
+          <img src="../skin/default/image/about2.jpg" alt="">
+          <div class="content">
+             <h2>Garment Factories</h2>
+             <p>Designers can choose garment factories from preferred countries with selected fabrics and accessories.</p>
+          </div>
+       </div>
+       <div class="slide wrapper">
+          <img src="../skin/default/image/about3.jpg" alt="">
+          <div class="content">
+             <h2>Quality Control</h2>
+             <p>Fabrics and accessories for bulk production strictly follow the samples. We will check the sample quality first with our client then proceed order.</p>
+          </div>
+       </div>
+       <div class="slide wrapper">
+          <img src="../skin/default/image/about4.jpg" alt="">
+          <div class="content">
+             <h2>Tax Return and Custom Clearance</h2>
+             <p>We take care of tax return and custom processes for clients, where the tax rate will directly been reduced from from our quote.</p>
+          </div>
+       </div>
+       <div class="slide wrapper">
+          <img src="../skin/default/image/about5.jpg" alt="">
+          <div class="content">
+             <h2>Unified Shipment</h2>
+             <p>We gather orders of the same country and arrange shipment together. The price will be better for each client.</p>
+          </div>
+       </div>
+    </div>
+    <ul class="item">
+        <li class="current"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <span class="left"><</span>
+    <span class="right">></span>
+</div>
+</div>
+<div class="b32 wrapper"></div>
+<div class="b32 wrapper"></div>
+<!--用户留言-->
+<div class="cus-message">
+    <div class="contact">
+        <br>
+        <h1>Contact</h1>
+        <p>4015/601 Little Lonsdale Street, Melbourne, VIC, Australia</p>
+        <p>business@weproducemoda.com</p>
+        <p>+61452509529</p>
+    </div>
+    <div class="msg">
+        <form id="msg" action="" method="POST" class="msg-form">
+            <div class="info-table">
+                    <div id="cus-msg">
+                        <br>
+                        <p>
+                            <td><input type="text" name="Name" id="Name" class="inputstyle" placeholder="Name" style="color: white" required></td>
+                        </p>
+                        <p>
+                            <td><input type="email" name="email" id="email" placeholder="Email" style="color: white" required></td>
+                        </p>
+                        
+                        <p>
+                            <td><input type="tel" name="phone" id="phone" placeholder="Phone" style="color: white" required></td>
+                        </p>
+                        <p>
+                            <td><input type="text" name="Subject" id="Subject" placeholder="Subject" style="color: white"></td>
+                        </p>
+                        <p>
+                            <textarea name="message" id="message" cols="50" rows="5" placeholder="Type your message here..." style="color: white"></textarea>
+                        </p>
+                    </div>
+            </div>
+        </form>
+        <div>
+            <button type="submit" name="submit" value="submit" form="msg">Send</button>
+        </div>
+     </div>
+    
+</div>
+</div>
+<script type="text/javascript">$(function(){$('#webpage_6').attr('class', 'side_on');});</script>
+<script type="text/javascript">
+var showmap = true;
+//获取元素
+var sliderArea=document.querySelector('.sliderDiv');
+var as=document.querySelector('.slider').querySelectorAll('.slide');
+var lis=document.querySelector('.item').querySelectorAll('li');
+var leftArrow=document.querySelector('.left');
+var rightArrow=document.querySelector('.right');
+
+var index=0;//保存当前展示的轮播图的索引，默认0
+var len=as.length;
+var t;
+
+//自动轮播
+t=setInterval(moveNext,2000);
+//鼠标经过，停止轮播
+sliderArea.onmouseover=function(){
+clearInterval(t);
+};
+//鼠标离开，继续轮播
+sliderArea.onmouseout=function(){
+t=setInterval(moveNext,2000);
+};
+//指示器轮播
+for(var i=0;i<lis.length;i++){
+lis[i]._index=i;//新增属性，保存位置
+//为每一个li追加点击事件
+lis[i].onclick=function(){
+//当前显示的li，修改为未选中状态
+lis[index].className='';
+as[index].classList.remove('on');//当前显示的轮播图改为不显示
+
+this.className='current';//被点击的li，改为选中状态
+as[this._index].classList.add('on');//轮播显示为对应
+
+//修改index值
+index=this._index;
+
+};
+}
+//箭头轮播
+//左箭头
+leftArrow.onclick=function(){
+movePre();
+};
+//右箭头
+rightArrow.onclick=function(){
+moveNext();
+};
+//切换下一张
+function moveNext(){
+as[index].classList.remove('on');//当前显示的轮播图改为不显示
+lis[index].className='';//当前指示器不显示
+index++;//索引递增
+if (index==len) {
+index=0;//最后一张切换为第一张
+}
+as[index].classList.add('on');//下一张显示
+lis[index].className='current';
+}
+//切换上一张
+function movePre(){
+as[index].classList.remove('on');
+lis[index].className='';
+index--;
+if (index==-1) {
+index=len-1;//第一张时，修改为最后一张
+}
+//上一张展示
+as[index].classList.add('on');
+lis[index].className='current';
+}
+</script>
+<style>
+    .contact{
+        padding: 1rem 0;
+    }
+    .contact li{
+        text-align: center;
+        padding: 1rem;
+        color: white;
+        font-size: 1rem;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    #map{
+        display: none;
+        width:100%;
+        height:650px;
+        text-align:center;
+    }
+</style>
+<div class="wrapper">
+    <div id="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.984115693682!2d144.95150951534347!3d-37.81384104182094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d49325b4501%3A0x9bbef6a27c2d55b!2s4015%2F601%20Little%20Lonsdale%20St%2C%20Melbourne%20VIC%203000!5e0!3m2!1sen!2sau!4v1591685741896!5m2!1sen!2sau" width="900" height="500" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    </div>
+    <div class="b32"></div>
+    <ul class="contact">
+        <li>Tel : +61-452-509-529</li>
+        <li><a href="https://instagram.com/we.produce?igshid=11sf7okfxqd1h"><img src="http://localhost/destoon/skin/default/image/ins.png" style="width: 2rem;" alt=""></a></li>
+    </ul>
+</div>
+<div class="m">
+    <div class="foot">
+        <div id="copyright">&copy;2020 by WeProduce<br>(c)2008-2018 DESTOON B2B SYSTEM All Rights Reserved</div>
+                <div id="powered"><a href="https://www.destoon.com/" target="_blank"><img src="http://localhost/destoon/file/image/powered.gif" width="136" height="10" alt="Powered By DESTOON"/></a></div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        if( showmap != undefined && showmap){
+            $('#map').show();
+        }
+    });
+</script>
+<div class="back2top"><a href="javascript:void(0);" title="返回顶部">&nbsp;</a></div>
+<script type="text/javascript">
+show_task('moduleid=3&html=webpage&itemid=6');
+</script>
+</body>
+</html>

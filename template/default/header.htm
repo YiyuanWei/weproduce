@@ -1,85 +1,13 @@
-<!DOCTYPE>
-<html>
-<head>
-<meta charset="{DT_CHARSET}"/>
-<title>{if $seo_title}{$seo_title}{else}{if $head_title}{$head_title}{$DT[seo_delimiter]}{/if}{if $city_sitename}{$city_sitename}{else}{$DT[sitename]}{/if}{/if}</title>
-{if $head_keywords}
-<meta name="keywords" content="{$head_keywords}"/>
-{/if}
-{if $head_description}
-<meta name="description" content="{$head_description}"/>
-{/if}
-{if $head_mobile}
-<meta http-equiv="mobile-agent" content="format=html5;url={$head_mobile}">
-{/if}
-<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
-<link rel="shortcut icon" type="image/x-icon" href="{DT_STATIC}favicon.ico"/>
-<link rel="bookmark" type="image/x-icon" href="{DT_STATIC}favicon.ico"/>
-{if $head_canonical}
-<link rel="canonical" href="{$head_canonical}"/>
-{/if}
-{if $EXT[archiver_enable]}
-<link rel="archives" title="{$DT[sitename]}" href="{$EXT[archiver_url]}"/>
-{/if}
-<link rel="stylesheet" type="text/css" href="{DT_SKIN}style.css"/>
-{if $moduleid>1}
-<link rel="stylesheet" type="text/css" href="{DT_SKIN}{$module}.css"/>
-{/if}
-{if $CSS}
-{loop $CSS $css}
-<link rel="stylesheet" type="text/css" href="{DT_SKIN}{$css}.css"/>
-{/loop}
-{/if}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!--[if lte IE 6]>
-<link rel="stylesheet" type="text/css" href="{DT_SKIN}ie6.css"/>
-<![endif]-->
-{if !DT_DEBUG}<script type="text/javascript">window.onerror=function(){return true;}</script>{/if}
-<script type="text/javascript" src="{DT_STATIC}lang/{DT_LANG}/lang.js"></script>
-<script type="text/javascript" src="{DT_STATIC}file/script/config.js"></script>
-<!--[if lte IE 9]><!-->
-<script type="text/javascript" src="{DT_STATIC}file/script/jquery-1.5.2.min.js"></script>
-<!--<![endif]-->
-<!--[if (gte IE 10)|!(IE)]><!-->
-<script type="text/javascript" src="{DT_STATIC}file/script/jquery-2.1.1.min.js"></script>
-<!--<![endif]-->
-<script type="text/javascript" src="{DT_STATIC}file/script/common.js"></script>
-<script type="text/javascript" src="{DT_STATIC}file/script/page.js"></script>
-{if $lazy}<script type="text/javascript" src="{DT_STATIC}file/script/jquery.lazyload.js"></script>{/if}
-{if $JS}
-{loop $JS $js}
-<script type="text/javascript" src="{DT_STATIC}file/script/{$js}.js"></script>
-{/loop}
-{/if}
-{php $searchid = ($moduleid > 3 && $MODULE[$moduleid]['ismenu'] && !$MODULE[$moduleid]['islink']) ? $moduleid : 5;}
-<script type="text/javascript">
-{if $head_mobile && $EXT[mobile_goto]}
-GoMobile('{$head_mobile}');
-{/if}
-var searchid = {$searchid};
-{if $itemid && $DT[anticopy]}
-document.oncontextmenu=function(e){return false;};
-document.onselectstart=function(e){return false;};
-{/if}
-</script>
-
-<!--[以上为系统关键代码，除非您明确其含义，否则请勿修改或删除，否则会导致系统错误]-->
-<!--[模板中所有带id的元素，请勿修改或删除，否则会导致部分JS代码无法运行]-->
-<!--[以上类似的注释，在编译模板时，系统会自动移除，不会显示在实际际的页面中]-->
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine|Dancing Script|Great Vibes">
+{template 'head'}
 <style>
-   :root{
-      --background-color: rgb(18, 43, 92);
-   }
    .clickable{
       cursor: pointer;
    }
    .clickable:hover{
-      color: rgb(220, 79, 62);
+      opacity: .8;
    }
    a:hover{
-      color: rgb(220, 79, 62);
+      color: var(--we-red)
    }
    #banner{
       display: grid;
@@ -128,6 +56,7 @@ document.onselectstart=function(e){return false;};
       width: 2.5rem;
       height: 2.5rem;
       border-radius: 50%;
+      margin: 0 .5rem;
    }
    #user-info li {
       overflow: hidden;
@@ -158,7 +87,8 @@ document.onselectstart=function(e){return false;};
 
    #menu{
       grid-area: menu;
-      display: flex;
+      display: block;
+      width: 400px;
       justify-self: end;
    }
    #menu li{
@@ -175,7 +105,7 @@ document.onselectstart=function(e){return false;};
    }
 
    #usermenu{
-      width: 9rem; 
+      width: fit-content; 
       border: 1px solid white; 
       background-color: white;
       margin: 0 auto;
@@ -184,11 +114,16 @@ document.onselectstart=function(e){return false;};
       justify-self: end;
    }
    #usermenu li{
-      color : black;
+      color : var(--background-color);
+      padding: .5rem;
+      font-weight: 100;
+   }
+   #usermenu li:hover{
+      color: var(--background-color);
    }
    #usermenu *{
       font-size: 1rem; 
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Arial;
       margin: .5rem;
    }
    #usermenu a{
@@ -202,18 +137,30 @@ document.onselectstart=function(e){return false;};
    .wrapper{
       background-color: var(--background-color);
    }
+   .active, #usermenu .active{
+      color: var(--we-red);
+   }
+   .inactive{
+      color: var(--background-color);
+   }
+.we_f1, .we_f1_0{color: var(--background-color);font-size: 1rem;font-family: var(--we-font);}
+.we_f1_2{color: var(--background-color);font-size: 1.2rem;font-family: var(--we-font);}
+.we_f1_5{color: var(--background-color);font-size: 1.5rem;font-family: var(--we-font);}
+.we_f2, .we_f2_0.we_f1_5{color: var(--background-color);font-size: 2rem;font-family: var(--we-font);}
+.f_i{font-style: italic;}
+.f_un{text-decoration: underline;}
 </style>
 
 </head>
 
 <body>
-   <div id="banner" class="wrapper">
-      <div id="head">
+   <div id="banner" class="wrapper" >
+      <div id="head" style="padding-top: 1rem;">
          
          <!----------用户区块----------------->
          <div id="user-menu">
             <div id="user-panel">
-               <div id='user-info' class="clickable" onclick="$('#usermenu').toggle()">
+               <div id='user-info' class="clickable" onclick="if(get_cookie('auth')) $('#usermenu').toggle()">
                   <script type="text/javascript">
                      var destoon_uname = get_cookie('username');
                      document.write('<img src="'+DTPath+'api/avatar/show.php?size=large&reload={DT_TIME}&username='+destoon_uname+'"/>');
@@ -237,10 +184,12 @@ document.onselectstart=function(e){return false;};
                </div>
                <div id="usermenu" style="display: none;">
                   <ul>
-                     <li>My Orders</li>
-                     <li>My Addresses</li>
-                     <li>My Wallet</li>
-                     <li>My Account</li>
+                     <a href="{$MODULE[2][linkurl]}order.php" class="clickable"><li class="inactive" id="my-order">My Orders</li></a>
+                     <!-- <li class="inactive" id="my-request">My Requests</li> -->
+                     <a href="{$MODULE[2][linkurl]}address.php" class="clickable"><li class="inactive" id="my-address">My Addresses</li></a>
+                     <!-- <li class="inactive" id="my-wallet">My Wallet</li> -->
+                     <a href="{$MODULE[2][linkurl]}account.php"><li class="inactive" id="my-account">My Account</li></a>
+                     <!-- <li class="inactive" id="my-message">My Messages</li> -->
                      <div class="break"></div>
                      <a class="clickable" href="{$MODULE[2][linkurl]}logout.php"><li>Log Out</li></a>
                   </ul>
@@ -264,7 +213,7 @@ document.onselectstart=function(e){return false;};
 
          <div id='menu'>
             <ul>
-               <li>Past Items</li>
+               <a class="clickable" href="{$MODULE[2][linkurl]}cart.php?mid=16" id="menu-cart"><li>My Cart</li></a>
                <a class="clickable" href="{DT_PATH}about"><li>About</li></a>
                <a class="clickable" href="{$MODULE[16][linkurl]}"><li>Shop</li></a>
                <a class="clickable" href="{$MODULE[100][linkurl]}"><li>Request</li></a>
@@ -277,9 +226,13 @@ document.onselectstart=function(e){return false;};
    
 <script>
 $(document).ready(function(){
-   if(get_cookie('auth')) $('#showsub').css('display','block')
-   else $('#showsub').css('display','none')
+   if(get_cookie('auth')){
+      $('#showsub').css('display','block');
+      $('#menu-cart').css('display','block');
+   }
+   else{
+      $('#showsub').css('display','none');
+      $('#menu-cart').css('display','none');
+   }
 })
 </script>
-</body>
-</html>

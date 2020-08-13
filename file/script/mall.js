@@ -60,8 +60,6 @@ function addE(i) {
 	});
 }
 function BuyNow() {
-	console.log(mallmid);
-	console.log(mallid);
 	Go(MEPath+'buy.php?mid='+mallmid+'&itemid='+mallid+'&s1='+s_s[1]+'&s2='+s_s[2]+'&s3='+s_s[3]+'&a='+Dd('amount').value);
 }
 function AddCart() {
