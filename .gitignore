@@ -5,3 +5,5 @@ file/upload/
 file/session/
 vendor/
 test/
+/composer.json
+/composer.lock
