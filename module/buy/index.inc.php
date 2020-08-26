@@ -5,6 +5,7 @@ if($DT_PC) {
 	if(!check_group($_groupid, $MOD['group_index'])) include load('403.inc');
 	$typeid = isset($typeid) ? intval($typeid) : 99;
 	isset($TYPE[$typeid]) or $typeid = 99;
+	$step = isset($step) ? intval($step) : 1;
 	$dtype = $typeid != 99 ? " AND typeid=$typeid" : '';
 	$maincat = get_maincat($catid ? $CAT['parentid'] : 0, $moduleid);
 	if($catid) $seo_title = $seo_catname.$seo_title;
@@ -12,6 +13,10 @@ if($DT_PC) {
 	if($page == 1) $head_canonical = $MOD['linkurl'];
 	$destoon_task = "moduleid=$moduleid&html=index";
 	if($EXT['mobile_enable']) $head_mobile = $MOD['mobile'].($page > 1 ? 'index.php?page='.$page : '');
+	switch($step){
+		case 3:
+			if( $submit ) dheader('?step=4');
+	}
 } else {
 	$condition = "status=3";
 	if($cityid) {
@@ -41,4 +46,8 @@ if($DT_PC) {
 $seo_file = 'index';
 include DT_ROOT.'/include/seo.inc.php';
 include template($MOD['template_index'] ? $MOD['template_index'] : 'index', $module);
+
+function label($id, $content){
+    echo("<label for='$id'>".$content.": </label>");
+}
 ?>

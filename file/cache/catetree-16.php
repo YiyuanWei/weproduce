@@ -1,1 +1,1 @@
-<option value="4">test</option></select>
+<option value="5">Fabric</option><option value="6">Garment</option><option value="7">Bedding</option><option value="8">Accessories</option></select>

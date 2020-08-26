@@ -3,3 +3,5 @@
 file/cache/
 file/upload/
 file/session/
+vendor/
+test/

@@ -1,3 +1,4 @@
+{template 'header','mall'}
 <style>
     .products{
         display: grid;
@@ -66,8 +67,11 @@
         display: block;
     }
 </style>
-{if $tags}
-<div class="products">
+{php $mid=16;}
+<!--{php $tags=tag("moduleid=$mid&condition=status=3&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_mall]."&template=null");}-->
+
+<div class="main">
+    <div class="products"> 
     {loop $tags $i $t}
     <div class="product clickable" id="product-{$t[itemid]}" onclick="show('{$t[itemid]}')">
       <div style="position: relative;">
@@ -79,8 +83,17 @@
     </div>
     {/loop}
 </div>
-{else}
-<div style="font-size: 2rem; font-family: var(--we-font); color: var(--background-color); width: fit-content; margin: 5rem auto;">
-    No Product
 </div>
-{/if}
+
+<script>
+    var onquickview = false;
+    function qv(bool){
+        onquickview = bool;
+    }
+    function show(id){
+        if(!onquickview) location.href= '{$MOD[linkurl]}show.php?&itemid='+id;
+    }
+</script>
+
+{template 'quickview','mall'}
+{template 'footer'}

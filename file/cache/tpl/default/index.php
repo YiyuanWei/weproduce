@@ -1,10 +1,10 @@
 <?php defined('IN_DESTOON') or exit('Access Denied');?><?php include template('header');?>
 <script>
     var banner = document.createElement('div');
-    banner.setAttribute('style','grid-area: banner; z-index: 1; max-width: fit-content; place-self: stretch; place-items: center; display: grid; grid-template-columns: auto; grid-template-rows: auto;');
+    banner.setAttribute('style','grid-area: banner; z-index: 1; width: 100%; place-self: stretch; place-items: center; display: grid; grid-template-columns: auto; grid-template-rows: auto;');
     var img = new Image();
     img.src = '<?php echo DT_SKIN;?>image/banner.jpg';
-    img.style = "grid-area: 1 / 1 / 2 / 2;";
+    img.style = "grid-area: 1 / 1 / 2 / 2; width:100%; place-self:stretch;";
     banner.append(img);
     var title = document.createElement('div');
     title.setAttribute('style','text-align: center; grid-area: 1 / 1 / 2 / 2; place-self: center;')
@@ -52,41 +52,42 @@
     </div>
   </div>
 </div>
+<?php $steps=array('Request','Quote','Produce','Shipment')?>
 <style>
   #steps{
     display:grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: <?php if(is_array($steps)) { foreach($steps as $i) { ?> auto <?php } } ?>;
+    height: 10rem;
+  }
+  #steps:hover{
+    padding: 0 2px;
   }
   #steps .step{
     padding: 2rem 3rem 1rem;
+    color: var(--background-color);
   }
-  #steps h2{
+  #steps .h2{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: lighter;
     font-size: 1.2rem;
   }
-  #steps p{
-    font-family: 'Dancing Script';
+  #steps .p{
+    font-family: var(--we-font);
     font-style: italic;
     font-size: 1rem;
   }
 </style>
-<div id="steps">
-  <div class="step">
-    <h2>Step 1</h2>
-    <p>Request</p>
-  </div>
-  <div class="step">
-    <h2>Step 2</h2>
-    <p>Quote</p>
-  </div>
-  <div class="step">
-    <h2>Step 3</h2>
-    <p>Produce</p>
-  </div>
-  <div class="step">
-    <h2>Step 4</h2>
-    <p>Shipment</p>
+<div id="steps" class="clickable" onclick="Go('<?php echo DT_PATH;?>request')">
+    <?php if(is_array($steps)) { foreach($steps as $i => $step) { ?>
+    <div class="step">
+      <span class="fa-stack">
+        <span class="fa fa-circle-thin fa-stack-2x"></span>
+        <span class="fa-stack-1x" style="font-family: var(--we-font);"><?php echo $i+1;?></span>
+      </span>
+      <p class="h2">Step <?php echo $i+1;?></p>
+      <p class="p"><?php echo $step;?></p>
+    </div>
+    <?php } } ?>
   </div>
 </div>
 <style>

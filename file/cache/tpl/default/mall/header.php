@@ -5,6 +5,7 @@
     }
     .main{
         background-color: var(--background);
-        margin: 10% 15%;
+        width: 1000px;
+        margin: 10% auto;
     }
 </style>

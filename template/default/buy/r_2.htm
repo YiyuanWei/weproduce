@@ -1,0 +1,65 @@
+<table class="content-table">
+    {php $c = 'f'}
+    <tr>
+        <td>{label('fmid','Fabric Material')}</td>
+        <td>
+            {php $l = 'm'}
+            {php $p = $m}
+            {template option,buy}
+        </td>
+        <td>{label('fw','Fabric Weight')}</td>
+        <td>
+            <input type="number" name="content[fw]" id="fw" min="0" placeholder="0" step="0.01">
+            <span>Unit: gsm</span>
+        </td>
+        <td>
+            {label('fcatid','Fabric Type')}
+        </td>
+        <td>
+            {php $l = 'cat'}
+            {php $p = $cat}
+            {template option,buy}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            {php $id=fm}
+            {template other,buy}
+        </td>
+        <td></td>
+        <td></td>
+        <td colspan="2">
+            {php $id=fcat}
+            {template other,buy}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6"><div class="b16"></div></td>
+    </tr>
+    <tr>
+        <td>{label('q','Quantity')}</td>
+        <td><input type="number" name="content[q]" id="q"><span>Unit: Meters</span></td>
+        <td>{label('others','Requirements')}</td>
+        <td colspan="3">
+            <div style="display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto;">
+                <textarea name="content[others]" id="others" rows="5" maxlength="200" autocomplete="off" style="grid-area: 1 / 1 / 3 / 3;" onkeyup="count(this)"></textarea>
+                <span style="grid-area: 2 / 1 / 3 / 3; justify-self: end;">200</span>
+            </div>
+        </td>
+    </tr>
+</table>
+<div class="upload-img">
+    <p class="h2">Upload Image</p>
+    <p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
+    <div class="t_up_imgs">
+        <div class="t_up_imgs" id="img_pre"></div>
+        <div class="t_up_imgs">
+            <input type="file" name="content[img][]" id="img" style="display: none;" multiple accept="image/*" onchange="showImage()">
+            <label for="img">
+                <div class="up_imgs">
+                    <span>+</span>
+                </div>
+            </label>
+        </div>
+    </div>
+</div>

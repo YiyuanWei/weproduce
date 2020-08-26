@@ -548,7 +548,7 @@ font-weight: bold;
 <?php } else if($nav==6) { ?>
 <p>No Orders has been cancelled.</p>
 <?php } else { ?>
-<p>You haven't placed any orders yet.</p>
+<p>No orders under unknown status.</p>
 <a href="<?php echo $MODULE['16']['linkurl'];?>"><p style="text-decoration: underline; font-size: 1rem;">Shop Now</p></a>
 <?php } ?>
 </div>

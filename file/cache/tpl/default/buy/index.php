@@ -1,46 +1,82 @@
-<?php defined('IN_DESTOON') or exit('Access Denied');?><?php include template('header');?>
-<?php if($MOD['page_irec']) { ?>
-<div class="m o_h">
-<div class="head-txt"><span><a href="<?php echo $MODULE['2']['linkurl'];?><?php echo $DT['file_my'];?>?mid=<?php echo $moduleid;?>&action=add" target="_blank">发布<i>&gt;</i></a></span><strong>推荐<?php echo $MOD['name'];?></strong></div>
-<div class="list-img list0"><?php echo tag("moduleid=$moduleid&condition=status=3 and thumb<>'' and level>0&areaid=$cityid&order=addtime desc&width=180&height=135&lazy=$lazy&pagesize=".$MOD['page_irec']."&template=list-thumb");?></div>
+<?php defined('IN_DESTOON') or exit('Access Denied');?><?php include template(header);?>
+<div class="main">
+    <style>
+        .progress{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+    <div class="progress">
+        <style>
+            .progress-bar{
+                background-color: lightgrey;
+                border-radius: 1rem;
+                height: .5rem;
+                width: 1000px;
+                margin: .5rem auto;
+                position: absolute;
+            }
+            .progress-track{
+                background-color: var(--background-color);
+                height: .5rem;
+                z-index: 2;
+                border-radius: 1rem;
+                width: 0%;
+            }
+            .progress-cir{
+                width: 1rem;
+                height: 1rem;
+                border-radius: 1rem;
+                z-index: 3;
+                background-color: white;
+                border: .25rem solid lightgrey;
+                color: white;
+                text-align: center;
+                cursor: default;
+            }
+            .progress-cir.active{
+                animation: pulse 1s infinite;
+                border: .25rem solid grey;
+            }
+            .progress-cir.complete{
+                background-color: green;
+                border: .25rem solid green;
+            }
+            .progress-cir.clickable:hover{
+                cursor: pointer;
+                opacity: 1;
+            }
+            .progress-cir.clickable:active{
+                animation: pulse 1s infinite;
+            }
+            @keyframes pulse{ 0% { box-shadow: 0 0 0 0 rgba(33,131,211,0.4);} 70% { box-shadow: 0 0 0 1rem rgba(33,131,211,0);} 100% { box-shadow: 0 0 0 0 rgba(33, 131, 211, 0);} }
+            @keyframes nextStep{ 0% { width: 0%; } 100% { width: 100%; } }
+        </style>
+        <div class="progress-bar">
+            <div id="progress-track" class="progress-track"></div>
+        </div>
+        <?php $tags=tag("table=category&condition=moduleid=$moduleid and level=1&order=catid asc&template=null")?>
+        <?php if(is_array($tags)) { foreach($tags as $k => $v) { ?>
+        <?php $t = intval($v['catname'])?>
+        <div class="progress-cir<?php if($t == $step) { ?> active<?php } else if($t<$step) { ?> complete<?php } ?>
+<?php if($step>$t) { ?> clickable<?php } ?>
+" onclick="<?php if($step>$t) { ?>Go('?step=<?php echo $t;?>')<?php } ?>
+">&#8730;</div>
+        <?php } } ?>
+        <script>
+            $(document).ready(function (){
+                $('#progress-track').css('width',<?php echo(($step-1) * 25)?>+'%');
+            })
+        </script>
+    </div>
+    <div style="margin: 5rem auto">
+    <?php include template(step.$step, buy);?>
+    </div>
+    <script>
+        function next(url){
+            Go("?step=<?php echo($step+1)?>"+url);
+        }
+    </script>
 </div>
-<?php } ?>
-<div class="m m3">
-<div class="m3l o_h">
-<div class="head-txt"><strong>按地区浏览</strong></div>
-<div class="list-area">
-<?php $mainarea = get_mainarea(0)?>
-<ul>
-<?php if(is_array($mainarea)) { foreach($mainarea as $k => $v) { ?>
-<li><a href="<?php echo $MOD['linkurl'];?><?php echo rewrite('search.php?areaid='.$v['areaid']);?>"><?php echo $v['areaname'];?></a></li>
-<?php } } ?>
-</ul>
-<div class="c_b"></div>
-</div>
-<div class="head-txt"><strong>按行业浏览</strong></div>
-<div class="list-cate">
-<?php $mid = $moduleid;?>
-<?php include template('catalog', 'chip');?>
-</div>
-</div>
-<div class="m3r">
-<?php if($MOD['page_inew']) { ?>
-<div class="head-sub"><strong>最新发布</strong></div>
-<div class="list-txt">
-<?php echo tag("moduleid=$moduleid&condition=status=3&areaid=$cityid&datetype=2&pagesize=".$MOD['page_inew']."&order=addtime desc");?>
-</div>
-<?php } ?>
-<?php if($MOD['page_iedit']) { ?>
-<div class="head-sub"><strong>最新更新</strong></div>
-<div class="list-txt">
-<?php echo tag("moduleid=$moduleid&condition=status=3&areaid=$cityid&datetype=2&pagesize=".$MOD['page_iedit']."&order=edittime desc");?>
-</div>
-<?php } ?>
-<?php if($MOD['page_ihits']) { ?>
-<div class="head-sub"><strong>点击排行</strong></div>
-<div class="list-rank"><?php echo tag("moduleid=$moduleid&condition=status=3 and addtime>$today_endtime-1800*86400&areaid=$cityid&order=hits desc&key=hits&pagesize=".$MOD['page_ihits']."&template=list-rank");?></div>
-<?php } ?>
-</div>
-<div class="c_b"></div>
-</div>
-<?php include template('footer');?>
+<?php include template(footer);?>

@@ -1,0 +1,225 @@
+<table class="content-table">
+    <tr>
+        <td colspan="6"><p class="h2">Fabric</p></td>
+    </tr>
+    {php $c = 'f'}
+    <tr>
+        <td>
+            {label('fmid','Fabric Material')}
+        </td>
+        <td>
+            {php $l = 'm'}
+            {php $p = $m}
+            {template option,buy}
+        </td>
+        <td>
+            {label('fw',"Weight")}
+        </td>
+        <td>
+            <input type="number" name="content[fw]" id="fw" min="0" placeholder="0" step="0.01">
+            <span>Unit: gsm</span>
+        </td>
+        <td>
+            {label('fcatid','Fabric Type')}
+        </td>
+        <td>
+            {php $l = 'cat'}
+            {php $p = $cat}
+            {template option,buy}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            {php $id=fm}
+            {template other,buy}
+        </td>
+        <td></td>
+        <td></td>
+        <td colspan="2">
+            {php $id=fcat}
+            {template other,buy}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6"><p class="h2">Button</p></td>
+    </tr>
+    {php $c = 'b'}
+    <tr>
+        <td>
+            {label('bmid',"Button Material")}
+        </td>
+        <td>
+            {php $l = 'm'}
+            {php $p = $m}
+            {template option, buy}
+        </td>
+        <td>
+            {label('bdm',"Diameter")}
+        </td>
+        <td>
+            <input type="number" name="content[bdm]" id="bdm" placeholder="0" min="0" step="0.01">
+            <span>Unit: cm</span>
+        </td>
+        <td>
+            {label('btid',"Thickness")}
+        </td>
+        <td>
+            {php $l = 't'}
+            {php $p = $t}
+            {template option,buy}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            {php $id=bm}
+            {template other, buy}
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td colspan="2">
+            {php $id=bt}
+            {template other, buy}
+            <script>
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6"><p class="h2">Zipper</p></td>
+    </tr>
+    {php $c = 'z'}
+    <tr>
+        <td>
+            {label("zmid","Zipper Material")}
+        </td>
+        <td>
+            {php $l = 'm'}
+            {php $p = $m}
+            {template option, buy}
+        </td>
+        <td>
+            {label('zn','Number')}
+        </td>
+        <td>
+            <input type="number" name="content[zn]" id="zn" placeholder="0" min="0">
+        </td>
+        <td>
+            {label('ztid','Thickness')}
+        </td>
+        <td>
+            {php $l = 't'}
+            {php $p = $t}
+            {template option, buy}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            {php $id = zm}
+            {template other, buy}
+        </td>
+        <td></td>
+        <td>
+            </td>
+        <td colspan="2">
+            {php $id = zt}
+            {template other, buy}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6"><p class="h2">Others</p></td>
+    </tr>
+    {php $c = 'f'}
+    <tr>
+        <td>
+            {label('q','Quantity')}
+        </td>
+        <td>
+            <input type="number" name="content[q]" id="q" min="1">
+        </td>
+        <td>
+            {label('et','Estimated on Sale Time')}
+        </td>
+        <td>
+            <input type="date" name="content[et]" id="et">
+        </td>
+        <td>
+            {label('ftid','Thickness')}
+        </td>
+        <td>
+            {php $l = 't'}
+            {php $p = $t}
+            {template option,buy}
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td colspan="2">
+            {php $id = ft}
+            {template other, buy}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6"><div class="b16"></div></td>
+    </tr>
+    <tr>
+        <td>{label('others',"Requirements")}</td>
+        <td colspan="5">
+            <div style="display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto;">
+                <textarea name="content[others]" id="others" rows="5" maxlength="200" autocomplete="off" style="grid-area: 1 / 1 / 3 / 3;" onkeyup="count(this)"></textarea>
+                <span style="grid-area: 2 / 1 / 3 / 3; justify-self: end;">200</span>
+            </div>
+        </td>
+    </tr>
+</table>
+<div class="upload-img">
+    <p class="h2">Upload Image</p>
+    <p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
+    <div class="t_up_imgs">
+        <div class="t_up_imgs" id="img_pre"></div>
+        <div class="t_up_imgs">
+            <input type="file" name="content[img][]" id="img" style="display: none;" multiple accept="image/*" onchange="showImage()">
+            <label for="img">
+                <div class="up_imgs">
+                    <span>+</span>
+                </div>
+            </label>
+        </div>
+    </div>
+</div>
+<table class="content-table">
+    <thead><p class="h2">Upload Files</p></thead>
+    <tr>
+        <td>{label('fDesign','Design Draft')}</td>
+        <td>
+            <input class="clickable" type="file" name="content[file][design]" id="fDesign" class="inputfile">
+        </td>
+    </tr>
+    <tr>
+        <td>{label('fSize','Size Table')}</td>
+        <td>
+            <input class="clickable" type="file" name="content[file][size]" id="fSize" class="inputfile">
+        </td>
+    </tr>
+    <tr>
+        <td>{label('fLabel','Label Design')}</td>
+        <td>
+            <input class="clickable" type="file" name="content[file][label]" id="fLabel" class="inputfile">
+        </td>
+    </tr>
+</table>
+
+{php unset($c)}
+{php unset($l)}
+{php unset($p)}
+{php unset($id)}
+{php unset($cat)}
+{php unset($m)}
+{php unset($t)}

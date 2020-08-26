@@ -1,0 +1,19 @@
+{template style, buy}
+<div class="center">
+    {if $send}
+    <p class="h2">Please send your sample to the following address and</p>
+    <p class="h2">upload your tracking number in <a href="{$MODULE[2][linkurl]}"><strong><i style="color: var(--background-color);">My Orders</i></strong></a>.</p>
+    <br>
+    <p class="h2">ROOM 807 NO.1 WEST TOWER,</p>
+    <p class="h2">NO.115 ZHANGCHA YI ROAD,</p>
+    <p class="h2">FOSHAN, GUANGDONG, CHINA</p>
+    <br>
+    <div class="button clickable" style="width: 10rem;" onclick="Go('{DT_PATH}')">Back to Home</div>
+    {else}
+    <!--{php $tags=tag("table=category&condition=moduleid=$moduleid and letter='r'&template=null")}-->
+    <p class="h1">Choose Your Requst Type</p>
+    {loop $tags $k $v}
+    <div class="button clickable" onclick="Go('?step=3&catdir={$v[catdir]}&catid={$v[catid]}')">{$v[catname]}</div>
+    {/loop}
+    {/if}
+</div>

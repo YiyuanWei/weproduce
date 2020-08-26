@@ -1,0 +1,48 @@
+add new types to mall{
+    Fabric
+    Garment
+    Bedding
+    Accessories
+}
+
+模块管理->管理->修改->(模块名称:->Wholesale)
+
+模块管理->管理->修改->(模块名称:->Request)
+
+add new types to buy{
+    Step 1
+    Step 2
+    Step 3
+    Step 4
+    Step 5
+}
+
+add new types to buy->Step 2{
+    Garment
+    Fabric
+}
+
+add new types to buy->Garment{
+    Button
+    Zipper
+}
+
+add new types to buy->Fabric{
+    Material
+    Type
+}
+
+add new types to buy->Button{
+    Material
+    Thickness
+}
+
+add new types to buy->Zipper{
+    Material
+    Thickness
+}
+
+add new types to buy{
+    Other
+    No Requirement
+}

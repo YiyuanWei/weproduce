@@ -20,12 +20,12 @@
       margin: 0 5%;
       grid-area: 1 / 1 / 2 / 2;
       display: grid;
-      grid-template-columns: auto auto auto;
+      grid-template-columns: auto auto;
       grid-template-rows: 4rem 1rem auto;
       grid-template-areas: 
-         ". . user"
-         "break break break"
-         "logo . menu";
+         ". user"
+         "break break"
+         "logo menu";
       color: white;
       z-index: 2;
       font-size:1rem;
@@ -86,13 +86,15 @@
    #menu{
       grid-area: menu;
       display: block;
-      width: 400px;
+      width: fit-content;
       justify-self: end;
    }
-   #menu li{
-      float: right;
-      font-size: 1rem;
+   #menu>ul>li{
       margin: 1.5rem .75rem;
+      float: right;
+   }
+   #menu>ul>li>a{
+      font-size: 1rem;
    }
    .break{
       grid-area: break;
@@ -100,20 +102,6 @@
       border: .2px solid rgba(255, 255, 255, 0.75);
       border-radius: 100%;
       align-self: start;
-   }
-   #usermenu{
-      width: fit-content; 
-      border: 1px solid white; 
-      background-color: white;
-      margin: 0 auto;
-      z-index: 100; 
-      grid-row-start: 2; 
-      justify-self: end;
-   }
-   #usermenu li{
-      color : var(--background-color);
-      padding: .5rem;
-      font-weight: 100;
    }
    #usermenu li:hover{
       color: var(--background-color);
@@ -146,6 +134,22 @@
 .we_f2, .we_f2_0.we_f1_5{color: var(--background-color);font-size: 2rem;font-family: var(--we-font);}
 .f_i{font-style: italic;}
 .f_un{text-decoration: underline;}
+.dropdown{
+   background-color: white;
+   width: fit-content;
+   z-index: 100;
+   display: block;
+   position: absolute;
+}
+.dropdown li{
+   color : var(--background-color);
+   padding: .5rem;
+   font-weight: 100;
+   display: block;
+}
+.dropdown li:hover{
+   color: var(--we-red);
+}
 </style>
 </head>
 <body>
@@ -155,7 +159,7 @@
          <!----------用户区块----------------->
          <div id="user-menu">
             <div id="user-panel">
-               <div id='user-info' class="clickable" onclick="if(get_cookie('auth')) $('#usermenu').toggle()">
+               <div id='user-info' onclick="if(get_cookie('auth')) $('#usermenu').toggle()">
                   <script type="text/javascript">
                      var destoon_uname = get_cookie('username');
                      document.write('<img src="'+DTPath+'api/avatar/show.php?size=large&reload=<?php echo DT_TIME;?>&username='+destoon_uname+'"/>');
@@ -165,19 +169,16 @@
                         string += '<em>Hello '+destoon_uname+'</em>';
                         string += '</li>';
                         document.write(string);
+                        Dd('user-info').classList.add('clickable');
                      } else {
-                        if(destoon_uname) {
-                           document.write('<li><em><a href="<?php echo $MODULE['2']['linkurl'];?><?php echo $DT['file_login'];?>">Login</a></em><a href="<?php echo $MODULE['2']['linkurl'];?>"><strong>Hi,'+destoon_uname+'</strong></a></li>');
-                        } else {
-                           document.write('<li><em><a href="<?php echo $MODULE['2']['linkurl'];?><?php echo $DT['file_login'];?>"><strong>Log In</strong></em></a></li>');
-                        }
+                        document.write('<li><em><a class="clickable" href="<?php echo $MODULE['2']['linkurl'];?><?php echo $DT['file_register'];?>">Register</a></em></li> <li>/</li> <li><em><a class="clickable" href="<?php echo $MODULE['2']['linkurl'];?><?php echo $DT['file_login'];?>">Log In</a></em></li>');
                      }
                      //document.write('<li></i><a href="<?php echo $MODULE['2']['linkurl'];?>biz.php" class="b">商户后台</a></li>');
                      document.write('</ul>');
                   </script>
                   <span id='showsub' style="display: inline-block;transform: scale(1,.5);font-size: 2rem;">&or;</span>
                </div>
-               <div id="usermenu" style="display: none;">
+               <div id="usermenu" class="dropdown" style="display: none; position: relative; margin: auto;">
                   <ul>
                      <a href="<?php echo $MODULE['2']['linkurl'];?>order.php" class="clickable"><li class="inactive" id="my-order">My Orders</li></a>
                      <!-- <li class="inactive" id="my-request">My Requests</li> -->
@@ -203,13 +204,26 @@
          <div id='logo'><a href="<?php echo DT_PATH;?>"><img src="<?php echo DT_SKIN;?>image/logo.gif"/></a></div>
          <!----<?php echo DT_SKIN;?> =  /skin/default/image/  ---->
          <!----------LOGO区块----------------------->
+         <?php $tags=tag("table=category&condition=moduleid=16&order=catid asc&template=null")?>
          <div id='menu'>
             <ul>
-               <a class="clickable" href="<?php echo $MODULE['2']['linkurl'];?>cart.php?mid=16" id="menu-cart"><li>My Cart</li></a>
-               <a class="clickable" href="<?php echo DT_PATH;?>about"><li>About</li></a>
-               <a class="clickable" href="<?php echo $MODULE['16']['linkurl'];?>"><li>Shop</li></a>
-               <a class="clickable" href="<?php echo $MODULE['100']['linkurl'];?>"><li>Request</li></a>
-               <a class="clickable" href="<?php echo DT_PATH;?>"><li>Home</li></a>
+               <li><a class="clickable" href="<?php echo DT_PATH;?>about">About Us</a></li>
+               <li>
+                  <div>
+                     <div onclick="$('#wholesale-menu').toggle()" class="clickable">Wholesale
+                        <i class="fa fa-bars"></i>
+                     </div>
+                     <div id="wholesale-menu" class="dropdown" style="display: none;">
+                        <ul>
+                           <?php if(is_array($tags)) { foreach($tags as $t => $v) { ?>
+                           <a href="<?php echo $MODULE['16']['linkurl'];?><?php echo $v['linkurl'];?>"><li><?php echo $v['catname'];?></li></a>
+                           <?php } } ?>
+                        </ul>
+                     </div>
+                  </div>
+               </li>
+               <li><a class="clickable" href="<?php echo $MODULE['6']['linkurl'];?>">Request</a></li>
+               <li><a class="clickable" href="<?php echo DT_PATH;?>">Home</a></li>
             </ul>
          </div>
          
