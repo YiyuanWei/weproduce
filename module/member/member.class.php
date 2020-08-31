@@ -413,19 +413,7 @@ class member {
 	function login($login_username, $login_password, $login_cookietime = 0, $admin = false) {
 		global $MOD, $MODULE, $L;
 		if(!$MOD || !isset($MOD['login_times'])) $MOD = cache_read('module-2.php');
-		$login_lock = ($MOD['login_times'] && $MOD['lock_hour']) ? true : false;
 		$LOCK = array();
-		if($login_lock) {
-			$LOCK = cache_read(DT_IP.'.php', 'ban');
-			if($LOCK) {
-				if(DT_TIME - $LOCK['time'] < $MOD['lock_hour']*3600) {
-					if($LOCK['times'] >= $MOD['login_times']) return $this->_(lang($L['member_login_ban'], array($MOD['login_times'], $MOD['lock_hour'])));
-				} else {
-					$LOCK = array();
-					cache_delete(DT_IP.'.php', 'ban');
-				}
-			}
-		}
 		$user = userinfo($login_username, 0);
 		if(!$user) {
 			$this->lock($login_lock, $LOCK);

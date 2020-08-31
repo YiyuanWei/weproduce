@@ -7,6 +7,7 @@
 <img src="<?php echo DT_SKIN;?>image/logo.gif">
 <p style="font-weight: bolder; font-size: large;">Sign in to your WeProduce Account</p>
 <form action="?" id="login_form" class="ma wf" method="POST">
+<input type="hidden" name="forward" value="<?php echo $forward;?>">
 <table>
 <tr><td><input class="padd_10" type="text" name="email" placeholder="Email Address"></td></tr>
 <tr><td><div class="b5"></div></td></tr>
@@ -27,9 +28,4 @@
 <div id="back" class="clickable" onclick="Go('<?php echo DT_PATH;?>')">&#x2715;</div>
 </div>
 <script>
-function sign_in(){
-Dd('login_form').submit();
-}
-function forget_password(){
-}
 </script>

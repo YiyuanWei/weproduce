@@ -1,15 +1,12 @@
 <?php 
 defined('IN_DESTOON') or exit('Access Denied');
 require DT_ROOT.'/module/'.$module.'/common.inc.php';
-if($_userid && !$MOD['passport']) dheader($DT_PC ? DT_PATH : DT_MOB.'my.php');
+if($_userid && !$MOD['passport']) dheader($DT_PC ? $MOD['linkurl'] : DT_MOB.'my.php');
 require DT_ROOT.'/include/post.func.php';
 require DT_ROOT.'/module/'.$module.'/member.class.php';
 $do = new member;
 $forward or $forward = $DT_PC ? DT_PATH : DT_MOB.'my.php';
-$_forward = $forward ? urlencode($forward) : '';
 $OAUTH = cache_read('oauth.php');
-$could_sms = ($MOD['login_sms'] && $DT['sms']) ? 1 : 0;
-$could_scan = ($MOD['login_scan'] && $OAUTH['wechat']['enable'] && $DT_PC) ? 1 : 0;
 
 # login
 $LOCK = cache_read($DT_IP.'.php', 'ban');
@@ -29,7 +26,6 @@ if($auth) {
 if($submit) {
 	$email = trim($email);
 	$username = DB::get_one("SELECT username FROM {$table} WHERE email='$email'")['username'];
-	echo $username;
 	$password = trim($password);
 	if(strlen($password) < 5) message($L['login_msg_password']);
 	$goto = isset($goto) ? true : false;
@@ -54,7 +50,6 @@ if($submit) {
 		message($do->errmsg, '?forward='.urlencode($forward));
 	}
 }
-
 isset($username) or $username = $_username; 	
 isset($password) or $password = '';
 $register = isset($register) && $username ? 1 : 0;

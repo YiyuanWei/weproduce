@@ -21,7 +21,7 @@
     }
 </style>
 <div class="main">
-    <?php $tags=tag("table=category&condition=moduleid=$moduleid&order=catid asc&template=null")?>
+    <?php $tags=tag("table=category&condition=moduleid=$moduleid and parentid=0&order=catid asc&template=null")?>
     <div class="display-grid">
         <?php if(is_array($tags)) { foreach($tags as $t => $v) { ?>
         <div class="cat-block clickable display-grid" onclick="Go('<?php echo $v['linkurl'];?>')">

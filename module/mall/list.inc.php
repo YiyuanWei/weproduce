@@ -54,6 +54,7 @@ if($DT_PC) {
 	$showpage = 1;
 	$datetype = 5;
 	if($EXT['mobile_enable']) $head_mobile = $MOD['mobile'].listurl($CAT, $page);
+	isset($subcatid) or $subcatid=0;
 } else {
 	if(!$CAT || $CAT['moduleid'] != $moduleid) message($L['msg_not_cate']);
 	if(!check_group($_groupid, $MOD['group_list']) || !check_group($_groupid, $CAT['group_list'])) message($L['msg_no_right']);

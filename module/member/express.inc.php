@@ -3,7 +3,7 @@ defined('IN_DESTOON') or exit('Access Denied');
 login();
 require DT_ROOT.'/module/'.$module.'/common.inc.php';
 $MG['express_limit'] > -1 or dalert(lang('message->without_permission_and_upgrade'), 'goback');
-($mid && $MODULE[$mid]['module'] == 'mall') or dheader($DT_PC ? $MOD['linkurl'] : $MOD['mobile']);
+//($mid && $MODULE[$mid]['module'] == 'mall') or dheader($DT_PC ? $MOD['linkurl'] : $MOD['mobile']);
 $head_title = $L['express_title'];
 require DT_ROOT.'/include/post.func.php';
 require DT_ROOT.'/module/'.$module.'/express.class.php';

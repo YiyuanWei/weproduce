@@ -7,6 +7,7 @@
     .product{
         width: 90%;
         padding: .5rem;
+        margin: auto;
     }
     .product img{
         width: 100%;
@@ -66,7 +67,6 @@
         display: block;
     }
 </style>
-{if $tags}
 <div class="products">
     {loop $tags $i $t}
     <div class="product clickable" id="product-{$t[itemid]}" onclick="show('{$t[itemid]}')">
@@ -79,8 +79,3 @@
     </div>
     {/loop}
 </div>
-{else}
-<div style="font-size: 2rem; font-family: var(--we-font); color: var(--background-color); width: fit-content; margin: 5rem auto;">
-    No Product
-</div>
-{/if}

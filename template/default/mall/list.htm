@@ -18,14 +18,58 @@
         }
     </style>
     <div class="nav bd-b"><a href="{$MODULE[1][linkurl]}">Home</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
-    <!--{php $tags=tag("table=category&condition=moduleid=$moduleid&order=catname desc&template=null")}-->
+    <!--{php $tags=tag("table=category&condition=moduleid=$moduleid and parentid=0&order=catname desc&template=null")}-->
     <div class="b16"></div>
     <div class="cat bd-b">
         {loop $tags $t $v}
-        <a class="{if $v[catid]==$catid}selected{/if}" href="?catid={$v[catid]}">{$v[catname]}</a>
+        <a class="{if $v[catid]==$catid}selected{/if}" href="{$v[linkurl]}">{$v[catname]}</a>
         {/loop}
     </div>
-    <!--{tag("moduleid=$moduleid&condition=status=3 and catid=$catid&order=addtime desc&template=list-mall")}-->
+    <!--{php $tags=tag("table=category&condition=moduleid=$moduleid and parentid=$catid&order=catname desc&template=null")}-->
+    <div class="b16"></div>
+    <div class="cat bd-b">
+        {loop $tags $t $v}
+        <a href="?catid={$catid}&subcatid={$v[catid]}" class="{if $subcatid==$v[catid]}selected{/if}">{$v[catname]}</a>
+        {/loop}
+    </div>
+    {if $subcatid != 0}
+    <!--{tag("moduleid=$moduleid&condition=status=3 and catid=$subcatid&order=addtime desc&template=list-mall")}-->
+    {else}
+    <style>
+        .list-area{
+            width: 100%;
+            margin: 2rem auto;
+        }
+        .area-title{
+            width: 96%;
+            margin: auto;
+            position: relative;
+        }
+        .area-title .h2, span{
+            color: var(--background-color);
+            font-family: var(--we-font);
+            margin: 0;
+            font-size: 32px;
+        }
+        .area-title a>span{
+            text-decoration: underline;
+            font-size: 24px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
+    <!--{php $tags=tag("table=category&condition=moduleid=$moduleid and parentid=$catid&order=catname desc&template=null")}-->
+    {loop $tags $t $v}
+    <div class="list-area">
+        <div class="area-title">
+            <span class="h2">{$v[catname]}</span>
+            <a class="clickable" href="?catid={$catid}&subcatid={$v[catid]}"><span>Show More >>></span></a>
+        </div>
+        <!--{tag("moduleid=$moduleid&condition=status=3 and catid=".$v[catid]."&order=addtime desc&template=list-mall&pagesize=4")}-->
+    </div>
+    {/loop}
+    {/if}
 </div>
 <script>
     var onquickview = false;

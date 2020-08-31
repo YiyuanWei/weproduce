@@ -1,5 +1,6 @@
 <?php
 defined('IN_DESTOON') or exit('Access Denied');
+login();
 require DT_ROOT.'/module/'.$module.'/common.inc.php';
 if($DT_PC) {
 	if(!check_group($_groupid, $MOD['group_index'])) include load('403.inc');
@@ -14,8 +15,20 @@ if($DT_PC) {
 	$destoon_task = "moduleid=$moduleid&html=index";
 	if($EXT['mobile_enable']) $head_mobile = $MOD['mobile'].($page > 1 ? 'index.php?page='.$page : '');
 	switch($step){
+		case 1:
+			break;
+		case 2:
+			break;
 		case 3:
 			if( $submit ) dheader('?step=4');
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		default:
+			dheader("?step=1");
+			break;
 	}
 } else {
 	$condition = "status=3";
