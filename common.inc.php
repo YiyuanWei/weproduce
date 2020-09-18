@@ -170,7 +170,7 @@ if($destoon_auth) {
 	$_userid = isset($_dauth[0]) ? intval($_dauth[0]) : 0;
 	if($_userid) {
 		$_password = isset($_dauth[1]) ? trim($_dauth[1]) : '';
-		$USER = $db->get_one("SELECT username,passport,company,truename,mobile,password,groupid,email,message,chat,sound,online,sms,credit,money,loginip,admin,aid,edittime,trade FROM {$DT_PRE}member WHERE userid=$_userid");
+		$USER = $db->get_one("SELECT username,passport,company,truename,mobile,password,groupid,email,message,chat,sound,online,sms,credit,money,loginip,admin,aid,edittime,trade,contact_email,contact_mobile,first_name,last_name FROM {$DT_PRE}member WHERE userid=$_userid");
 		if($USER && $USER['password'] == $_password) {
 			if($USER['groupid'] == 2) dalert(lang('message->common_forbidden'));
 			if($USER['loginip'] != $DT_IP && ($DT['ip_login'] == 2 || ($DT['ip_login'] == 1 && IN_ADMIN))) {

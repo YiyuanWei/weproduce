@@ -1,32 +1,49 @@
 <?php defined('IN_DESTOON') or exit('Access Denied');?><?php include template('header');?>
-<script type="text/javascript">var module_id= <?php echo $moduleid;?>,item_id=<?php echo $itemid;?>,content_id='content',img_max_width=<?php echo $MOD['max_width'];?>;</script>
-<div class="m">
-<div class="nav"><div><img src="<?php echo DT_SKIN;?>image/ico-like.png" class="share" title="加入收藏" onclick="SendFav(<?php echo $moduleid;?>, <?php echo $itemid;?>);"/><img src="<?php echo DT_SKIN;?>image/ico-share.png" class="share" title="分享好友" onclick="Dshare(<?php echo $moduleid;?>, <?php echo $itemid;?>);"/></div><a href="<?php echo $MODULE['1']['linkurl'];?>">首页</a> <i>&gt;</i> <a href="<?php echo $MOD['linkurl'];?>"><?php echo $MOD['name'];?></a> <i>&gt;</i> <?php echo cat_pos($CAT, ' <i>&gt;</i> ');?></div>
-<div class="b20 bd-t"></div>
-</div>
-<div class="m">
+<script type="text/javascript">var module_id=<?php echo $moduleid;?>,item_id=<?php echo $itemid;?>,content_id='content',img_max_width=<?php echo $MOD['max_width'];?>;</script>
+<style>
+.fn{
+color: var(--background-color) 
+}
+.progress-cir{
+width: 1rem;
+height: 1rem;
+border-radius: 1rem;
+z-index: 3;
+background-color: white;
+border: .25rem solid lightgrey;
+color: white;
+text-align: center;
+cursor: default;
+}
+.progress-cir.complete{
+background-color: green;
+border: .25rem solid green;
+}
+</style>
+<div class="m" style="color:var(--background-color); margin-top: 5rem;">
 <table width="100%">
 <tr>
 <td valign="top">
 <table width="100%">
 <tr>
-<td colspan="3"><h1 class="title_trade" id="title"><?php echo $title;?></h1></td>
+<td colspan="3"><h1 class="title_trade" id="title" style="color: var(--background-color);"><?php echo $CAT['catname'];?></h1></td>
 </tr>
 <tr>
+<?php if($img) { ?>
 <td width="330" valign="top">
 <div id="mid_pos"></div>
 <div id="mid_div" onmouseover="SAlbum();" onmouseout="HAlbum();" onclick="PAlbum(Dd('mid_pic'));">
-<img src="<?php echo $albums['0'];?>" width="320" height="240" id="mid_pic"/><span id="zoomer"></span>
+<img src="<?php echo $img['0'];?>" width="320" height="240" id="mid_pic"/><span id="zoomer"></span>
 </div>
 <div class="b10"></div>
 <div>
-<?php if(is_array($thumbs)) { foreach($thumbs as $k => $v) { ?><img src="<?php echo $v;?>" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album(<?php echo $k;?>, '<?php echo $albums[$k];?>');" class="<?php if($k) { ?>ab_im<?php } else { ?>ab_on<?php } ?>
+<?php if(is_array($img)) { foreach($img as $k => $v) { ?><img src="<?php echo $v;?>" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album(<?php echo $k;?>, '<?php echo $img[$k];?>');" class="<?php if($k) { ?>ab_im<?php } else { ?>ab_on<?php } ?>
 " id="t_<?php echo $k;?>"/><?php } } ?>
 </div>
 <div class="b10"></div>
-<div onclick="PAlbum(Dd('mid_pic'));" class="c_b t_c c_p"><img src="<?php echo DT_SKIN;?>image/ico_zoom.gif" width="16" height="16" align="absmiddle"/> 点击图片查看原图</div>
+<div onclick="PAlbum(Dd('mid_pic'));" class="c_b t_c c_p"><img src="<?php echo DT_SKIN;?>image/ico_zoom.gif" width="16" height="16" align="absmiddle"/> <span class="fn">Click to Preview</span></div>
 </td>
-<td width="16">&nbsp;</td>
+<?php } ?>
 <td valign="top">
 <div id="big_div" style="display:none;"><img src="" id="big_pic"/></div>
 <table width="100%" cellpadding="5" cellspacing="5">
@@ -49,69 +66,64 @@
 </tr>
 <?php } ?>
 <tr>
-<td>需求数量：</td>
+<td>Quantity: </td>
 <td><?php echo $amount;?></td>
 </tr>
 <tr>
-<td>价格要求：</td>
-<td class="f_b f_orange"><?php echo $price;?></td>
-</tr>
-<tr>
-<td>包装要求：</td>
-<td><?php echo $pack;?></td>
-</tr>
-<tr>
-<td>所在地：</td>
-<td><?php echo area_pos($areaid, '');?></td>
-</tr>
-<tr>
-<td>有效期至：</td>
-<td><?php if($todate) { ?><?php echo $todate;?><?php } else { ?>长期有效<?php } ?>
-<?php if($expired) { ?> <span class="f_red">[已过期]</span><?php } ?>
-</td>
-</tr>
-<tr>
-<td width="80">最后更新：</td>
+<td width="150">Last Updated: </td>
 <td><?php echo $editdate;?></td>
 </tr>
-<?php if($MOD['hits']) { ?>
+</table>
+</td>
+<td width="330">
+<table>
+<?php if(is_array($L['show_status'])) { foreach($L['show_status'] as $k => $v) { ?>
 <tr>
-<td>浏览次数：</td>
-<td><span id="hits"><?php echo $hits;?></span></td>
+<td><?php echo $v;?></td>
+<td><div class="progress-cir <?php if($k<=$status) { ?>complete<?php } ?>
+">&#8730;</div></td>
 </tr>
-<?php } ?>
-<?php if($username && !$expired) { ?>
-<tr>
-<td colspan="2"><img src="<?php echo DT_SKIN;?>image/btn_price.gif" alt="报价" class="c_p" onclick="Go('<?php echo $MOD['linkurl'];?><?php echo rewrite('price.php?itemid='.$itemid);?>');"/></td>
-</tr>
-<?php } ?>
+<?php } } ?>
 </table>
 </td>
 </tr>
 </table>
 </td>
 <td width="16">&nbsp;</td>
+<?php if($_admin) { ?>
 <td width="300" valign="top">
-<div class="contact_head">公司基本资料信息</div>
-<div class="contact_body" id="contact"><?php include template('contact', 'chip');?></div>
-<?php if(!$username) { ?>
-<br/>
-&nbsp;<strong class="f_red">注意</strong>:发布人未在本站注册，建议优先选择<a href="<?php echo $MODULE['2']['linkurl'];?>grade.php"><strong><?php echo VIP;?>会员</strong></a>
-<?php } ?>
+<form action="?itemid=<?php echo $itemid;?>&action=update&step=status&admin=<?php echo $_admin;?>" method="POST">
+<select name="status" value="<?php echo $status;?>">
+<?php if(is_array($L['show_status'])) { foreach($L['show_status'] as $k => $v) { ?>
+<option value="<?php echo $k;?>"<?php if($k==$status) { ?> selected<?php } ?>
+><?php echo $v;?></option>
+<?php } } ?>
+</select>
+<input type="submit" name="submit" value="Update Status">
+</form>
 </td>
+<?php } ?>
 </tr>
 </table>
 </div>
-<div class="m">
-<div class="head-txt"><strong>详细说明</strong></div>
-<?php if($CP) { ?><?php include template('property_show', 'chip');?><?php } ?>
-<div class="content c_b" id="content"><?php echo $content;?></div>
-<?php if($MOD['fee_award']) { ?>
-<div class="award"><div onclick="Go('<?php echo $MODULE['2']['linkurl'];?>award.php?mid=<?php echo $moduleid;?>&itemid=<?php echo $itemid;?>');">打赏</div></div>
-<?php } ?>
-<div class="head-txt"><span><a href="<?php echo $MOD['linkurl'];?><?php echo $CAT['linkurl'];?>">更多<i>&gt;</i></a></span><strong>同类<?php echo $MOD['name'];?></strong></div>
-<div class="list-thumb"><?php echo tag("moduleid=$moduleid&length=20&condition=status=3 and thumb<>''&catid=$catid&areaid=$cityid&pagesize=8&order=edittime desc&width=100&height=100&cols=8&template=thumb-table", -2);?></div>
-<?php include template('comment', 'chip');?>
+<div class="m" style="margin-bottom: 5rem;">
+<style>
+.content span{
+color: var(--background-color);
+}
+.content-n{
+font-size: 14px;
+}
+.content-v{
+font-size: 12px;
+}
+</style>
+<div class="head-txt"><strong style="color: var(--background-color);">Details</strong></div>
+<table class="content c_b" id="content">
+<?php if(is_array($content)) { foreach($content as $t => $v) { ?>
+<tr><td><span class="content-n"><?php echo $t;?></span></td><td width="50px">: </td><td><span class="content-v"><?php echo $v;?></span></td></tr>
+<?php } } ?>
+</table>
 </div>
 <script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/album.js"></script>
 <?php if($content) { ?><script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/content.js"></script><?php } ?>

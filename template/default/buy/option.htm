@@ -1,6 +1,7 @@
+<div class="b16"></div>
 <select name="content[{$c}{$l}id]" id="{$c}{$l}id" required onchange="other('{$c}{$l}')">
 	{php $tags=tag("table=category&condition=moduleid=$moduleid and level=5 and ((letter='$c' and parentid=$m) or not letter)&order=catid asc&template=null")}
-    <option value="default">Please select</option>
+    <option value>Please select</option>
     {loop $tags $k $v}
     <option value="{$v[catid]}">{$v[catname]}</option>
     {/loop}

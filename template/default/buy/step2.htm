@@ -1,14 +1,26 @@
 {template style, buy}
 <div class="center">
     {if $send}
-    <p class="h2">Please send your sample to the following address and</p>
-    <p class="h2">upload your tracking number in <a href="{$MODULE[2][linkurl]}"><strong><i style="color: var(--background-color);">My Orders</i></strong></a>.</p>
+    <p class="h2">Please send your sample to the following address.</p>
+    <p class="h2">If you have already send the sample to the correct address.</p>
+    <p class="h2">Please enter the tracking number so we can track the status of the package.</p>
+    <form action="?" method="post" class="info-table" id="express" style="width: fit-content;margin: auto;">
+        <input type="hidden" name="post[moduleid]" value="{$moduleid}">
+        <input type="hidden" name="post[username]" value="{$_username}">
+        <input type="hidden" name="post[catid]" value="{$express_cat}">
+        <input type="hidden" name="post[status]" value="3">
+        <input type="hidden" name="post[typeid]" value="1">
+        <input type="hidden" name="post[level]" value="1">
+        <input type="hidden" name="post[totime]" value='0'>
+        <input type="text" name="post[note]" id="express" placeholder="tracking number">
+        <input type="submit" value="Submit" name="submit" class="clickable" style="background-color:var(--background-color); color: var(--background);border-radius: 8px;border: none;">
+    </form>
     <br>
     <p class="h2">ROOM 807 NO.1 WEST TOWER,</p>
     <p class="h2">NO.115 ZHANGCHA YI ROAD,</p>
     <p class="h2">FOSHAN, GUANGDONG, CHINA</p>
     <br>
-    <div class="button clickable" style="width: 10rem;" onclick="Go('{DT_PATH}')">Back to Home</div>
+    <div class="button clickable" style="width: 10rem;" onclick="Go('{DT_PATH}')">To Home</div>
     {else}
     <!--{php $tags=tag("table=category&condition=moduleid=$moduleid and letter='r'&template=null")}-->
     <p class="h1">Choose Your Requst Type</p>

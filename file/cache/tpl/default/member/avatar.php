@@ -33,9 +33,10 @@
     #edit-username{
         border: none;
         border-bottom: 1px solid black;
+        width: calc(100% - 12px);
     }
     .display-username{
-        font-family: 'Dancing Script';
+        font-family: var(--we-font);
         text-align: center;
         font-size: 1.5rem;
         font-weight: normal;
@@ -50,12 +51,12 @@
         <label for="edit-avatar" id="display-avatar"><img class="clickable" src="<?php echo DT_PATH;?>api/avatar/show.php?size=large&reload=<?php echo DT_TIME;?>&username=<?php echo $_username;?>"></label>
         <input type="file" name="edit-avatar" id="edit-avatar" accept="image/*">
         <div class="b16"></div>
-        <input type="text" name="edit-username" class="display-username" id="edit-username" value="<?php echo $_username;?>" onfocus="changeValue(this); this.value=''" onblur="setValue(this)" onchange="changeValue(this)">
+        <input type="text" name="edit-username" class="display-username" id="edit-username" value="<?php echo $_truename;?>" onfocus="changeValue(this); this.value=''" onblur="setValue(this)" onchange="changeValue(this)">
     </div>
     <?php } else { ?>
     <div id="display-avatar"><img src="<?php echo DT_PATH;?>api/avatar/show.php?size=large&reload=<?php echo DT_TIME;?>&username=<?php echo $_username;?>"></div>
     <div class="b16"></div>
-    <div class="display-username"><?php echo $_username;?></div>
+    <div class="display-username"><?php echo $_truename;?></div>
     <?php } ?>
 </div>
 <style>

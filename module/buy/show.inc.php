@@ -1,13 +1,37 @@
 <?php 
 defined('IN_DESTOON') or exit('Access Denied');
 require DT_ROOT.'/module/'.$module.'/common.inc.php';
+require DT_ROOT.'/include/post.func.php';
+include load('buy.lang');
 $could_comment = in_array($moduleid, explode(',', $EXT['comment_module'])) ? 1 : 0;
+switch ($action) {
+	case 'update':
+		switch ($step) {
+			case 'status':
+				if($submit){
+					$update = "status = $status";
+					$condition = "itemid = $itemid";
+					$db->query("UPDATE {$table} SET $update WHERE $condition");
+					$subject = "Your request has been updated.";
+					$mail = "The status of your request # {$itemid} has been changed to {$status}";
+					send_mail($_email, $subject, $mail);
+				}
+				break;
+			
+			default:
+				break;
+		}
+		break;
+	
+	default:
+		break;
+}
 if($DT_PC) {
 	$itemid or dheader($MOD['linkurl']);
 	if(!check_group($_groupid, $MOD['group_show'])) include load('403.inc');
 	$item = $db->get_one("SELECT * FROM {$table} WHERE itemid=$itemid");
 	if($item['groupid'] == 2) include load('404.inc');
-	if($item && $item['status'] > 2) {
+	if($item) {
 		if($MOD['show_html'] && is_file(DT_ROOT.'/'.$MOD['moduledir'].'/'.$item['linkurl'])) d301($MOD['linkurl'].$item['linkurl']);
 		extract($item);
 	} else {
@@ -17,7 +41,10 @@ if($DT_PC) {
 	if(!check_group($_groupid, $CAT['group_show'])) include load('403.inc');
 	$content_table = content_table($moduleid, $itemid, $MOD['split'], $table_data);
 	$t = $db->get_one("SELECT content FROM {$content_table} WHERE itemid=$itemid");
-	$content = $t['content'];
+	$content = decode_content($t['content']);
+	$imgs = $content['files']['img'];
+	$files = $content['files']['file'];
+	unset($content['files']);
 	$content = parse_video($content);
 	if($MOD['keylink']) $content = keylink($content, $moduleid);
 	if($lazy) $content = img_lazy($content);

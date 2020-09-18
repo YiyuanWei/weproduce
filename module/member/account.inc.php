@@ -10,8 +10,8 @@ switch($action) {
 			foreach ($post as $k=>$v){
 				if($v != '' && $k != 'userid') $query.=", $k='$v'";
 			}
-			$_username = $post['first_name'].' '.$post['last_name'];
-			$query = "username='$_username'".$query;
+			$_truename = $post['first_name'].' '.$post['last_name'];
+			$query = "truename='$_truename'".$query;
 			$db->query("UPDATE {$DT_PRE}member SET $query WHERE userid=$_userid");
 		}
 		dheader('?action=success');
@@ -42,7 +42,7 @@ switch($action) {
 		extract($user);
 		$expired = $totime && $totime < $DT_TIME ? true : false;
 		$havedays = $expired ? 0 : ceil(($totime-$DT_TIME)/86400);
-		$head_title = $L['profile_title'];	
+		$head_title = $L['profile_title'];
 	break;
 }
 if($DT_PC) {

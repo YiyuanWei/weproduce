@@ -21,7 +21,7 @@ a.b:hover {color:#FF3300;}
 a.g:link,a.g:visited,a.g:active {color:#666666;text-decoration:none;}
 a.g:hover {color:#FF6600;}
 /* common */
-.m {margin:auto;width:1200px;background:#fff;clear:both;}
+.m {margin:auto;width:100%;background:#fff;clear:both;}
 .m0 {width:100%;background:#F2F2F2;}
 .m0 .m {background:#F2F2F2;}
 .m1 {background:url('image/bg-line.png') repeat-y 960px 0;}

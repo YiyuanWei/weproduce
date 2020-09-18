@@ -1,185 +1,128 @@
-<table class="content-table">
+<table class="content-table top">
     <tr>
-        <td colspan="6"><p class="h2">Fabric</p></td>
+        <td width="150"></td>
+        <td width="180"></td>
+        <td width="330"></td>
+        <td width="330"></td>
+    </tr>
+    <tr>
+        <td colspan="4"><p class="h2">Fabric</p></td>
     </tr>
     {php $c = 'f'}
     <tr>
-        <td>
-            {label('fmid','Fabric Material')}
-        </td>
-        <td>
+        <td colspan="2">
             {php $l = 'm'}
             {php $p = $m}
+            {label('Fabric Material', $l, $c, 1)}
             {template option,buy}
+            {template other,buy}
         </td>
         <td>
-            {label('fw',"Weight")}
-        </td>
-        <td>
+            {label('Weight','w',$c)}
+            <div class="b16"></div>
             <input type="number" name="content[fw]" id="fw" min="0" placeholder="0" step="0.01">
+            <div class="b16"></div>
             <span>Unit: gsm</span>
         </td>
         <td>
-            {label('fcatid','Fabric Type')}
-        </td>
-        <td>
-            {php $l = 'cat'}
+            {php $l = 'c'}
             {php $p = $cat}
+            {label('Fabric Type',$l,$c,1)}
             {template option,buy}
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            {php $id=fm}
-            {template other,buy}
-        </td>
-        <td></td>
-        <td></td>
-        <td colspan="2">
-            {php $id=fcat}
             {template other,buy}
         </td>
     </tr>
     <tr>
-        <td colspan="6"><p class="h2">Button</p></td>
+        <td colspan="4"><p class="h2">Button</p></td>
     </tr>
     {php $c = 'b'}
     <tr>
-        <td>
-            {label('bmid',"Button Material")}
-        </td>
-        <td>
+        <td colspan="2">
             {php $l = 'm'}
             {php $p = $m}
+            {label('Button Material',$l,$c,1)}
             {template option, buy}
+            {template other, buy}
         </td>
         <td>
-            {label('bdm',"Diameter")}
-        </td>
-        <td>
-            <input type="number" name="content[bdm]" id="bdm" placeholder="0" min="0" step="0.01">
+            {label('Diameter','d',$c)}
+            <div class="b16"></div>
+            <input type="number" name="content[bd]" id="bd" placeholder="0" min="0" step="0.01">
+            <div class="b16"></div>
             <span>Unit: cm</span>
         </td>
         <td>
-            {label('btid',"Thickness")}
-        </td>
-        <td>
             {php $l = 't'}
             {php $p = $t}
-            {template option,buy}
+            {label('Thickness',$l,$c,1)}
+            {template option, buy}
+            {template other,buy}
         </td>
     </tr>
     <tr>
-        <td colspan="2">
-            {php $id=bm}
-            {template other, buy}
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td colspan="2">
-            {php $id=bt}
-            {template other, buy}
-            <script>
-            </script>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="6"><p class="h2">Zipper</p></td>
+        <td colspan="4"><p class="h2">Zipper</p></td>
     </tr>
     {php $c = 'z'}
     <tr>
-        <td>
-            {label("zmid","Zipper Material")}
-        </td>
-        <td>
+        <td colspan="2">
             {php $l = 'm'}
             {php $p = $m}
+            {label('Zipper Material',$l,$c,1)}
             {template option, buy}
+            {template other, buy}
         </td>
         <td>
-            {label('zn','Number')}
-        </td>
-        <td>
+            {label('Number','n',$c)}
+            <div class="b16"></div>
             <input type="number" name="content[zn]" id="zn" placeholder="0" min="0">
         </td>
         <td>
-            {label('ztid','Thickness')}
-        </td>
-        <td>
             {php $l = 't'}
             {php $p = $t}
+            {label('Thickness',$l,$c,1)}
             {template option, buy}
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            {php $id = zm}
-            {template other, buy}
-        </td>
-        <td></td>
-        <td>
-            </td>
-        <td colspan="2">
-            {php $id = zt}
             {template other, buy}
         </td>
     </tr>
     <tr>
-        <td colspan="6"><p class="h2">Others</p></td>
+        <td colspan="4"><p class="h2">Others</p></td>
     </tr>
     {php $c = 'f'}
     <tr>
-        <td>
-            {label('q','Quantity')}
+        <td colspan="2">
+            <span class="f_red">*</span>
+            {label('Quantity','q')}
+            <div class="b16"></div>
+            <input type="number" name="content[Quantity]" id="q" min="1" placeholder="1" value="1" onfocus="this.value=''" onblur="if(this.value == '') this.value='1'" required>
+            <span id="dq" class="f_red"></span>
         </td>
         <td>
-            <input type="number" name="content[q]" id="q" min="1">
-        </td>
-        <td>
-            {label('et','Estimated on Sale Time')}
-        </td>
-        <td>
-            <input type="date" name="content[et]" id="et">
-        </td>
-        <td>
-            {label('ftid','Thickness')}
+            {label('Estimated on Sale Time','et')}
+            <div class="b16"></div>
+            <input type="date" name="content[Estimated_Time]" id="et" style="width: 85%;">
         </td>
         <td>
             {php $l = 't'}
             {php $p = $t}
+            {label('Thickness',$l,$c,1)}
             {template option,buy}
-        </td>
-    </tr>
-    <tr>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td colspan="2">
-            {php $id = ft}
             {template other, buy}
         </td>
     </tr>
     <tr>
-        <td colspan="6"><div class="b16"></div></td>
+        <td colspan="4"><div class="b32"></div></td>
     </tr>
     <tr>
-        <td>{label('others',"Requirements")}</td>
+        <td>{label('Requirements',"others")}</td>
         <td colspan="5">
             <div style="display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto;">
-                <textarea name="content[others]" id="others" rows="5" maxlength="200" autocomplete="off" style="grid-area: 1 / 1 / 3 / 3;" onkeyup="count(this)"></textarea>
+                <textarea name="content[Requirements]" id="others" rows="5" maxlength="200" autocomplete="off" style="grid-area: 1 / 1 / 3 / 3;" onkeyup="count(this)"></textarea>
                 <span style="grid-area: 2 / 1 / 3 / 3; justify-self: end;">200</span>
             </div>
         </td>
     </tr>
 </table>
-<div class="upload-img">
+<div class="upload-img" style="padding: 16px">
     <p class="h2">Upload Image</p>
     <p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
     <div class="t_up_imgs">
@@ -195,23 +138,23 @@
     </div>
 </div>
 <table class="content-table">
-    <thead><p class="h2">Upload Files</p></thead>
+    <thead><p class="h2" style="padding: 0 16px">Upload Files</p></thead>
     <tr>
-        <td>{label('fDesign','Design Draft')}</td>
+        <td width="100px">{label('Design Draft','design')}</td>
         <td>
-            <input class="clickable" type="file" name="content[file][design]" id="fDesign" class="inputfile">
+            <input class="clickable" type="file" name="content[file][design]" id="design" class="inputfile">
         </td>
     </tr>
     <tr>
-        <td>{label('fSize','Size Table')}</td>
+        <td>{label('Size Table','size')}</td>
         <td>
-            <input class="clickable" type="file" name="content[file][size]" id="fSize" class="inputfile">
+            <input class="clickable" type="file" name="content[file][size]" id="size" class="inputfile">
         </td>
     </tr>
     <tr>
-        <td>{label('fLabel','Label Design')}</td>
+        <td>{label('Label Design','label')}</td>
         <td>
-            <input class="clickable" type="file" name="content[file][label]" id="fLabel" class="inputfile">
+            <input class="clickable" type="file" name="content[file][label]" id="label" class="inputfile">
         </td>
     </tr>
 </table>

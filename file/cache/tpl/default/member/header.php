@@ -38,7 +38,7 @@
     }
     #side-menu li{
         margin: .5rem 1rem;
-        font-family: 'Dancing Script', sans-serif;
+        font-family: var(--we-font);
         font-size: 1.5rem;
         cursor: pointer;
     }
@@ -114,7 +114,7 @@ color: white;
         <div id="side-menu">
             <ul>
                 <a href="<?php echo $MOD['linkurl'];?>order.php"><li class="inactive" id="order">My Orders</li></a>
-                <!-- <a href="<?php echo $MOD['linkurl'];?>request.php"><li class="inactive" id="request">My Requests</li></a> -->
+                <a href="<?php echo $MOD['linkurl'];?>request.php"><li class="inactive" id="request">My Requests</li></a>
                 <a href="<?php echo $MOD['linkurl'];?>address.php"><li class="inactive" id="address">My Addresses</li></a>
                 <!-- <li class="inactive" id="wallet">My Wallet</li> -->
                 <a href="<?php echo $MOD['linkurl'];?>account.php"><li class="inactive" id="account">My Account</li></a>

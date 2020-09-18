@@ -66,7 +66,7 @@
         <?php } } ?>
         <script>
             $(document).ready(function (){
-                $('#progress-track').css('width',<?php echo(($step-1) * 25)?>+'%');
+                $('#progress-track').css('width',<?php echo(($step-1) * 100 / (count($tags)-1))?>+'%');
             })
         </script>
     </div>

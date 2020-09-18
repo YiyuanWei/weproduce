@@ -185,7 +185,7 @@
                <div id="usermenu" class="dropdown" style="display: none; position: relative; margin: auto;">
                   <ul>
                      <a href="{$MODULE[2][linkurl]}order.php" class="clickable"><li class="inactive" id="my-order">My Orders</li></a>
-                     <!-- <li class="inactive" id="my-request">My Requests</li> -->
+                     <a href="{$MODULE[2][linkurl]}request.php" class="clickable"><li class="inactive" id="my-request">My Requests</li></a>
                      <a href="{$MODULE[2][linkurl]}address.php" class="clickable"><li class="inactive" id="my-address">My Addresses</li></a>
                      <!-- <li class="inactive" id="my-wallet">My Wallet</li> -->
                      <a href="{$MODULE[2][linkurl]}account.php"><li class="inactive" id="my-account">My Account</li></a>
@@ -211,12 +211,12 @@
          <!----{DT_SKIN} =  /skin/default/image/  ---->
          <!----------LOGO区块----------------------->
 
-         <!--{php $tags=tag("table=category&condition=moduleid=16&order=catid asc&template=null")}-->
          <div id='menu'>
             <ul>
                <li><a class="clickable" href="{DT_PATH}about">About Us</a></li>
                <li>
                   <div>
+                     <!--{php $tags=tag("table=category&condition=moduleid=16 and parentid=0&order=catid asc&template=null")}-->
                      <div onclick="$('#wholesale-menu').toggle()" class="clickable">Wholesale
                         <i class="fa fa-bars"></i>
                      </div>

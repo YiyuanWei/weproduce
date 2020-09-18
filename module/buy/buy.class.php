@@ -31,15 +31,12 @@ class buy {
 			if(!is_time($post['totime'])) return $this->_(lang('message->pass_date'));
 			if(strtotime($post['totime']) < DT_TIME) return $this->_(lang('message->pass_todate'));
 		}
-		if(DT_MAX_LEN && strlen(clear_img($post['content'])) > DT_MAX_LEN) $this->_(lang('message->pass_max'));
+		// if(DT_MAX_LEN && strlen(clear_img($post['content'])) > DT_MAX_LEN) $this->_(lang('message->pass_max'));
 		return true;
 	}
 
 	function set($post) {
 		global $MOD, $TYPE, $_username, $_userid;
-		is_url($post['thumb']) or $post['thumb'] = '';
-		is_url($post['thumb1']) or $post['thumb1'] = '';
-		is_url($post['thumb2']) or $post['thumb2'] = '';
 		$post['filepath'] = (isset($post['filepath']) && is_filepath($post['filepath'])) ? file_vname($post['filepath']) : '';
 		$post['editor'] = $_username;
 		$post['addtime'] = (isset($post['addtime']) && is_time($post['addtime'])) ? strtotime($post['addtime']) : DT_TIME;
@@ -48,8 +45,6 @@ class buy {
 		$post['editdate'] = timetodate($post['edittime'], 3);
 		$post['totime'] = is_time($post['totime']) ? strtotime($post['totime']) : 0;
 		$post['fee'] = dround($post['fee']);
-		$post['content'] = stripslashes($post['content']);
-		$post['content'] = save_local($post['content']);
 		if($MOD['clear_link']) $post['content'] = clear_link($post['content']);
 		if($MOD['save_remotepic']) $post['content'] = save_remote($post['content']);
 		if($MOD['introduce_length']) $post['introduce'] = addslashes(get_intro($post['content'], $MOD['introduce_length']));
@@ -70,8 +65,21 @@ class buy {
 		$content = $post['content'];
 		unset($post['content']);
 		$post = dhtmlspecialchars($post);
-		$post['content'] = addslashes(dsafe($content));
-		return array_map("trim", $post);
+		$post = array_map("trim",$post);
+		$post['content'] = $content;
+		$arr = array('Fabric Material','Fabric Weight','Fabric Type');
+		$vs = array($content['fm'],$content['fw'],$content['fc']);
+		$post = $this->set_nv($arr,$vs,$post);
+		array_map('unset',$vs);
+		return $post;
+	}
+
+	function set_nv($arr, $vs,$post){
+		for( $i = 0; $i < count($arr) ; $i++ ){
+			$post['n'.($i+1)] = $arr[$i];
+			$post['v'.($i+1)] = $vs[$i];
+		}
+		return $post;
 	}
 
 	function get_one() {
@@ -132,13 +140,15 @@ class buy {
 		DB::query("INSERT INTO {$this->table} ($sqlk) VALUES ($sqlv)");
 		$this->itemid = DB::insert_id();
 		$content_table = content_table($this->moduleid, $this->itemid, $this->split, $this->table_data);
-		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$post[content]')");
+		$content = content($post['content'], $this->itemid);
+		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$content')");
 		$this->update($this->itemid);
 		if($post['status'] == 3 && $post['username'] && $MOD['credit_add']) {
 			credit_add($post['username'], $MOD['credit_add']);
 			credit_record($post['username'], $MOD['credit_add'], 'system', lang('my->credit_record_add', array($MOD['name'])), 'ID:'.$this->itemid);
 		}
 		clear_upload($post['content'].$post['thumb'].$post['thumb1'].$post['thumb2'], $this->itemid);
+		send_request($content);
 		return $this->itemid;
 	}
 
@@ -152,6 +162,7 @@ class buy {
         $sql = substr($sql, 1);
 	    DB::query("UPDATE {$this->table} SET $sql WHERE itemid=$this->itemid");
 		$content_table = content_table($this->moduleid, $this->itemid, $this->split, $this->table_data);
+		$post['content'] = content($post['content'], $this->itemid);
 		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$post[content]')");
 		$this->update($this->itemid);
 		clear_upload($post['content'].$post['thumb'].$post['thumb1'].$post['thumb2'], $this->itemid);

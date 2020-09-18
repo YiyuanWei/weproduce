@@ -2,6 +2,9 @@
 defined('IN_DESTOON') or exit('Access Denied');
 login();
 require DT_ROOT.'/module/'.$module.'/common.inc.php';
+require DT_ROOT.'/include/post.func.php';
+require DT_ROOT.'/module/'.$module.'/'.$module.'.class.php';
+$do = new $module($moduleid);
 if($DT_PC) {
 	if(!check_group($_groupid, $MOD['group_index'])) include load('403.inc');
 	$typeid = isset($typeid) ? intval($typeid) : 99;
@@ -18,9 +21,36 @@ if($DT_PC) {
 		case 1:
 			break;
 		case 2:
+			if( $submit ){
+				$post['title'] = "Express";
+				isset($post['totime']) or $post['totime'] = 0;
+				if($do->pass($post)){
+					if($itemid=$do->add($post)){
+						$subject = "Sample has been sent.";
+						$mail = "Customer {$post['username']} has sent a sample. Please check.<br>";
+						$mail .= "The tracking number is {$post['note']}.";
+						send_mail($DT['sys_email'],$subject,$mail);
+					}
+				}
+			}
 			break;
 		case 3:
-			if( $submit ) dheader('?step=4');
+			if( $submit ){
+				$content['files'] = $_FILES['content'];
+				$content['fm'] = $content['fm'] ? $content['fm'] : get_cat($content['fmid'])['catname'];
+				$content['fc'] = $content['fc'] ? $content['fc'] : get_cat($content['fcid'])['catname'];
+				unset($content['fmid']);unset($content['fcid']);
+				$post['content'] = $content;
+				$post['amount'] = $content['Quantity'];
+				$catname = get_cat($post['catid'])['catname'];
+				$post['title'] = $catname."_request";
+				isset($post['totime']) or $post['totime'] = 0;
+				if($do->pass($post)){
+					if( $itemid = $do->add($post) ){
+						dheader('?step=4&itemid='.$itemid);
+					}
+				}
+			}
 			break;
 		case 4:
 			break;
@@ -60,7 +90,4 @@ $seo_file = 'index';
 include DT_ROOT.'/include/seo.inc.php';
 include template($MOD['template_index'] ? $MOD['template_index'] : 'index', $module);
 
-function label($id, $content){
-    echo("<label for='$id'>".$content.": </label>");
-}
 ?>

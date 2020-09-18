@@ -30,14 +30,14 @@
         margin-left: auto;
     }
     input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-    .content-table input[type=number]{ width: 70px ;-moz-appearance: textfield; } 
+    .content-table input[type=number]{ width: 85% ;-moz-appearance: textfield; } 
     
     .content-table input, .content-table textarea, .content-table select, .content-table option{
         padding: .4rem .8rem;
         font-size: 16px;
         color: var(--background-color);
     }
-    .content-table select{width: 135px;}
+    .content-table select{width: 100%;}
 
     .content-table input:focus, .content-table textarea:focus, .content-table select:focus{
         outline-color: var(--background-color);
@@ -46,15 +46,18 @@
         font-size: 20px;
         font-family: var(--we-font);
         color: var(--background-color);
-        float: right;
     }
     .content-table td{
-        padding: 0 10px;
+        padding: 0 16px;
+    }
+
+    .content-table.top td{
+        vertical-align: top;
     }
 
     .other{
         display: none;
-        float: right;
+        padding-left: .4rem;
     }
     .other label{
         font-size: 15px;
@@ -63,13 +66,17 @@
         border: 0;
         border-bottom: 1px solid var(--background-color);
         padding: .2rem 1rem;
+        width: 85%;
     }
     .info-table .h2{
         opacity: 1;
         text-align: left;
         font-size: 25px;
     }
-    .content-table td>span{
+    .content-table {
+        width: 100%;
+    }
+    .content-table td>span:not(.f_red){
         font-size: 18px;
         font-family: var(--we-font);
         color: var(--background-color);

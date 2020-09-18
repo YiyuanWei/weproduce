@@ -33,7 +33,7 @@ $L['next_page'] = '';
 $L['home_page'] = 'First Page';
 $L['last_page'] = 'Last Page';
 $L['curr_page'] = '<label title="共{V0}条">第<em>{V1}</em>页/共<span>{V2}</span>页</label>';
-$L['info_page'] = '<cite>{V1}/{V0}</cite>';
+$L['info_page'] = '<cite>{V1} pages/{V0} items</cite>';
 $L['message_type'] = array('普通', '询价', '报价', '留言', '信使');
 $L['message_weixin'] = '[详见站内消息]';
 $L['star_type'] = array('评分', '差评', '中评', '好评');

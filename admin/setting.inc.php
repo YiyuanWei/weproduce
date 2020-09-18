@@ -22,6 +22,7 @@ switch($action) {
 		$DT['smtp_auth'] = $smtp_auth;
 		$DT['smtp_user'] = $smtp_user;
 		$DT['smtp_pass'] = $smtp_pass;
+		$DT['sys_email'] = $sys_email;
 		$DT['mail_sender'] = $mail_sender;
 		$DT['mail_name'] = $mail_name;
 		$DT['mail_delimiter'] = $mail_delimiter;

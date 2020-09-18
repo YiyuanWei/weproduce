@@ -1,0 +1,62 @@
+{template 'header', 'member'}
+<script>page('request');</script>
+<script type="text/javascript">var errimg = '{DT_SKIN}image/nopic60.gif';</script>
+<div class="tt">
+    <p>Check the status of your requests and manage your requests.</p>
+    <div class="b10 break"></div>
+    <div>
+        <style>
+            .order-nav{
+                display: flex;
+            }
+            .order-nav div{
+                padding: 5px 15px;
+                width: fit-content;
+                cursor: pointer;
+                border: none;
+            }
+            .order-nav div:hover{
+                opacity: .8;
+            }
+            .order-nav div span{
+                font-size: large;
+                text-decoration: underline;
+            }
+        </style>
+        <div class="order-nav">
+            {loop $types $t}
+            <div onclick="Go('?catid={$t[catid]}')"><span class="{if $catid==$t[catid]}f_red{/if}">{$t[catname]}</span></div>
+            {/loop}
+            <div style="margin-left:auto; order: 2;" onclick="Go('{$MODULE[6][linkurl]}')"><span style="text-decoration: none; opacity: .8;;"><i class="fa fa-plus"></i>&nbsp;New Request</span></div>
+        </div>
+    </div>
+    <div class="b10"></div>
+    <div class="break"></div>
+    <div class="b10"></div>
+    <table cellspacing="0" style="margin: 5px 0;">
+        {if $list}
+        {loop $list $k $v}
+		<table cellpadding="10" cellspacing="0" class="tb">
+		<tr bgcolor="#F5F5F5">
+		<td colspan="7" class="f_gray">
+		<span class="f_r"><a href="{$v[linkurl]}" style="text-decoration: underline; font-size: 14px; font-style: italic;">Check</a></span>
+		<span class="c_p" onclick="Go('?itemid={$v[itemid]}&action=update&step=detail');">&nbsp; # {$v[itemid]} <br>&nbsp; {$v[edittime]}<span> 
+		</td>
+		</tr>
+		<tr align="center">
+		<td width="100" valign="top"><a href="{$v[linkurl]}" target="_blank"><img src="{if $v[thumb]}{$v[thumb]}{else}{DT_SKIN}image/nopic60.gif{/if}" width="100" height="100" onerror="this.src=errimg;"/></a></td>
+        <td align="left" valign="top" class="f_gray lh18" width="180px"><span class="we_f1_2">Material:<br>{$v[v1]}</span><br/><span class="we_f1" style="font-size: .7rem;">Fabric Weight: {$v[v2]}</span></td>
+        <td width="200" align="left" valign="top" style="padding-top: 15px"><span class="we_f1">Type:<br>{$v[v3]}</span></td>
+		<td width="200" align="left" valign="top" style="padding-top: 15px"><span class="we_f1">Other:<br>{$v[content][others]}</span></td>
+		<td width="30" align="left" valign="top"><span class="we_f1">amount: {$v[amount]}</span></td>
+		</tr>
+        </table>
+        {/loop}
+        {else}
+        {/if}
+    </table>
+</div>
+
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('request');m('action');</script>
+{template 'footer', 'member'}

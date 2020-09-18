@@ -46,3 +46,11 @@ add new types to buy{
     Other
     No Requirement
 }
+
+add new types to buy{
+    express, level 6
+}
+
+change setting of model{
+    types: buy|express
+}

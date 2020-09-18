@@ -40,7 +40,8 @@ var property_admin = 1;
 <?php echo $FD ? fields_html('<td class="tl">', '<td>', $item) : '';?>
 <tr>
 <td class="tl"><span class="f_hid">*</span> 详细说明</td>
-<td><textarea name="post[content]" id="content" class="dsn"><?php echo $content;?></textarea>
+<?php require_once DT_ROOT.'/module/buy/global.func.php';?>
+<td><textarea name="post[content]" id="content" class="dsn"><?php echo content2str($content);?></textarea>
 <?php echo deditor($moduleid, 'content', $MOD['editor'], '100%', 350);?><br/><span id="dcontent" class="f_red"></span>
 </td>
 </tr>
@@ -195,11 +196,10 @@ var property_admin = 1;
 <tr>
 <td class="tl"><span class="f_hid">*</span> 信息状态</td>
 <td>
-<input type="radio" name="post[status]" value="3" <?php if($status == 3) echo 'checked';?>/> 通过
-<input type="radio" name="post[status]" value="2" <?php if($status == 2) echo 'checked';?>/> 待审
-<input type="radio" name="post[status]" value="1" <?php if($status == 1) echo 'checked';?> onclick="if(this.checked) Dd('note').style.display='';"/> 拒绝
-<input type="radio" name="post[status]" value="4" <?php if($status == 4) echo 'checked';?>/> 过期
-<input type="radio" name="post[status]" value="0" <?php if($status == 0) echo 'checked';?>/> 删除
+	<?php include_once load('buy.lang');?>
+	<?php foreach($L['trade_status'] as $k => $v) {?>
+		<input type="radio" name="post[status]" value="<?php echo $k;?>" <?php if($status==$k) echo 'checked';?>/> <?php echo $v;?><br>
+	<?php }?>
 </td>
 </tr>
 <tr id="note" style="display:<?php echo $status==1 ? '' : 'none';?>">

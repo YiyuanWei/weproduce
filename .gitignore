@@ -7,3 +7,6 @@ vendor/
 test/
 /composer.json
 /composer.lock
+file/temp/
+file/buy/
+/to-do.txt

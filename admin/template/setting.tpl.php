@@ -944,6 +944,10 @@ function TestFTP() {
 <td class="tl">发件人邮箱</td>
 <td><input name="setting[mail_sender]" id="mail_sender" type="text" size="40" value="<?php echo $mail_sender;?>"/><?php tips('系统发送的信件将以此邮箱名义发送');?></td>
 </tr>
+<tr>
+<td class="tl">系统邮箱</td>
+<td><input name="setting[sys_email]" id="sys_email" type="text" size="40" value="<?php echo $sys_email;?>"><?php tips('所有邮件将以此系统邮箱接受');?></td>
+</tr>
 <tr> 
 <td class="tl">发件人名称</td>
 <td><input name="setting[mail_name]" id="mail_name" type="text" size="40" value="<?php echo $mail_name;?>"/><?php tips('系统发送的信件将显示此名称，不填则显示网站名');?></td>
