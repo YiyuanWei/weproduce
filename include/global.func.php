@@ -1184,7 +1184,7 @@ function is_ip($ip) {
 }
 
 function is_mobile($mobile) {
-	return preg_match("/^1[3|4|5|6|7|8|9]{1}[0-9]{9}$/", $mobile);
+	return preg_match("/^0[2|3|4|7|8]{1}[0-9]{8}$/", $mobile);
 }
 
 function is_md5($password) {

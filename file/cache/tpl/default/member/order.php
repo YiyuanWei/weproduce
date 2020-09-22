@@ -244,7 +244,7 @@ opacity: .8;
 <tr>
 <td class="tl" valign="top"> </td>
 <td class="tr">
-<input type="submit" name="submit" value=" CheckOut " class="btn_g clickable"/>&nbsp;&nbsp;<input type="button" value=" Back " class="clickable" onclick="history.back(-1);"/>
+<input type="submit" name="submit" value="CheckOut" class="clickable"/>&nbsp;&nbsp;<input type="button" value=" Back " class="clickable" onclick="history.back(-1);"/>
 </td>
 </tr>
 </table>

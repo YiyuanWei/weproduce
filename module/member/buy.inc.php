@@ -41,7 +41,7 @@ if($submit) {
 		$buyer_address = $add['address'];
 		if(strlen($buyer_address) < 10) message($L['msg_type_address']);
 		$buyer_postcode = $add['postcode'];
-		if(strlen($buyer_postcode) < 6) message($L['msg_type_postcode']);
+		if(strlen($buyer_postcode) < 1) message($L['msg_type_postcode']);
 		$buyer_name = $add['truename'];
 		if(strlen($buyer_name) < 2) message($L['msg_type_truename']);
 		$buyer_mobile = $add['mobile'];
