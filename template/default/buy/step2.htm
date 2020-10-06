@@ -1,31 +1,92 @@
+<!--{php $tags=tag("fields=catdir&table=category&condition=moduleid=$moduleid and letter='r'&template=null")}-->
+<!--{php $cats=tag("fields=catid&table=category&condition=moduleid=$moduleid and level=4&template=null&order=catid asc")}-->
+<!--{php $m=$cats[0][catid];$t=$cats[1][catid];$cat=$cats[2][catid];}-->
+<!--{php $otherid=tag("fields=catid&table=category&condition=moduleid=$moduleid and level=5 and not letter&template=null&pagesize=1&debug=0")[0][catid]}-->
 {template style, buy}
-<div class="center">
-    {if $send}
-    <p class="h2">Please send your sample to the following address.</p>
-    <p class="h2">If you have already send the sample to the correct address.</p>
-    <p class="h2">Please enter the tracking number so we can track the status of the package.</p>
-    <form action="?" method="post" class="info-table" id="express" style="width: fit-content;margin: auto;">
-        <input type="hidden" name="post[moduleid]" value="{$moduleid}">
-        <input type="hidden" name="post[username]" value="{$_username}">
-        <input type="hidden" name="post[catid]" value="{$express_cat}">
-        <input type="hidden" name="post[status]" value="3">
-        <input type="hidden" name="post[typeid]" value="1">
-        <input type="hidden" name="post[level]" value="1">
-        <input type="hidden" name="post[totime]" value='0'>
-        <input type="text" name="post[note]" id="express" placeholder="tracking number">
-        <input type="submit" value="Submit" name="submit" class="clickable" style="background-color:var(--background-color); color: var(--background);border-radius: 8px;border: none;">
-    </form>
-    <br>
-    <p class="h2">ROOM 807 NO.1 WEST TOWER,</p>
-    <p class="h2">NO.115 ZHANGCHA YI ROAD,</p>
-    <p class="h2">FOSHAN, GUANGDONG, CHINA</p>
-    <br>
-    <div class="button clickable" style="width: 10rem;" onclick="Go('{DT_PATH}')">To Home</div>
-    {else}
-    <!--{php $tags=tag("table=category&condition=moduleid=$moduleid and letter='r'&template=null")}-->
-    <p class="h1">Choose Your Requst Type</p>
-    {loop $tags $k $v}
-    <div class="button clickable" onclick="Go('?step=3&catdir={$v[catdir]}&catid={$v[catid]}')">{$v[catname]}</div>
-    {/loop}
-    {/if}
-</div>
+{if in_array(array('catdir'=>$catdir), $tags)}
+<script>
+    var otherid = {$otherid};
+</script>
+<form class="info-table" action="?step={$step}" method="post" enctype="multipart/form-data" id="info" onsubmit="return check()">
+<input type="hidden" name="post[catid]" value="{$catid}">
+<input type="hidden" name="post[username]" value="{$_username}">
+<input type="hidden" name="post[typeid]" value="0">
+<input type="hidden" name="post[level]" value="1">
+<input type="hidden" name="post[totime]" value='0'>
+<input type="hidden" name="post[status]" value="3">
+<input type="hidden" name="action" value="add">
+{template $catdir,buy}
+<button type="submit" name="submit" class="clickable">Submit</button>
+<div class="button clickable" onclick="Go('?step={php echo(($step)-1)}&send=0')">Back</button>
+</form>
+{else}
+<p class="h1">The category is not valid</p>
+<p class="h2" style="font-size: 2rem;">Please select the valid category</p>
+<!-- <meta http-equiv="refresh" content="1;{$MOD[linkurl]}?step={php echo($step-1)}&send=0"/> -->
+{/if}
+<script>
+    function other(pre){
+        var e = Dd(pre+'id');
+        var v = e.value;
+        var t = v.indexOf('t') == 1;
+        if( v == otherid ){
+            Dd(pre).style.display = 'block';
+            if( t ) Dmsg("You should include the unit for the thickness",pre+"id");
+        }
+        else{
+            Dd(pre).style.display = 'none';
+        }
+    }
+    function showImage(){
+        var id_btn = 'img';
+        var id_previewer = 'img_pre';
+        if( typeof (FileReader) != "undefined" ){
+            var previewer = document.getElementById(id_previewer);
+            var index = previewer.childElementCount;
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+            var btn = document.getElementById(id_btn);
+            for(var i = 0; i < btn.files.length; i++){
+                var file = btn.files[i];
+                if( regex.test(file.name.toLowerCase()) ){
+                    var reader = new FileReader();
+                    reader.onload = function(e){
+                        var img = document.createElement("IMG");
+                        img.src = e.target.result;
+                        addImg(previewer, img);
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+        else{
+            alert("This browser cannot preview images after you upload them.");
+        }
+    }
+    function addImg(previewer, img){
+        img.id = ++previewer.childElementCount;
+        img.addEventListener('click',function(){console.log('click'); this.parentNode.removeChild(this);});
+        previewer.appendChild(img);
+    }
+    function count(textarea){
+        var max = 200;
+        var c = textarea.value.length;
+        var span = textarea.parentNode.getElementsByTagName("SPAN")[0];
+        span.innerHTML = max-c;
+    }
+    function check(){
+        var selects = document.getElementsByTagName("SELECT");
+        for( var i = 0 ; i < selects.length; i++ ){
+            var e = selects[i];
+            if( e.value == otherid ){
+                Dmsg("Please input the requirement for this field.",e.id);
+                return false;
+            }
+        }
+        if( Dd('q').value == '' ){
+            Dmsg("Please input the requirement for the quantity of your request","dq");
+            return false;
+        }
+        
+        return true;
+    }
+</script>

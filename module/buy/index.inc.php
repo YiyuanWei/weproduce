@@ -17,48 +17,43 @@ if($DT_PC) {
 	if($page == 1) $head_canonical = $MOD['linkurl'];
 	$destoon_task = "moduleid=$moduleid&html=index";
 	if($EXT['mobile_enable']) $head_mobile = $MOD['mobile'].($page > 1 ? 'index.php?page='.$page : '');
-	switch($step){
-		case 1:
-			break;
-		case 2:
-			if( $submit ){
-				$post['title'] = "Express";
-				isset($post['totime']) or $post['totime'] = 0;
-				if($do->pass($post)){
-					if($itemid=$do->add($post)){
-						$subject = "Sample has been sent.";
-						$mail = "Customer {$post['username']} has sent a sample. Please check.<br>";
-						$mail .= "The tracking number is {$post['note']}.";
-						send_mail($DT['sys_email'],$subject,$mail);
+	if($submit){
+		switch($action){
+			case "add":
+				if( $submit ){
+					$content['files'] = $_FILES['content'];
+					$content['fm'] = $content['fm'] ? $content['fm'] : get_cat($content['fmid'])['catname'];
+					$content['fc'] = $content['fc'] ? $content['fc'] : get_cat($content['fcid'])['catname'];
+					unset($content['fmid']);unset($content['fcid']);
+					$post['content'] = $content;
+					$post['amount'] = $content['Quantity'];
+					$catname = get_cat($post['catid'])['catname'];
+					$post['title'] = $catname."_request";
+					isset($post['totime']) or $post['totime'] = 0;
+					if($do->pass($post)){
+						if( $itemid = $do->add($post) ){
+							dheader('?step='.($step+1));
+						}
 					}
 				}
-			}
-			break;
-		case 3:
-			if( $submit ){
-				$content['files'] = $_FILES['content'];
-				$content['fm'] = $content['fm'] ? $content['fm'] : get_cat($content['fmid'])['catname'];
-				$content['fc'] = $content['fc'] ? $content['fc'] : get_cat($content['fcid'])['catname'];
-				unset($content['fmid']);unset($content['fcid']);
-				$post['content'] = $content;
-				$post['amount'] = $content['Quantity'];
-				$catname = get_cat($post['catid'])['catname'];
-				$post['title'] = $catname."_request";
-				isset($post['totime']) or $post['totime'] = 0;
-				if($do->pass($post)){
-					if( $itemid = $do->add($post) ){
-						dheader('?step=4&itemid='.$itemid);
+				break;
+			case "express":
+				if( $submit ){
+					$post['title'] = "Express";
+					isset($post['totime']) or $post['totime'] = 0;
+					if($do->pass($post)){
+						if($itemid=$do->add($post)){
+							$subject = "Sample has been sent.";
+							$mail = "Customer {$post['username']} has sent a sample. Please check.<br>";
+							$mail .= "The tracking number is {$post['note']}.";
+							send_mail($DT['sys_email'],$subject,$mail);
+						}
 					}
 				}
-			}
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		default:
-			dheader("?step=1");
-			break;
+				break;
+			default:
+				break;
+		}
 	}
 } else {
 	$condition = "status=3";
