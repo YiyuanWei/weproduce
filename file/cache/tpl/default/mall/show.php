@@ -30,15 +30,10 @@ font-weight: 700;
 .product-price{
 font-size: 20px;
 }
-    #price{
+    #price, #price *{
         color: var(--background-color);
         font-size: 1rem;
-        font-family: 'Dancing Script', serif;
-    }
-    #price a{
-        color: var(--background-color);
-        text-decoration: underline;
-        font-family: 'Dancing Script';
+        font-family: Arial, Helvetica, sans-serif;
     }
     .quickview-form{
         margin: 1rem 0;
@@ -126,8 +121,14 @@ Prev
 </div>
 <div class="b10"></div>
 <div style="margin: auto; width: fit-content;">
+<script>
+var max = <?php echo count($thumbs);?>;
+function mAlbum(id,k){
+Album(id,k,max);
+}
+</script>
 <?php if(is_array($thumbs)) { foreach($thumbs as $k => $v) { ?>
-<img src="<?php echo $v;?>" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album(<?php echo $k;?>, '<?php echo $albums[$k];?>');" class="<?php if($k) { ?>ab_im<?php } else { ?>ab_on<?php } ?>
+<img src="<?php echo $v;?>" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)mAlbum(<?php echo $k;?>, '<?php echo $albums[$k];?>');" class="<?php if($k) { ?>ab_im<?php } else { ?>ab_on<?php } ?>
 " id="t_<?php echo $k;?>"/>
 <?php } } ?>
 </div>
@@ -142,7 +143,33 @@ Prev
 </div>
 
 <div style="grid-area: form;">
-<div id="price">$<?php echo $p1;?></div>
+<div id="price">
+<?php if($is == Y) { ?>
+<table>
+<tr>
+<td><span><?php echo $a1;?>-<?php echo $a2;?> <?php echo $unit;?>:</span></td>
+<td><span><?php echo $DT['money_sign'];?> <?php echo $p1;?>/<?php echo $unit;?></span></td>
+</tr>
+<?php if($p3!=0) { ?>
+<tr>
+<td><span><?php echo $a2;?>-<?php echo $a3;?> <?php echo $unit;?>:</span></td>
+<td><span><?php echo $DT['money_sign'];?> <?php echo $p2;?>/<?php echo $unit;?></span></td>
+</tr>
+<tr>
+<td><span>&gt; <?php echo $a3;?> <?php echo $unit;?>:</span></td>
+<td><span><?php echo $DT['money_sign'];?> <?php echo $p3;?>/<?php echo $unit;?></span></td>
+</tr>
+<?php } else { ?>
+<tr>
+<td><span>&gt; <?php echo $a2;?> <?php echo $unit;?>:</span></td>
+<td><span><?php echo $DT['money_sign'];?> <?php echo $p2;?>/<?php echo $unit;?></span></td>
+</tr>
+<?php } ?>
+</table>
+<?php } else { ?>
+<?php echo $DT['money_sign'];?> <?php echo $p1;?>/<?php echo $unit;?>
+<?php } ?>
+</div>
 <form style="margin-top: 0;" method="POST" class="quickview-form" action="<?php echo $MODULE['2']['linkurl'];?>cart.php?action=add">
 <input type="hidden" name="itemid" value="<?php echo $itemid;?>">
 <div style="display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto auto; margin-top: 0;">
@@ -158,6 +185,18 @@ Prev
 </div>
 </div>
 </div>
+<script>
+function calculatePrice(p,c){
+p = p * c;
+p = p.toFixed(2);
+var str = p.toString();
+var l = str.length;
+str = str.substr(0,l-1);
+str += c == 1 ? '0' : '9';
+p = parseFloat(str);
+return p;
+}
+</script>
 <script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/album.js"></script>
 <?php if($content) { ?><script type="text/javascript" src="<?php echo DT_STATIC;?>file/script/content.js"></script><?php } ?>
 <script type="text/javascript">

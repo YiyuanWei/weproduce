@@ -71,4 +71,61 @@ function view_txt($date) {
 	if($date == timetodate(strtotime('-2 day'), 3)) return $L['view_txt_2'];
 	return $date;
 }
+
+function connectAPI($from,$to){
+
+	$curl = curl_init();
+	
+	curl_setopt_array($curl, [
+		CURLOPT_URL => "https://rapidapi.p.rapidapi.com/convert/10/".$from."/".$to."",
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_ENCODING => "",
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 30,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => "GET",
+		CURLOPT_HTTPHEADER => [
+			"x-rapidapi-host: currency13.p.rapidapi.com",
+			"x-rapidapi-key: 39c8c0a6damsh0d9ec206f51bd6fp11d2f6jsn59e6f79f3c39"
+		],
+	]);
+	
+	$response = curl_exec($curl);
+	$err = curl_error($curl);
+	
+	curl_close($curl);
+	
+	if ($err) {
+		return array('error'=>"cURL Error #:" . $err);
+	} else {
+		return json_decode($response);
+	}
+}
+
+function currency($from='CNY', $to='AUD'){
+	global $DT_PRE, $DT_TIME;
+	$table_currency = $DT_PRE.'currency';
+	$from = urlencode($from);
+	$to = urlencode($to);
+	$record = DB::get_one("SELECT * FROM {$table_currency} WHERE fromunit='$from' and tounit='$to'");
+	if($record){
+		if(($DT_TIME-intval($record['edittime'])) > 12*3600){
+			$newrecord['itemid'] = $record['itemid'];
+			$newrecord['value'] = connectAPI($from, $to)->amount;
+		}
+		else return $record['value'];
+	}else{
+		$newrecord['value'] = connectAPI($from, $to)->amount;
+	}
+	$newrecord['fromunit'] = $from;
+	$newrecord['tounit'] = $to;
+	$newrecord['edittime'] = $DT_TIME;
+	$newrecord['editdate'] = timetodate($DT_TIME, 3);
+	
+	$query = arraytoquery($newrecord);
+	$query = "REPLACE INTO {$table_currency} ".$query;
+	DB::query($query);
+	return $newrecord['value'];
+}
 ?>

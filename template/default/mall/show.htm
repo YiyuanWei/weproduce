@@ -31,15 +31,10 @@
 	.product-price{
 		font-size: 20px;
 	}
-    #price{
+    #price, #price *{
         color: var(--background-color);
         font-size: 1rem;
-        font-family: 'Dancing Script', serif;
-    }
-    #price a{
-        color: var(--background-color);
-        text-decoration: underline;
-        font-family: 'Dancing Script';
+        font-family: Arial, Helvetica, sans-serif;
     }
     .quickview-form{
         margin: 1rem 0;
@@ -123,8 +118,14 @@
 	</div>
 	<div class="b10"></div>
 	<div style="margin: auto; width: fit-content;">
+		<script>
+			var max = {count($thumbs)};
+			function mAlbum(id,k){
+				Album(id,k,max);
+			}
+		</script>
 		{loop $thumbs $k $v}
-		<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album({$k}, '{$albums[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>
+		<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)mAlbum({$k}, '{$albums[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>
 		{/loop}
 	</div>
 	<div class="b20"></div>
@@ -139,7 +140,33 @@
 		</div>
 		
 		<div style="grid-area: form;">
-			<div id="price">${$p1}</div>
+			<div id="price">
+				{if $is == Y}
+					<table>
+						<tr>
+							<td><span>{$a1}-{$a2} {$unit}:</span></td>
+							<td><span>{$DT[money_sign]} {$p1}/{$unit}</span></td>
+						</tr>
+						{if $p3!=0}
+							<tr>
+								<td><span>{$a2}-{$a3} {$unit}:</span></td>
+								<td><span>{$DT[money_sign]} {$p2}/{$unit}</span></td>
+							</tr>
+							<tr>
+								<td><span>&gt; {$a3} {$unit}:</span></td>
+								<td><span>{$DT[money_sign]} {$p3}/{$unit}</span></td>
+							</tr>
+						{else}
+							<tr>
+								<td><span>&gt; {$a2} {$unit}:</span></td>
+								<td><span>{$DT[money_sign]} {$p2}/{$unit}</span></td>
+							</tr>
+						{/if}
+					</table>
+				{else}
+					{$DT[money_sign]} {$p1}/{$unit}
+				{/if}
+			</div>
 			<form style="margin-top: 0;" method="POST" class="quickview-form" action="{$MODULE[2][linkurl]}cart.php?action=add">
 				<input type="hidden" name="itemid" value="{$itemid}">
 				<div style="display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto auto; margin-top: 0;">
@@ -156,6 +183,18 @@
 </div>
 
 </div>
+<script>
+function calculatePrice(p,c){
+	p = p * c;
+	p = p.toFixed(2);
+	var str = p.toString();
+	var l = str.length;
+	str = str.substr(0,l-1);
+	str += c == 1 ? '0' : '9';
+	p = parseFloat(str);
+	return p;
+}
+</script>
 <script type="text/javascript" src="{DT_STATIC}file/script/album.js"></script>
 {if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
 <script type="text/javascript">

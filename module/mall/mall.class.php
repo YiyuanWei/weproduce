@@ -14,7 +14,7 @@ class mall {
 		$this->table = $table;
 		$this->table_data = $table_data;
 		$this->split = $MOD['split'];
-		$this->fields = array('catid','mycatid','areaid','level','title','style','fee','introduce','brand','price','step','amount','unit','thumb','thumb1','thumb2','tag','status','hits','username','editor','addtime','adddate','edittime','editdate','ip','template','linkurl','filepath','elite','note','company','truename','telephone','mobile','address','email','qq','wx','ali','skype','n1','n2','n3','v1','v2','v3','express_1','express_name_1','fee_start_1','fee_step_1','express_2','express_name_2','fee_start_2','fee_step_2','express_3','express_name_3','fee_start_3','fee_step_3','cod');
+		$this->fields = array('catid','mycatid','areaid','level','title','style','fee','introduce','brand','price','step','amount','unit','thumb','thumb1','thumb2','thumbs','tag','status','hits','username','editor','addtime','adddate','edittime','editdate','ip','template','linkurl','filepath','elite','note','company','truename','telephone','mobile','address','email','qq','wx','ali','skype','n1','n2','n3','v1','v2','v3','express_1','express_name_1','fee_start_1','fee_step_1','express_2','express_name_2','fee_start_2','fee_step_2','express_3','express_name_3','fee_start_3','fee_step_3','cod');
     }
 
     function mall($moduleid) {

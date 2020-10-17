@@ -1,6 +1,7 @@
 <?php
 defined('DT_ADMIN') or exit('Access Denied');
 require DT_ROOT.'/module/'.$module.'/'.$module.'.class.php';
+require_once DT_ROOT.'/module/'.$module.'/'.'global.func.php';
 $do = new $module($moduleid);
 $menus = array (
     array('添加商品', '?moduleid='.$moduleid.'&action=add'),
@@ -108,6 +109,9 @@ if(in_array($action, array('', 'check', 'expire', 'reject', 'recycle'))) {
 switch($action) {
 	case 'add':
 		if($submit) {
+			$post['thumb'] = $post['thumbs'][0];
+			array_pop($post['thumbs']);
+			$post['thumbs'] = json_encode($post['thumbs'], JSON_FORCE_OBJECT);
 			if($do->pass($post)) {
 				if($FD) fields_check($post_fields);
 				if($CP) property_check($post_ppt);
@@ -125,7 +129,7 @@ switch($action) {
 			}
 			$a1 = 1;
 			$a2 = $a3 = $p1 = $p2 = $p3 = '';
-			$unit = '件';
+			$unit = '';
 			$boc = 1;
 			$content = '';
 			$status = 3;
@@ -150,6 +154,9 @@ switch($action) {
 		$itemid or msg();
 		$do->itemid = $itemid;
 		if($submit) {
+			$post['thumb'] = $post['thumbs'][0];
+			array_pop($post['thumbs']);
+			$post['thumbs'] = json_encode($post['thumbs'], JSON_FORCE_OBJECT);
 			if($do->pass($post)) {
 				if($FD) fields_check($post_fields);
 				if($CP) property_check($post_ppt);
@@ -183,6 +190,7 @@ switch($action) {
 			}
 			$menuon = array('5', '4', '2', '1', '3');
 			$menuid = $menuon[$status];
+			$thumbs = decode_thumb($thumbs);
 			include tpl($action, $module);
 		}
 	break;

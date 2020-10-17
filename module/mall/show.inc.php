@@ -41,11 +41,13 @@ if($DT_PC) {
 	$adddate = timetodate($addtime, 3);
 	$editdate = timetodate($edittime, 3);
 	$linkurl = $MOD['linkurl'].$linkurl;
-	$thumbs = get_albums($item);
-	$albums = get_big(get_albums($item, 1));
+	$item['thumbs'] = decode_thumb($item['thumbs']);
+	$thumbs = get_albums($item,0,true);
+	$albums = get_big(get_albums($item, 1,true));
 	$promos = get_promos($username);
 	$fee = get_fee($item['fee'], $MOD['fee_view']);
 	$update = '';
+	currency();
 	if(check_group($_groupid, $MOD['group_contact'])) {
 		if($fee) {
 			$user_status = 4;

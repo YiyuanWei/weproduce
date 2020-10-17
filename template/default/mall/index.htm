@@ -15,8 +15,8 @@
     }
     .cat-block div{
         grid-area: block;
-        font-family: var(--we-font);
-        font-size: 2rem;
+        font-family: 'Dancing Script',Arial, Helvetica, sans-serif;
+        font-size: 3rem;
         color: var(--background-color);
     }
 </style>
@@ -25,7 +25,7 @@
     <div class="display-grid">
         {loop $tags $t $v}
         <div class="cat-block clickable display-grid" onclick="Go('{$v[linkurl]}')">
-            <img src="{DT_SKIN}image/category_{$v[catid]}_{$v[moduleid]}" width="100%">
+            <img src="{$v[thumb]}" width="100%">
             <div style="margin: auto; width: fit-content;">
                 {$v[catname]}
             </div>

@@ -1256,4 +1256,28 @@ function d301($url) {
 	dhttp(301, 0);
 	dheader($url);
 }
+
+// string to array convertor
+function decode_thumb($thumbs){
+	$thumbs = substr($thumbs,1,strlen($thumbs)-2);
+	$thumbs = explode(',',$thumbs);
+	foreach( $thumbs as $k=>$v ){
+		$v = explode(':',$v,2)[1];
+		$v = substr($v, strlen('&quot;'),strlen($v)-2*strlen('&quot;'));
+		$thumbs[$k] = $v;
+	}
+	return $thumbs;
+}
+
+function arraytoquery($arr, $fields=array()){
+	$sqlk = '';
+	$sqlv = '';
+	foreach($arr as $k=>$v){
+		$sqlk .= (!count($fields) or in_array($k,$fields)) ? ",".$k : "" ;
+		$sqlv .= (!count($fileds) or in_array($k,$fields)) ? ",'$v'" : "" ;
+	}
+	$sqlk = substr($sqlk, 1);
+	$sqlv = substr($sqlv, 1);
+	return "($sqlk) VALUES ($sqlv)";
+}
 ?>

@@ -243,8 +243,16 @@ function vip_year($fromtime) {
 	return $fromtime ? intval((DT_TIME - $fromtime)/86400/365) + 1 : 1;
 }
 
-function get_albums($item, $type = 0) {
+function get_albums($item, $type = 0, $thumbs = false) {
 	$imgs = array();
+	$nopic = $type ? DT_SKIN.'image/nopic320.gif' : DT_SKIN.'image/nopic60.gif';
+	if( $thumbs ){
+		foreach($item['thumbs'] as $v ){
+			if($v && !preg_match("/^[a-z0-9\-\.\:\/]{30,}$/i", $v)) $v = '';
+			$imgs[] = $v ? ($type ? str_replace('.thumb.', '.middle.', $v) : $v) : $nopic; 
+		}
+		return $imgs;
+	}
 	if($item['thumb'] && !preg_match("/^[a-z0-9\-\.\:\/]{30,}$/i", $item['thumb'])) $item['thumb'] = '';
 	if($item['thumb1'] && !preg_match("/^[a-z0-9\-\.\:\/]{30,}$/i", $item['thumb1'])) $item['thumb1'] = '';
 	if($item['thumb2'] && !preg_match("/^[a-z0-9\-\.\:\/]{30,}$/i", $item['thumb2'])) $item['thumb2'] = '';

@@ -26,6 +26,23 @@ show_menu($menus);
 <td><input name="category[letter]" type="text" id="letter" size="2" value="<?php echo $letter;?>"/></td>
 </tr>
 <tr>
+<td class="tl"><span class="f_hid">*</span> 分类图片</td>
+<td>
+	<div id="thumbs_inputs">
+		<input type="hidden" name="category[thumb]" id="thumb">
+	</div>
+	<table class="ctb">
+	<tr align="center" height="120" class="c_p">
+		<td width="120" id='preview'><img src="<?php echo DT_SKIN.'image/waitpic.gif';?>" width="100" height="100" id="showthumb" title="预览图片" alt="" onclick="if(this.src.indexOf('waitpic.gif') == -1){_preview(Dd('showthumb').src, 1);}else{Dalbum('',<?php echo $mid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb').value, true);}" onload="thumb()"/></td>
+	</tr>
+	<tr align="center" class="c_p">
+		<td><span onclick="Dalbum('',<?php echo $mid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb').value, true);" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif" width="12" height="12" title="上传"/></span>&nbsp;&nbsp;<img src="<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif" width="12" height="12" title="选择" onclick="selAlbum('');"/>&nbsp;&nbsp;<span onclick="delAlbum('', 'wait');" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif" width="12" height="12" title="删除"/></span></td>
+	</tr>
+	</table>
+	<span id="dthumb" class="f_red"></span>
+</td>
+</tr>
+<tr>
 <td class="tl"><span class="f_hid">*</span> 级别</td>
 <td><input name="category[level]" type="text" size="2" value="<?php echo $level;?>"/><?php tips('0 - 不在首页显示 1 - 正常显示 2 - 首页和上级分类并列显示');?></td>
 </tr>

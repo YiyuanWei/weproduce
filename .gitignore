@@ -1,9 +1,7 @@
-/replace.bat
 /config.inc.php
 file/cache/
 file/upload/
 file/session/
-vendor/
 test/
 /composer.json
 /composer.lock
@@ -11,3 +9,4 @@ file/temp/
 file/buy/
 /to-do.txt
 file/log/
+/sql.sql

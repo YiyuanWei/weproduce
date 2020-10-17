@@ -80,19 +80,71 @@ var property_admin = 1;
 <tr>
 <td class="tl"><span class="f_red">*</span> 商品图片</td>
 <td>
-	<input type="hidden" name="post[thumb]" id="thumb" value="<?php echo $thumb;?>"/>
-	<input type="hidden" name="post[thumb1]" id="thumb1" value="<?php echo $thumb1;?>"/>
-	<input type="hidden" name="post[thumb2]" id="thumb2" value="<?php echo $thumb2;?>"/>
-	<table width="360" class="ctb">
-	<tr align="center" height="120" class="c_p">
-	<td width="120"><img src="<?php echo $thumb ? $thumb : DT_SKIN.'image/waitpic.gif';?>" width="100" height="100" id="showthumb" title="预览图片" alt="" onclick="if(this.src.indexOf('waitpic.gif') == -1){_preview(Dd('showthumb').src, 1);}else{Dalbum('',<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb').value, true);}"/></td>
-	<td width="120"><img src="<?php echo $thumb1 ? $thumb1 : DT_SKIN.'image/waitpic.gif';?>" width="100" height="100" id="showthumb1" title="预览图片" alt="" onclick="if(this.src.indexOf('waitpic.gif') == -1){_preview(Dd('showthumb1').src, 1);}else{Dalbum(1,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb1').value, true);}"/></td>
-	<td width="120"><img src="<?php echo $thumb2 ? $thumb2 : DT_SKIN.'image/waitpic.gif';?>" width="100" height="100" id="showthumb2" title="预览图片" alt="" onclick="if(this.src.indexOf('waitpic.gif') == -1){_preview(Dd('showthumb2').src, 1);}else{Dalbum(2,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb2').value, true);}"/></td>
+	<div id="thumbs_inputs">
+		<?php 
+		foreach($thumbs as $k=>$v){ 
+		?>
+		<input type="hidden" name="post[thumbs][]" id="thumb<?php echo $k;?>" value="<?php echo $thumbs[$k];?>">
+		<?php }?>
+	</div>
+	<script>
+		var paras;
+		function newParas(l){
+			var para = [];
+			for(var i=0;i<l;i++){ para[i]=false;}
+			return para;
+		}
+		function newThumb(i){
+			paras[i] = true;
+			Dd('thumbs_inputs').innerHTML += "<input type='hidden' name='post[thumbs][]' id='thumb"+i+"'/>";
+			Dd('thumbs_preview').innerHTML += "<td width='120' id='preview"+i+"'><img src='<?php echo DT_SKIN;?>image/waitpic.gif' width='100' height='100' id='showthumb"+i+"' title='preivew' onclick='if(this.src.indexOf(`waitpic.gif`) == -1){_preivew(Dd(`showthumb"+i+"`).src,1);}else{mDalbum("+i+",<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>,Dd(`thumb"+i+"`).value,true);}' onload='thumb()'/></td>";
+			Dd('thumbs_controller').innerHTML += "<td id='control"+i+"'><span onclick='mDalbum("+i+",<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>,Dd(`thumb"+i+"`).value,true);' class='jt'><img src='<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif' width='12' height='12' title='上传'/></span>&nbsp;&nbsp;<img src='<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif' width='12' height='12' title='选择' onclick='mselAlbum("+i+");'/>&nbsp;&nbsp;<span onclick='mdelAlbum("+i+", `wait`);' class='jt'><img src='<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif' width='12' height='12' title='删除'/></span></td>";
+		}
+		function delThumb(i){
+			paras[i] = false;
+			Dd('preview'+i).parentNode.removeChild(Dd('preview'+i));
+			Dd('control'+i).parentNode.removeChild(Dd('control'+i));
+			Dd('thumb'+i).parentNode.removeChild(Dd('thumb'+i));
+		}
+		function thumb(){
+			for( var i = 0; i < paras.length ; i++ ){
+				if( paras[i] ) break;
+			}
+			if( i == paras.length ) newThumb(i);
+			else if( paras.length > 1 && ((i + 1) != paras.length) ) delThumb(i);
+		}
+		function mDalbum(f, m, w, h, o, s){
+			paras[f] = false;
+			Dalbum(f,m,w,h,o,s);
+		}
+		function mdelAlbum(f,s){
+			paras[f] = true;
+			delAlbum(f,s);
+		}
+		function mselAlbum(f){
+			paras[f] = false;
+			selAlbum(f);
+		}
+		document.addEventListener("DOMContentLoaded", function() {
+			var l = <?php echo count($thumbs) ? count($thumbs): 1;?>;
+			paras = newParas(l);
+			newThumb(l);
+		});
+	</script>
+	<table class="ctb">
+	<tr align="center" height="120" class="c_p" id="thumbs_preview">
+	<?php 
+	foreach($thumbs as $k=>$v){
+	?>
+	<td width="120" id='preview<?php echo($k);?>'><img src="<?php echo $thumbs[$k] ? $thumbs[$k] : DT_SKIN.'image/waitpic.gif';?>" width="100" height="100" id="showthumb<?php echo $k;?>" title="预览图片" alt="" onclick="if(this.src.indexOf('waitpic.gif') == -1){_preview(Dd('showthumb<?php echo $k;?>').src, 1);}else{mDalbum(<?php echo $k;?>,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb<?php echo $k;?>').value, true);}" onload="thumb()"/></td>
+	<?php }?>
 	</tr>
-	<tr align="center" class="c_p">
-	<td><span onclick="Dalbum('',<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb').value, true);" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif" width="12" height="12" title="上传"/></span>&nbsp;&nbsp;<img src="<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif" width="12" height="12" title="选择" onclick="selAlbum('');"/>&nbsp;&nbsp;<span onclick="delAlbum('', 'wait');" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif" width="12" height="12" title="删除"/></span></td>
-	<td><span onclick="Dalbum(1,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb1').value, true);" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif" width="12" height="12" title="上传"/></span>&nbsp;&nbsp;<img src="<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif" width="12" height="12" title="选择" onclick="selAlbum(1);"/>&nbsp;&nbsp;<span onclick="delAlbum(1, 'wait');" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif" width="12" height="12" title="删除"/></span></td>
-	<td><span onclick="Dalbum(2,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb2').value, true);" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif" width="12" height="12" title="上传"/></span>&nbsp;&nbsp;<img src="<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif" width="12" height="12" title="选择" onclick="selAlbum(2);"/>&nbsp;&nbsp;<span onclick="delAlbum(2, 'wait');" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif" width="12" height="12" title="删除"/></span></td>
+	<tr align="center" class="c_p" id="thumbs_controller">
+	<?php 
+	foreach($thumbs as $k=>$v){
+	?>
+	<td id='control<?php echo $k;?>'><span onclick="mDalbum(<?php echo $k;?>,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb<?php echo $k;?>').value, true);" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif" width="12" height="12" title="上传"/></span>&nbsp;&nbsp;<img src="<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif" width="12" height="12" title="选择" onclick="mselAlbum(<?php echo $k;?>);"/>&nbsp;&nbsp;<span onclick="mdelAlbum(<?php echo $k;?>, 'wait');" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif" width="12" height="12" title="删除"/></span></td>
+	<?php }?>
 	</tr>
 	</table>
 	<span id="dthumb" class="f_red"></span>
@@ -417,6 +469,7 @@ function Dstep() {
 	var a3 = parseInt(Dd('a3').value);
 	var p3 = parseFloat(Dd('p3').value);
 	var u = Dd('unit').value;
+	var currency = parseInt(Dd('moneyunit').value) ? <?php echo currency()?> : 1;
 	if(u.length < 1) Dd('unit').value = u = '件';
 	var m = '<?php echo $DT['money_unit'];?>';
 	if(!a1 || a1 < 1) {
@@ -431,8 +484,11 @@ function Dstep() {
 		Dd('p1').focus();
 		return false;
 	}
-	Dd('p_a_1').innerHTML = a1+u+'以上';
-	Dd('p_p_1').innerHTML = p1+m+'/'+u;
+	p1 = calculatePrice(p1,currency);
+	p2 = calculatePrice(p2,currency);
+	p3 = calculatePrice(p3,currency);
+	Dd('p_a_1').innerHTML = '>'+a1+u;
+	Dd('p_p_1').innerHTML = m+' '+p1+'/'+u;
 	if(a2 > 1 && p2 > 0.01) {
 		if(a2 <= a1) {
 			Dmsg('数量必须大于'+a1, 'price');
@@ -447,9 +503,9 @@ function Dstep() {
 			return false;
 		}
 		Dd('p_a_1').innerHTML = a1+'-'+a2+u;
-		Dd('p_p_1').innerHTML = p1+m+'/'+u;
+		Dd('p_p_1').innerHTML = m+' '+p1+'/'+u;
 		Dd('p_a_2').innerHTML = '>'+a2+u;
-		Dd('p_p_2').innerHTML = p2+m+'/'+u;
+		Dd('p_p_2').innerHTML = m+' '+p2+'/'+u;
 	}
 	if(a3 > 1 && p3 > 0.01) {
 		if(a3 <= a2) {
@@ -465,11 +521,22 @@ function Dstep() {
 			return false;
 		}
 		Dd('p_a_2').innerHTML = (a2+1)+'-'+a3+u;
-		Dd('p_p_2').innerHTML = p2+m+'/'+u;
+		Dd('p_p_2').innerHTML = m+' '+p2+'/'+u;
 		Dd('p_a_3').innerHTML = '>'+a3+u;
-		Dd('p_p_3').innerHTML = p3+m+'/'+u;
+		Dd('p_p_3').innerHTML = m+' '+p3+'/'+u;
 	}
 	return true;
+}
+
+function calculatePrice(p,c){
+	p = p * c;
+	p = p.toFixed(2);
+	var str = p.toString();
+	var l = str.length;
+	str = str.substr(0,l-1);
+	str += c == 1 ? '0' : '9';
+	p = parseFloat(str);
+	return p;
 }
 </script>
 <script type="text/javascript">Menuon(<?php echo $menuid;?>);</script>

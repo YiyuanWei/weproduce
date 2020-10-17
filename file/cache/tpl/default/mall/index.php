@@ -15,8 +15,8 @@
     }
     .cat-block div{
         grid-area: block;
-        font-family: var(--we-font);
-        font-size: 2rem;
+        font-family: 'Dancing Script',Arial, Helvetica, sans-serif;
+        font-size: 3rem;
         color: var(--background-color);
     }
 </style>
@@ -25,7 +25,7 @@
     <div class="display-grid">
         <?php if(is_array($tags)) { foreach($tags as $t => $v) { ?>
         <div class="cat-block clickable display-grid" onclick="Go('<?php echo $v['linkurl'];?>')">
-            <img src="<?php echo DT_SKIN;?>image/category_<?php echo $v['catid'];?>_<?php echo $v['moduleid'];?>" width="100%">
+            <img src="<?php echo $v['thumb'];?>" width="100%">
             <div style="margin: auto; width: fit-content;">
                 <?php echo $v['catname'];?>
             </div>

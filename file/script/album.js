@@ -47,8 +47,8 @@ function MAlbum(e) {
 	big_pic.style.left = ll + 'px';
 	big_pic.style.top = tt + 'px';
 }
-function Album(id, s) {
-	for(var i=0; i<3; i++) {Dd('t_'+i).className = i==id ? 'ab_on' : 'ab_im';}
+function Album(id, s, max = 3) {
+	for(var i=0; i<max; i++) {Dd('t_'+i).className = i==id ? 'ab_on' : 'ab_im';}
 	Dd('mid_pic').src = s;
 }
 function SAlbum() {
