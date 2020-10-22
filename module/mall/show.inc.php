@@ -47,7 +47,10 @@ if($DT_PC) {
 	$promos = get_promos($username);
 	$fee = get_fee($item['fee'], $MOD['fee_view']);
 	$update = '';
-	currency();
+	$currency = $moneyunit ? currency() : 1;
+	$p1 = calculatePrice($p1, $currency);
+	$p2 = calculatePrice($p2, $currency);
+	$p3 = calculatePrice($p3, $currency);
 	if(check_group($_groupid, $MOD['group_contact'])) {
 		if($fee) {
 			$user_status = 4;

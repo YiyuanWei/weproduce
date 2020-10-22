@@ -128,4 +128,12 @@ function currency($from='CNY', $to='AUD'){
 	DB::query($query);
 	return $newrecord['value'];
 }
+
+function calculatePrice($p, $c){
+	if( $p == 0 ) return $p;
+	$p *= $c;
+	$p = number_format($p, 2,',','');
+	$p = substr($p, 0, -1);
+	return $p.'9';
+}
 ?>
