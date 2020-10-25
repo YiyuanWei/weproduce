@@ -165,7 +165,7 @@ class mall {
 			credit_add($post['username'], $MOD['credit_add']);
 			credit_record($post['username'], $MOD['credit_add'], 'system', lang('my->credit_record_add', array($MOD['name'])), 'ID:'.$this->itemid);
 		}
-		clear_upload($post['content'].$post['thumb'].$post['thumb1'].$post['thumb2'], $this->itemid);
+		clear_upload($post['content'].$post['thumb'].$post['thumb1'].$post['thumb2'].$post['thumbs'], $this->itemid);
 		return $this->itemid;
 	}
 
@@ -181,7 +181,7 @@ class mall {
 		$content_table = content_table($this->moduleid, $this->itemid, $this->split, $this->table_data);
 		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$post[content]')");
 		$this->update($this->itemid);
-		clear_upload($post['content'].$post['thumb'].$post['thumb1'].$post['thumb2'], $this->itemid);
+		clear_upload($post['content'].$post['thumb'].$post['thumb1'].$post['thumb2'].$post['thumbs'], $this->itemid);
 		if($post['status'] > 2) $this->tohtml($this->itemid, $post['catid']);
 		return true;
 	}

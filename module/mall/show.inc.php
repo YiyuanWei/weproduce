@@ -41,7 +41,8 @@ if($DT_PC) {
 	$adddate = timetodate($addtime, 3);
 	$editdate = timetodate($edittime, 3);
 	$linkurl = $MOD['linkurl'].$linkurl;
-	$item['thumbs'] = decode_thumb($item['thumbs']);
+	$item['thumbs'] = strpos($item['thumbs'], 'true') == 0 ? explode('|', $item['thumbs']) : array_merge(array(''),decode_thumb($item['thumbs']));
+	array_splice($item['thumbs'],0,1);
 	$thumbs = get_albums($item,0,true);
 	$albums = get_big(get_albums($item, 1,true));
 	$promos = get_promos($username);

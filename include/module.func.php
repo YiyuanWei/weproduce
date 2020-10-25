@@ -245,19 +245,18 @@ function vip_year($fromtime) {
 
 function get_albums($item, $type = 0, $thumbs = false) {
 	$imgs = array();
-	$nopic = $type ? DT_SKIN.'image/nopic320.gif' : DT_SKIN.'image/nopic60.gif';
 	$ids = array('','1','2');
 	foreach($ids as $v){
 		if($item['thumb'.$v] && !preg_match("/^[a-z0-9\-\.\:\/]{30,}$/i", $item['thumb'.$v])) $item['thumb'.$v] = '';
-		$imgs[] = $item['thumb'.$v] ? ($type ? str_replace('.thumb.','.middle.',$item['thumb'.$v]) : $item['thumb'.$v]) : $nopic;
+		$imgs[] = $item['thumb'.$v] ? ($type ? str_replace('.thumb.','.middle.',$item['thumb'.$v]) : $item['thumb'.$v]) : '';
 	}
 	if( $thumbs ){
 		foreach($item['thumbs'] as $v ){
 			if($v && !preg_match("/^[a-z0-9\-\.\:\/]{30,}$/i", $v)) $v = '';
-			$imgs[] = $v ? ($type ? str_replace('.thumb.', '.middle.', $v) : $v) : $nopic; 
+			$imgs[] = $v ? ($type ? str_replace('.thumb.', '.middle.', $v) : $v) : ''; 
 		}
 	}
-	return $imgs;
+	return array_values(array_filter(array_map('trim',$imgs), 'strlen'));;
 }
 
 function xml_linkurl($linkurl, $modurl = '') {

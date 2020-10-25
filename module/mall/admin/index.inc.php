@@ -111,7 +111,8 @@ switch($action) {
 		if($submit) {
 			$post['thumb'] = $post['thumbs'][0];
 			array_pop($post['thumbs']);
-			$post['thumbs'] = json_encode($post['thumbs'], JSON_FORCE_OBJECT);
+			$post['thumbs'][0] = "true";
+			$post['thumbs'] = implode($post['thumbs'], '|');
 			if($do->pass($post)) {
 				if($FD) fields_check($post_fields);
 				if($CP) property_check($post_ppt);
@@ -156,7 +157,8 @@ switch($action) {
 		if($submit) {
 			$post['thumb'] = $post['thumbs'][0];
 			array_pop($post['thumbs']);
-			$post['thumbs'] = json_encode($post['thumbs'], JSON_FORCE_OBJECT);
+			$post['thumbs'][0] = "true";
+			$post['thumbs'] = implode($post['thumbs'], '|');
 			if($do->pass($post)) {
 				if($FD) fields_check($post_fields);
 				if($CP) property_check($post_ppt);
@@ -190,7 +192,9 @@ switch($action) {
 			}
 			$menuon = array('5', '4', '2', '1', '3');
 			$menuid = $menuon[$status];
-			$thumbs = decode_thumb($thumbs);
+			$thumbs = strpos($thumbs,"true")==0 ? explode('|',$thumbs) : array_merge(array(''),decode_thumb($thumbs));
+			array_splice($thumbs,0,1);
+			$thumbs = array_values(array_filter(array_map('trim',array_merge(array($thumb, $thumb1, $thumb2),$thumbs)),'strlen'));
 			include tpl($action, $module);
 		}
 	break;
