@@ -1,9 +1,6 @@
 {template 'header','mall'}
 
 <style>
-	.m{
-		width: fit-content;
-	}
 	#mid_div{
 		width: fit-content;
 		cursor: default;
@@ -11,18 +8,22 @@
 		padding: 0;
 	}
 	#mid_pic{
-		width: 800px;
-		height: 640px;
+		width: 600px;
+		height: 480px;
 	}
 	.nav #next:hover, .nav #prev:hover{
 		cursor: default;
 	}
 	.nav{
-		width: 700px;
+		width: calc(1000px - 42px);
 	}
-	.m table td{
+	#content{
 		font-family: Arial, Helvetica, sans-serif;
 		color: var(--background-color);
+	}
+	#content *{
+		padding: 0px;
+		margin: 0px;
 	}
 	.product-title{
 		font-size: 24px;
@@ -71,7 +72,7 @@
         width: 100%;
         border: 0rem;
         font-size: 1rem;
-        padding: 1rem 0;
+        padding: 1rem 1rem;
 		color: white;
     }
     .quickview-form button:hover{
@@ -113,33 +114,30 @@
 	<div class="b20 bd-t"></div> 
 </div>
 <div class="m">
-	<div id="mid_div" onclick="PAlbum(Dd('mid_pic'));">
-		<img src="{$albums[0]}" alt="{$title}" id="mid_pic">
-	</div>
-	<div class="b10"></div>
-	<div style="margin: auto; width: fit-content;">
-		<script>
-			var max = {count($thumbs)};
-			function mAlbum(id,k){
-				Album(id,k,max);
-			}
-		</script>
-		{loop $thumbs $k $v}
-		<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)mAlbum({$k}, '{$albums[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>
-		{/loop}
-	</div>
-	<div class="b20"></div>
-
-	<div style="display: grid; grid-template-columns: 60% 40%; grid-template-areas: 'details form';">
-		<div style="grid-area: details;">
-			<table>
-				<tr><td class="product-title">{$title}</td></tr>
-				<tr><td><div class="b20"></div></td></tr>
-				<tr><td>{$content}</td></tr>
-			</table>
+	<div style="position: relative; display: grid; grid-template-columns: 60% 40%;grid-template-areas: 'thumbs form';">
+		<div style="grid-area: thumbs; width: fit-content; height: fit-content; position: relative">
+			<div id="mid_div" onclick="PAlbum(Dd('mid_pic'));">
+				<img src="{$albums[0]}" alt="{$title}" id="mid_pic">
+			</div>
+			<div class="b10"></div>
+			<div style="margin: auto; width: fit-content;">
+				<script>
+					var max = {count($thumbs)};
+					function mAlbum(id,k){
+						Album(id,k,max);
+					}
+				</script>
+				<style>
+					.ab_im, .ab_on{
+						margin: 10px 0px;
+					}
+				</style>
+				{loop $thumbs $k $v}
+				<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)mAlbum({$k}, '{$albums[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>
+				{/loop}
+			</div>
 		</div>
-		
-		<div style="grid-area: form;">
+		<div style="grid-area: form; margin: auto; margin-top: 40px; width: fit-content;">
 			<div id="price">
 				{if $is == Y}
 					<table>
@@ -175,10 +173,17 @@
 				<span style="grid-area: 3 / 2 / 4 / 3;justify-self: end;" class="text_len">100</span> -->
 				</div>
 				<label for="a">Quantity</label><br>
-				<input type="number" name="a" id="a" value="1" onchange="changeA()" onfocus="this.value=''" onblur="setA()" min="1"><br>
+				<input type="number" name="a" id="a" value="1" onchange="changeA()" onblur="setA()" min="1"><br>
 				<button type="submit" name="submit" value="add">Add to Cart</button>
 			</form>
 		</div>
+	</div>
+	<div class="b20"></div>
+
+	<div id="content">
+		<p class="product-title">{$title}</p>
+		<div class="b20"></div>
+		<div>{$content}</div>
 	</div>
 </div>
 

@@ -1,8 +1,5 @@
 <?php defined('IN_DESTOON') or exit('Access Denied');?><?php include template('header','mall');?>
 <style>
-.m{
-width: fit-content;
-}
 #mid_div{
 width: fit-content;
 cursor: default;
@@ -10,18 +7,22 @@ height: fit-content;
 padding: 0;
 }
 #mid_pic{
-width: 800px;
-height: 640px;
+width: 600px;
+height: 480px;
 }
 .nav #next:hover, .nav #prev:hover{
 cursor: default;
 }
 .nav{
-width: 700px;
+width: calc(1000px - 42px);
 }
-.m table td{
+#content{
 font-family: Arial, Helvetica, sans-serif;
 color: var(--background-color);
+}
+#content *{
+padding: 0px;
+margin: 0px;
 }
 .product-title{
 font-size: 24px;
@@ -70,7 +71,7 @@ font-size: 20px;
         width: 100%;
         border: 0rem;
         font-size: 1rem;
-        padding: 1rem 0;
+        padding: 1rem 1rem;
 color: white;
     }
     .quickview-form button:hover{
@@ -116,6 +117,8 @@ Prev
 <div class="b20 bd-t"></div> 
 </div>
 <div class="m">
+<div style="position: relative; display: grid; grid-template-columns: 60% 40%;grid-template-areas: 'thumbs form';">
+<div style="grid-area: thumbs; width: fit-content; height: fit-content; position: relative">
 <div id="mid_div" onclick="PAlbum(Dd('mid_pic'));">
 <img src="<?php echo $albums['0'];?>" alt="<?php echo $title;?>" id="mid_pic">
 </div>
@@ -127,22 +130,18 @@ function mAlbum(id,k){
 Album(id,k,max);
 }
 </script>
+<style>
+.ab_im, .ab_on{
+margin: 10px 0px;
+}
+</style>
 <?php if(is_array($thumbs)) { foreach($thumbs as $k => $v) { ?>
 <img src="<?php echo $v;?>" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)mAlbum(<?php echo $k;?>, '<?php echo $albums[$k];?>');" class="<?php if($k) { ?>ab_im<?php } else { ?>ab_on<?php } ?>
 " id="t_<?php echo $k;?>"/>
 <?php } } ?>
 </div>
-<div class="b20"></div>
-<div style="display: grid; grid-template-columns: 60% 40%; grid-template-areas: 'details form';">
-<div style="grid-area: details;">
-<table>
-<tr><td class="product-title"><?php echo $title;?></td></tr>
-<tr><td><div class="b20"></div></td></tr>
-<tr><td><?php echo $content;?></td></tr>
-</table>
 </div>
-
-<div style="grid-area: form;">
+<div style="grid-area: form; margin: auto; margin-top: 40px; width: fit-content;">
 <div id="price">
 <?php if($is == Y) { ?>
 <table>
@@ -178,10 +177,16 @@ Album(id,k,max);
 <span style="grid-area: 3 / 2 / 4 / 3;justify-self: end;" class="text_len">100</span> -->
 </div>
 <label for="a">Quantity</label><br>
-<input type="number" name="a" id="a" value="1" onchange="changeA()" onfocus="this.value=''" onblur="setA()" min="1"><br>
+<input type="number" name="a" id="a" value="1" onchange="changeA()" onblur="setA()" min="1"><br>
 <button type="submit" name="submit" value="add">Add to Cart</button>
 </form>
 </div>
+</div>
+<div class="b20"></div>
+<div id="content">
+<p class="product-title"><?php echo $title;?></p>
+<div class="b20"></div>
+<div><?php echo $content;?></div>
 </div>
 </div>
 </div>
