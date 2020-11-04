@@ -173,16 +173,13 @@ switch($action) {
 			$item = $do->get_one();
 			extract($item);
 			if($step) {
-				extract(unserialize($step));
-				$a2 > 0 or $a2 = '';
-				$a3 > 0 or $a3 = '';
-				$p2 > 0 or $p2 = '';
-				$p3 > 0 or $p3 = '';
+				$step = unserialize($step);
 			} else {
-				$a1 = 1;
-				$p1 = $item['price'];
-				$a2 = $a3 = $p2 = $p3 = '';
+				$step['a1'] = 1;
+				$step['p1'] = $item['price'];
 			}
+			$stepis = $step['is'];
+			array_splice($step,-1,1);
 			$unit or $unit = '件';
 			$addtime = timetodate($addtime);
 			$EXP = array();

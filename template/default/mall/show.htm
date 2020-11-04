@@ -97,12 +97,12 @@
 <div class="m">	
 	<div class="nav">
 		<div>
-			<div id="next" class="{if $itemid!=1}clickable{/if}" {if $itemid != 1} onclick="location.href='?itemid={$itemid-1}'" {/if}>
+			<div id="next" class="{if $itemid!=1}clickable{/if}" onclick="Go('?itemid={if $last}1{else}{$itemid+1}{/if}')">
 				Next
 				<i>&#62;</i>
 			</div>
 			<div><i>|</i></div>
-			<div id="prev" class="{if !($last)}clickable{/if}" onclick="location.href='?itemid={if $last}1{else}{$itemid+1}{/if}'">
+			<div id="prev" class="{if !($last)}clickable{/if}" {if $itemid!=1} onclick="Go('?itemid={$itemid-1}')" {/if}>
 				<i>&#60;</i>
 				Prev
 			</div>

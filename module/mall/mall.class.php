@@ -46,17 +46,21 @@ class mall {
 		$post['edittime'] = DT_TIME;
 		$post['editdate'] = timetodate($post['edittime'], 3);
 		$post['fee'] = dround($post['fee']);
-		$post['step']['a1'] = intval($post['step']['a1']);
-		$post['step']['p1'] = dround($post['step']['p1'], 2, 1);
-		$post['step']['a2'] = intval($post['step']['a2']);
-		$post['step']['p2'] = dround($post['step']['p2'], 2, 1);
-		$post['step']['a3'] = intval($post['step']['a3']);
-		$post['step']['p3'] = dround($post['step']['p3'], 2, 1);
-		$post['price'] = $post['step']['p1'];
-		if(($post['step']['a2'] && $post['step']['a2'] <= $post['step']['a1']) || ($post['step']['p2'] && $post['step']['p2'] >= $post['step']['p1'])) $post['step']['a2'] = $post['step']['a3'] = $post['step']['p2'] = $post['step']['p3'] = 0;
-		if(($post['step']['a3'] && $post['step']['a3'] <= $post['step']['a2']) || ($post['step']['p3'] && $post['step']['p3'] >= $post['step']['p2']))  $post['step']['a3'] = $post['step']['p3'] = 0;
+		for($i = 1; $i <= count($post['step'])/2; $i++){
+			$post['step']["a$i"] = intval($post['step']["a$i"]);
+			$post['step']["p$i"] = dround($post['step']["p$i"], 2, 1);
+		}
+		$post['price'] = $post['newstep']['p1'] = $post['step']['p1'];
+		$post['newstep']['a1'] = $post['step']['a1'];
+		for($i = 2; $i <= count($post['step'])/2; $i++){
+			$j = $i - 1;
+			if( ($post['step']["a$i"] && $post['step']["a$i"] <= $post['step']["a$j"]) || ($post['step']["p$i"] && $post['step']["p$i"] >= $post['step']["p$j"]) ) break;
+			$post['newstep']["a$i"] = $post['step']["a$i"];
+			$post['newstep']["p$i"] = $post['step']["p$i"];
+		}
+		$post['step'] = $post['newstep'];
+		unset($post['newstep']);
 		$post['step']['is'] = $post['step']['a2'] ? 'Y' : 'N';
-		count($post['step'] == 7) or exit;
 		$post['amount'] = intval($post['amount']);
 		$post['mycatid'] = intval($post['mycatid']);
 		$post['elite'] = $post['elite'] ? 1 : 0;

@@ -32,26 +32,30 @@ show_menu($menus);
 <td width="120">数量</td>
 <td width="120">价格</td>
 </tr>
+<script>
+var steplen = Math.ceil(<?php echo count($step)/2?>);
+</script>
 <tr bgcolor="#FFFFFF" align="center">
-<td><input name="post[step][a1]" type="text" size="10" value="<?php echo $a1;?>" id="a1"/></td>
-<td><input name="post[step][p1]" type="text" size="10" value="<?php echo $p1;?>" id="p1" onblur="Dstep();"/></td>
-<td></td>
+<td><input name="post[step][a1]" type="text" size="10" value="<?php echo $step['a1'];?>" id="a1"/></td>
+<td><input name="post[step][p1]" type="text" size="10" value="<?php echo $step['p1'];?>" id="p1" onblur="Dstep();"/></td>
+<td class="jt" onclick="Dstep()">点击预览</td>
 <td id="p_a_1"></td>
 <td id="p_p_1"></td>
 </tr>
+<?php if ($stepis == 'Y'){?>
+<?php for($i = 2; $i <= count($step)/2; $i++){?>
 <tr bgcolor="#FFFFFF" align="center">
-<td><input name="post[step][a2]" type="text" size="10" value="<?php echo $a2;?>" id="a2"/></td>
-<td><input name="post[step][p2]" type="text" size="10" value="<?php echo $p2;?>" id="p2" onblur="Dstep();"/></td>
-<td class="jt" onclick="Dstep()">点击预览</td>
-<td id="p_a_2"></td>
-<td id="p_p_2"></td>
-</tr>
-<tr bgcolor="#FFFFFF" align="center">
-<td><input name="post[step][a3]" type="text" size="10" value="<?php echo $a3;?>" id="a3"/></td>
-<td><input name="post[step][p3]" type="text" size="10" value="<?php echo $p3;?>" id="p3" onblur="Dstep();"/></td>
+<td><input name="post[step][a<?php echo $i?>]" type="text" size="10" value="<?php echo $step['a'.$i];?>" id="a<?php echo $i?>"/></td>
+<td><input name="post[step][p<?php echo $i?>]" type="text" size="10" value="<?php echo $step['p'.$i];?>" id="p<?php echo $i?>" onblur="Dstep();"/></td>
 <td></td>
-<td id="p_a_3"></td>
-<td id="p_p_3"></td>
+<td id="p_a_<?php echo $i?>"></td>
+<td id="p_p_<?php echo $i?>"></td>
+</tr>
+<?php }}?>
+<tbody id="newStep"></tbody>
+<tr bgcolor="#FFFFFF" align="center">
+<td><button type="button" onclick="newStep()">Add New</button></td>
+<td colspan="4"></td>
 </tr>
 </table>
 <span class="f_gray">&nbsp;填写示例：<span class="c_p" title="点击观看" onclick="Dd('a1').value=1;Dd('p1').value=1000;Dd('a2').value=100;Dd('p2').value=900;Dd('a3').value=500;Dd('p3').value=800;Dstep();">阶梯价格</span> / <span class="c_p" title="点击观看" onclick="Dd('a1').value=1;Dd('p1').value=1000;Dd('a2').value=Dd('p2').value=Dd('a3').value=Dd('p3').value='';Dstep();">非阶梯价格</span></span> <span id="dprice" class="f_red"></span>
@@ -461,69 +465,68 @@ function Nexpress(i, s) {
 }
 
 function Dstep() {
-	Dd('p_a_1').innerHTML=Dd('p_p_1').innerHTML=Dd('p_a_2').innerHTML=Dd('p_p_2').innerHTML=Dd('p_a_3').innerHTML=Dd('p_p_3').innerHTML='';
-	var a1 = parseInt(Dd('a1').value);
-	var p1 = parseFloat(Dd('p1').value);
-	var a2 = parseInt(Dd('a2').value);
-	var p2 = parseFloat(Dd('p2').value);
-	var a3 = parseInt(Dd('a3').value);
-	var p3 = parseFloat(Dd('p3').value);
-	var u = Dd('unit').value;
+	for(var i = 1; i<=steplen; i++){
+		Dd('p_a_'+i).innerHTML = Dd('p_p_'+i).innerHTML = '';
+	}
+	var a = [];
+	var p = [];
 	var currency = parseInt(Dd('moneyunit').value) ? <?php echo currency()?> : 1;
+	for( var i = 1; i<=steplen; i++ ){
+		a[i] = parseInt(Dd('a'+i).value);
+		p[i] = calculatePrice(p[i], currency);
+		p[i] = parseFloat(Dd('p'+i).value);
+	}
+	var u = Dd('unit').value;
 	if(u.length < 1) Dd('unit').value = u = '件';
 	var m = '<?php echo $DT['money_unit'];?>';
-	if(!a1 || a1 < 1) {
+	if(!a[1] || a[1] < 1) {
 		Dmsg('起订量必须大于0', 'price');
 		Dd('a1').value = '1';
 		Dd('a1').focus();
 		return false;
 	}
-	if(!p1 || p1 < 0.1) {
+	if(!p[1] || p[1] < 0.01) {
 		Dmsg('请填写商品价格', 'price');
 		Dd('p1').value = '';
 		Dd('p1').focus();
 		return false;
 	}
-	p1 = calculatePrice(p1,currency);
-	p2 = calculatePrice(p2,currency);
-	p3 = calculatePrice(p3,currency);
-	Dd('p_a_1').innerHTML = '>'+a1+u;
-	Dd('p_p_1').innerHTML = m+' '+p1+'/'+u;
-	if(a2 > 1 && p2 > 0.01) {
-		if(a2 <= a1) {
-			Dmsg('数量必须大于'+a1, 'price');
-			Dd('a2').value = '';
-			Dd('a2').focus();
-			return false;
+	Dd('p_a_1').innerHTML = '>'+a[1]+u;
+	Dd('p_p_1').innerHTML = m+' '+p[1]+'/'+u;
+	for(var i = 2; i < a.length; i++){
+		var j = i-1;
+		if(a[i] > 1 && p[i] > 0.01){
+			if(a[i] <= a[j]){
+				Dmsg('数量必须大于'+a[j], 'price');
+				Dd('a'+i).value = '';
+				Dd('a'+i).focus();
+				return false;
+			}
+			if(p[i] >= p[j]) {
+				Dmsg('价格必须小于'+p[j], 'price');
+				Dd('p'+i).value = '';
+				Dd('p'+i).focus();
+				return false;
+			}
+			Dd('p_a_'+j).innerHTML = a[j]+'-'+a[i]+u;
+			Dd('p_p_'+j).innerHTML = m+' '+p[j]+'/'+u;
+			Dd('p_a_'+i).innerHTML = '>'+a[i]+u;
+			Dd('p_p_'+i).innerHTML = m+' '+p[i]+'/'+u;
 		}
-		if(p2 >= p1) {
-			Dmsg('价格必须小于'+p1, 'price');
-			Dd('p2').value = '';
-			Dd('p2').focus();
-			return false;
+		else{
+			if(!a[i] || a[i] < 1) {
+				Dmsg('起订量必须大于0', 'price');
+				Dd('a'+i).value = '1';
+				Dd('a'+i).focus();
+				return false;
+			}
+			if(!p[i] || p[i] < 0.01) {
+				Dmsg('请填写商品价格', 'price');
+				Dd('p'+i).value = '';
+				Dd('p'+i).focus();
+				return false;
+			}
 		}
-		Dd('p_a_1').innerHTML = a1+'-'+a2+u;
-		Dd('p_p_1').innerHTML = m+' '+p1+'/'+u;
-		Dd('p_a_2').innerHTML = '>'+a2+u;
-		Dd('p_p_2').innerHTML = m+' '+p2+'/'+u;
-	}
-	if(a3 > 1 && p3 > 0.01) {
-		if(a3 <= a2) {
-			Dmsg('数量必须大于'+a2, 'price');
-			Dd('a3').value = '';
-			Dd('a3').focus();
-			return false;
-		}
-		if(p3 >= p2) {
-			Dmsg('价格必须小于'+p2, 'price');
-			Dd('p3').value = '';
-			Dd('p3').focus();
-			return false;
-		}
-		Dd('p_a_2').innerHTML = (a2+1)+'-'+a3+u;
-		Dd('p_p_2').innerHTML = m+' '+p2+'/'+u;
-		Dd('p_a_3').innerHTML = '>'+a3+u;
-		Dd('p_p_3').innerHTML = m+' '+p3+'/'+u;
 	}
 	return true;
 }
@@ -537,6 +540,29 @@ function calculatePrice(p,c){
 	str += c == 1 ? '0' : '9';
 	p = parseFloat(str);
 	return p;
+}
+
+function newStep(){
+	var a = [];
+	var p = [];
+	for(var i = 1; i <= steplen; i++){
+		a[i] = Dd('a'+i).value;
+		p[i] = Dd('p'+i).value;
+	}
+	steplen ++;
+	var tr="<tr bgcolor='#FFFFFF' align='center'>";
+ 	tr += "<td><input name='post[step][a"+steplen+"]' type='text' size='10' value='' id='a"+steplen+"'/></td>";
+	tr += "<td><input name='post[step][p"+steplen+"]' type='text' size='10' value='' id='p"+steplen+"' onblur='Dstep();'/></td>";
+	tr += "<td></td>";
+	tr += "<td id='p_a_"+steplen+"'></td>";
+	tr += "<td id='p_p_"+steplen+"'></td>";
+	tr += "</tr>";
+	Dd('newStep').innerHTML += tr; 
+	for( var i = 1; i < steplen; i++ ){
+		Dd('a'+i).value = a[i];
+		Dd('p'+i).value = p[i];
+	}
+	return true;
 }
 </script>
 <script type="text/javascript">Menuon(<?php echo $menuid;?>);</script>
