@@ -139,31 +139,9 @@
 		</div>
 		<div style="grid-area: form; margin: auto; margin-top: 40px; width: fit-content;">
 			<div id="price">
-				{if $is == Y}
-					<table>
-						<tr>
-							<td><span>{$a1}-{$a2} {$unit}:</span></td>
-							<td><span>{$DT[money_sign]} {$p1}/{$unit}</span></td>
-						</tr>
-						{if $p3!=0}
-							<tr>
-								<td><span>{$a2}-{$a3} {$unit}:</span></td>
-								<td><span>{$DT[money_sign]} {$p2}/{$unit}</span></td>
-							</tr>
-							<tr>
-								<td><span>&gt; {$a3} {$unit}:</span></td>
-								<td><span>{$DT[money_sign]} {$p3}/{$unit}</span></td>
-							</tr>
-						{else}
-							<tr>
-								<td><span>&gt; {$a2} {$unit}:</span></td>
-								<td><span>{$DT[money_sign]} {$p2}/{$unit}</span></td>
-							</tr>
-						{/if}
-					</table>
-				{else}
-					{$DT[money_sign]} {$p1}/{$unit}
-				{/if}
+				<table>
+					{step_price($step)}
+				</table>
 			</div>
 			<form style="margin-top: 0;" method="POST" class="quickview-form" action="{$MODULE[2][linkurl]}cart.php?action=add">
 				<input type="hidden" name="itemid" value="{$itemid}">

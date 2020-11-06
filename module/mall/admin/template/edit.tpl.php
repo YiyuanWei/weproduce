@@ -42,7 +42,6 @@ var steplen = Math.ceil(<?php echo count($step)/2?>);
 <td id="p_a_1"></td>
 <td id="p_p_1"></td>
 </tr>
-<?php if ($stepis == 'Y'){?>
 <?php for($i = 2; $i <= count($step)/2; $i++){?>
 <tr bgcolor="#FFFFFF" align="center">
 <td><input name="post[step][a<?php echo $i?>]" type="text" size="10" value="<?php echo $step['a'.$i];?>" id="a<?php echo $i?>"/></td>
@@ -51,7 +50,7 @@ var steplen = Math.ceil(<?php echo count($step)/2?>);
 <td id="p_a_<?php echo $i?>"></td>
 <td id="p_p_<?php echo $i?>"></td>
 </tr>
-<?php }}?>
+<?php }?>
 <tbody id="newStep"></tbody>
 <tr bgcolor="#FFFFFF" align="center">
 <td><button type="button" onclick="newStep()">Add New</button></td>

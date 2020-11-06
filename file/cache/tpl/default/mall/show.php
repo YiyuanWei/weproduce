@@ -97,15 +97,15 @@ var module_id= <?php echo $moduleid;?>,item_id=<?php echo $itemid;?>,content_id=
 <div class="nav">
 <div>
 <div id="next" class="<?php if($itemid!=1) { ?>clickable<?php } ?>
-" <?php if($itemid != 1) { ?> onclick="location.href='?itemid=<?php echo $itemid-1;?>'" <?php } ?>
->
+" onclick="Go('?itemid=<?php if($last) { ?>1<?php } else { ?><?php echo $itemid+1;?><?php } ?>
+')">
 Next
 <i>&#62;</i>
 </div>
 <div><i>|</i></div>
 <div id="prev" class="<?php if(!($last)) { ?>clickable<?php } ?>
-" onclick="location.href='?itemid=<?php if($last) { ?>1<?php } else { ?><?php echo $itemid+1;?><?php } ?>
-'">
+" <?php if($itemid!=1) { ?> onclick="Go('?itemid=<?php echo $itemid-1;?>')" <?php } ?>
+>
 <i>&#60;</i>
 Prev
 </div>
@@ -143,31 +143,9 @@ margin: 10px 0px;
 </div>
 <div style="grid-area: form; margin: auto; margin-top: 40px; width: fit-content;">
 <div id="price">
-<?php if($is == Y) { ?>
 <table>
-<tr>
-<td><span><?php echo $a1;?>-<?php echo $a2;?> <?php echo $unit;?>:</span></td>
-<td><span><?php echo $DT['money_sign'];?> <?php echo $p1;?>/<?php echo $unit;?></span></td>
-</tr>
-<?php if($p3!=0) { ?>
-<tr>
-<td><span><?php echo $a2;?>-<?php echo $a3;?> <?php echo $unit;?>:</span></td>
-<td><span><?php echo $DT['money_sign'];?> <?php echo $p2;?>/<?php echo $unit;?></span></td>
-</tr>
-<tr>
-<td><span>&gt; <?php echo $a3;?> <?php echo $unit;?>:</span></td>
-<td><span><?php echo $DT['money_sign'];?> <?php echo $p3;?>/<?php echo $unit;?></span></td>
-</tr>
-<?php } else { ?>
-<tr>
-<td><span>&gt; <?php echo $a2;?> <?php echo $unit;?>:</span></td>
-<td><span><?php echo $DT['money_sign'];?> <?php echo $p2;?>/<?php echo $unit;?></span></td>
-</tr>
-<?php } ?>
+<?php echo step_price($step);?>
 </table>
-<?php } else { ?>
-<?php echo $DT['money_sign'];?> <?php echo $p1;?>/<?php echo $unit;?>
-<?php } ?>
 </div>
 <form style="margin-top: 0;" method="POST" class="quickview-form" action="<?php echo $MODULE['2']['linkurl'];?>cart.php?action=add">
 <input type="hidden" name="itemid" value="<?php echo $itemid;?>">

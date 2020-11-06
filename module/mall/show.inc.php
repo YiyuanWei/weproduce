@@ -30,13 +30,8 @@ if($DT_PC) {
 	$P1 = get_nv($n1, $v1);
 	$P2 = get_nv($n2, $v2);
 	$P3 = get_nv($n3, $v3);
-	if($step) {
-		extract(unserialize($step));
-	} else {
-		$a1 = 1;
-		$p1 = $item['price'];
-		$a2 = $a3 = $p2 = $p3 = '';
-	}
+	$step = unserialize($step);
+	if($step['is']) unset($step['is']);
 	$unit or $unit = $L['unit'];
 	$adddate = timetodate($addtime, 3);
 	$editdate = timetodate($edittime, 3);
@@ -49,9 +44,6 @@ if($DT_PC) {
 	$fee = get_fee($item['fee'], $MOD['fee_view']);
 	$update = '';
 	$currency = $moneyunit ? currency() : 1;
-	$p1 = calculatePrice($p1, $currency);
-	$p2 = calculatePrice($p2, $currency);
-	$p3 = calculatePrice($p3, $currency);
 	if(check_group($_groupid, $MOD['group_contact'])) {
 		if($fee) {
 			$user_status = 4;
@@ -126,5 +118,25 @@ function get_big($albums){
 		$albums[$k] = substr($album,0,strlen($album)-strlen(".middle.jpg"));
 	}
 	return $albums;
+}
+function step_price($step){
+	global $DT, $unit;
+	$money_sign = $DT['money_sign'];
+	for( $i = 1; $i<count($step)/2; $i++ ){
+		$j = $i + 1;
+		$a1 = intval($step["a$i"]); $a2 = intval($step["a$j"]);
+		$p = dround($step["p$i"],2,1); 
+		$tr = "<tr>";
+		$tr.= "<td><span>$a1-$a2 $unit:</span></td>";
+		$tr.= "<td><span>$money_sign $p/$unit</span></td>";
+		$tr.= "</tr>";
+		echo $tr;
+	}
+	$a = intval($step["a$i"]); $p = dround($step["p$i"],2,1);
+	$tr = "<tr>";
+	$tr.= "<td><span>&gt; $a $unit:</span></td>";
+	$tr.= "<td><span>$money_sign $p/$unit</span></td>";
+	$tr.= "</tr>";
+	echo $tr;
 }
 ?>

@@ -178,8 +178,7 @@ switch($action) {
 				$step['a1'] = 1;
 				$step['p1'] = $item['price'];
 			}
-			$stepis = $step['is'];
-			array_splice($step,-1,1);
+			unset($step['is']);
 			$unit or $unit = '件';
 			$addtime = timetodate($addtime);
 			$EXP = array();

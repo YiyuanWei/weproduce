@@ -60,7 +60,6 @@ class mall {
 		}
 		$post['step'] = $post['newstep'];
 		unset($post['newstep']);
-		$post['step']['is'] = $post['step']['a2'] ? 'Y' : 'N';
 		$post['amount'] = intval($post['amount']);
 		$post['mycatid'] = intval($post['mycatid']);
 		$post['elite'] = $post['elite'] ? 1 : 0;
