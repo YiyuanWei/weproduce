@@ -113,6 +113,22 @@ function last($itemid){
 	$last_id = $last_item['itemid'];
 	return $last_id == $itemid;
 }
+function next_item($itemid, $catid, $dir = 1){
+	global $db, $table;
+	$catid = intval($catid);
+	$newcatid = 0; $newid = $itemid;
+	while($newcatid != $catid){
+		$newid += $dir;
+		$item = $db->get_one("SELECT * FROM {$table} WHERE itemid='$newid'");
+		if(!$item){
+			$order = $dir == 1 ? 'DESC' : 'ASC';
+			$item = $db->get_one("SELECT * FROM {$table} ORDER BY itemid '$order' LIMIT 1");
+		}
+		$newid = $item['itemid'];
+		$newcatid = intval($item['catid']);
+	}
+	echo $newid;
+}
 function get_big($albums){
 	foreach ($albums as $k => $album) {
 		$albums[$k] = substr($album,0,strlen($album)-strlen(".middle.jpg"));

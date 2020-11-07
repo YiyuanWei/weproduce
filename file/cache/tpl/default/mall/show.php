@@ -97,14 +97,13 @@ var module_id= <?php echo $moduleid;?>,item_id=<?php echo $itemid;?>,content_id=
 <div class="nav">
 <div>
 <div id="next" class="<?php if($itemid!=1) { ?>clickable<?php } ?>
-" onclick="Go('?itemid=<?php if($last) { ?>1<?php } else { ?><?php echo $itemid+1;?><?php } ?>
-')">
+" onclick="Go('?itemid=<?php echo next_item($itemid,$catid);?>')">
 Next
 <i>&#62;</i>
 </div>
 <div><i>|</i></div>
 <div id="prev" class="<?php if(!($last)) { ?>clickable<?php } ?>
-" <?php if($itemid!=1) { ?> onclick="Go('?itemid=<?php echo $itemid-1;?>')" <?php } ?>
+" <?php if($itemid!=1) { ?> onclick="Go('?itemid=<?php echo next_item($itemid,$catid,-1);?>')" <?php } ?>
 >
 <i>&#60;</i>
 Prev

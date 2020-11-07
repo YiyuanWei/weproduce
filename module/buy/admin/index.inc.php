@@ -238,7 +238,7 @@ switch($action) {
 		}
 	break;
 	default:
-		$lists = $do->get_list('status=3'.$condition, $dorder[$order]);
+		$lists = $do->get_list('status>=2'.$condition, $dorder[$order]);
 		$menuid = 1;
 		include tpl('index', $module);
 	break;
