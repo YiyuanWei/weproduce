@@ -156,7 +156,7 @@ switch($action) {
 		$do->itemid = $itemid;
 		if($submit) {
 			$post['thumb'] = $post['thumbs'][0];
-			array_pop($post['thumbs']);
+			array_pop($post['thumbs']); // delete the empty inputs
 			$post['thumbs'][0] = "true";
 			$post['thumbs'] = implode($post['thumbs'], '|');
 			if($do->pass($post)) {

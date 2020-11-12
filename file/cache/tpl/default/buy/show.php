@@ -1,6 +1,9 @@
 <?php defined('IN_DESTOON') or exit('Access Denied');?><?php include template('header');?>
 <script type="text/javascript">var module_id=<?php echo $moduleid;?>,item_id=<?php echo $itemid;?>,content_id='content',img_max_width=<?php echo $MOD['max_width'];?>;</script>
 <style>
+.m{
+width: 1000px;
+}
 .fn{
 color: var(--background-color) 
 }
@@ -26,14 +29,28 @@ border: .25rem solid green;
 <td valign="top">
 <table width="100%">
 <tr>
-<td colspan="3"><h1 class="title_trade" id="title" style="color: var(--background-color);"><?php echo $CAT['catname'];?></h1></td>
+<td colspan="2"><h1 class="title_trade" id="title" style="color: var(--background-color);"><?php echo $CAT['catname'];?></h1></td>
+
+<?php if($_admin) { ?>
+<td width="300" valign="top">
+<form action="?itemid=<?php echo $itemid;?>&action=update&step=status&admin=<?php echo $_admin;?>" method="POST">
+<select name="status" value="<?php echo $status;?>">
+<?php if(is_array($L['show_status'])) { foreach($L['show_status'] as $k => $v) { ?>
+<option value="<?php echo $k;?>"<?php if($k==$status) { ?> selected<?php } ?>
+><?php echo $v;?></option>
+<?php } } ?>
+</select>
+<input type="submit" name="submit" value="Update Status">
+</form>
+</td>
+<?php } ?>
 </tr>
 <tr>
-<?php if($img) { ?>
+<?php if($thumbs) { ?>
 <td width="330" valign="top">
 <div id="mid_pos"></div>
 <div id="mid_div" onmouseover="SAlbum();" onmouseout="HAlbum();" onclick="PAlbum(Dd('mid_pic'));">
-<img src="<?php echo $img['0'];?>" width="320" height="240" id="mid_pic"/><span id="zoomer"></span>
+<img src="<?php echo $thumbs['0'];?>" width="320" height="240" id="mid_pic"/><span id="zoomer"></span>
 </div>
 <div class="b10"></div>
 <div>
@@ -75,7 +92,7 @@ border: .25rem solid green;
 </tr>
 </table>
 </td>
-<td width="330">
+<td valign="top" width="330">
 <table>
 <?php if(is_array($L['show_status'])) { foreach($L['show_status'] as $k => $v) { ?>
 <tr>
@@ -89,20 +106,6 @@ border: .25rem solid green;
 </tr>
 </table>
 </td>
-<td width="16">&nbsp;</td>
-<?php if($_admin) { ?>
-<td width="300" valign="top">
-<form action="?itemid=<?php echo $itemid;?>&action=update&step=status&admin=<?php echo $_admin;?>" method="POST">
-<select name="status" value="<?php echo $status;?>">
-<?php if(is_array($L['show_status'])) { foreach($L['show_status'] as $k => $v) { ?>
-<option value="<?php echo $k;?>"<?php if($k==$status) { ?> selected<?php } ?>
-><?php echo $v;?></option>
-<?php } } ?>
-</select>
-<input type="submit" name="submit" value="Update Status">
-</form>
-</td>
-<?php } ?>
 </tr>
 </table>
 </div>

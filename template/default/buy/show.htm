@@ -1,6 +1,9 @@
 {template 'header'}
 <script type="text/javascript">var module_id={$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
 <style>
+	.m{
+		width: 1000px;
+	}
 .fn{
 	color: var(--background-color) 
 }
@@ -26,14 +29,27 @@
 	<td valign="top">
 		<table width="100%">
 		<tr>
-		<td colspan="3"><h1 class="title_trade" id="title" style="color: var(--background-color);">{$CAT[catname]}</h1></td>
+		<td colspan="2"><h1 class="title_trade" id="title" style="color: var(--background-color);">{$CAT[catname]}</h1></td>
+		
+	{if $_admin}
+	<td width="300" valign="top">
+		<form action="?itemid={$itemid}&action=update&step=status&admin={$_admin}" method="POST">
+			<select name="status" value="{$status}">
+			{loop $L[show_status] $k $v}
+			<option value="{$k}"{if $k==$status} selected{/if}>{$v}</option>
+			{/loop}
+			</select>
+			<input type="submit" name="submit" value="Update Status">
+		</form>
+	</td>
+	{/if}
 		</tr>
 		<tr>
-		{if $img}
+		{if $thumbs}
 		<td width="330" valign="top">
 			<div id="mid_pos"></div>
 			<div id="mid_div" onmouseover="SAlbum();" onmouseout="HAlbum();" onclick="PAlbum(Dd('mid_pic'));">
-			<img src="{$img[0]}" width="320" height="240" id="mid_pic"/><span id="zoomer"></span>
+			<img src="{$thumbs[0]}" width="320" height="240" id="mid_pic"/><span id="zoomer"></span>
 			</div>
 			<div class="b10"></div>
 			<div>
@@ -74,7 +90,7 @@
 			</tr>
 			</table>
 		</td>
-		<td width="330">
+		<td valign="top" width="330">
 		<table>
 			{loop $L[show_status] $k $v}
 			<tr>
@@ -87,19 +103,6 @@
 		</tr>
 	</table>
 	</td>
-	<td width="16">&nbsp;</td>
-	{if $_admin}
-	<td width="300" valign="top">
-		<form action="?itemid={$itemid}&action=update&step=status&admin={$_admin}" method="POST">
-			<select name="status" value="{$status}">
-			{loop $L[show_status] $k $v}
-			<option value="{$k}"{if $k==$status} selected{/if}>{$v}</option>
-			{/loop}
-			</select>
-			<input type="submit" name="submit" value="Update Status">
-		</form>
-	</td>
-	{/if}
 	</tr>
 	</table>
 </div>

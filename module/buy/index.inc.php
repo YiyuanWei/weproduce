@@ -20,34 +20,31 @@ if($DT_PC) {
 	if($submit){
 		switch($action){
 			case "add":
-				if( $submit ){
-					$content['files'] = $_FILES['content'];
-					$content['fm'] = $content['fm'] ? $content['fm'] : get_cat($content['fmid'])['catname'];
-					$content['fc'] = $content['fc'] ? $content['fc'] : get_cat($content['fcid'])['catname'];
-					unset($content['fmid']);unset($content['fcid']);
-					$post['content'] = $content;
-					$post['amount'] = $content['Quantity'];
-					$catname = get_cat($post['catid'])['catname'];
-					$post['title'] = $catname."_request";
-					isset($post['totime']) or $post['totime'] = 0;
-					if($do->pass($post)){
-						if( $itemid = $do->add($post) ){
-							dheader('?step='.($step+1));
-						}
+				$post['thumbs'] = implode($post['thumbs'], '|');
+				$content['files'] = $_FILES['content'];
+				$content['fm'] = $content['fm'] ? $content['fm'] : get_cat($content['fmid'])['catname'];
+				$content['fc'] = $content['fc'] ? $content['fc'] : get_cat($content['fcid'])['catname'];
+				unset($content['fmid']);unset($content['fcid']);
+				$post['content'] = $content;
+				$post['amount'] = $content['Quantity'];
+				$catname = get_cat($post['catid'])['catname'];
+				$post['title'] = $catname."_request";
+				isset($post['totime']) or $post['totime'] = 0;
+				if($do->pass($post)){
+					if( $itemid = $do->add($post) ){
+						dheader('?step='.($step+1));
 					}
 				}
 				break;
 			case "express":
-				if( $submit ){
-					$post['title'] = "Express";
-					isset($post['totime']) or $post['totime'] = 0;
-					if($do->pass($post)){
-						if($itemid=$do->add($post)){
-							$subject = "Sample has been sent.";
-							$mail = "Customer {$post['username']} has sent a sample. Please check.<br>";
-							$mail .= "The tracking number is {$post['note']}.";
-							send_mail($DT['sys_email'],$subject,$mail);
-						}
+				$post['title'] = "Express";
+				isset($post['totime']) or $post['totime'] = 0;
+				if($do->pass($post)){
+					if($itemid=$do->add($post)){
+						$subject = "Sample has been sent.";
+						$mail = "Customer {$post['username']} has sent a sample. Please check.<br>";
+						$mail .= "The tracking number is {$post['note']}.";
+						send_mail($DT['sys_email'],$subject,$mail);
 					}
 				}
 				break;

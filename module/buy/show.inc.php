@@ -13,11 +13,10 @@ switch ($action) {
 					$condition = "itemid = $itemid";
 					$db->query("UPDATE {$table} SET $update WHERE $condition");
 					$subject = "Your request has been updated.";
-					$mail = "The status of your request # {$itemid} has been changed to {$status}";
-					send_mail($_email, $subject, $mail);
+					$body = "The status of your request # {$itemid} has been changed to {$status}";
+					send_mail($_contact_email, $subject, $body);
 				}
 				break;
-			
 			default:
 				break;
 		}
@@ -42,7 +41,6 @@ if($DT_PC) {
 	$content_table = content_table($moduleid, $itemid, $MOD['split'], $table_data);
 	$t = $db->get_one("SELECT content FROM {$content_table} WHERE itemid=$itemid");
 	$content = decode_content($t['content']);
-	$imgs = $content['files']['img'];
 	$files = $content['files']['file'];
 	unset($content['files']);
 	$content = parse_video($content);
@@ -59,8 +57,9 @@ if($DT_PC) {
 	$todate = $totime ? timetodate($totime, 3) : 0;
 	$expired = $totime && $totime < $DT_TIME ? true : false;
 	$linkurl = $MOD['linkurl'].$linkurl;
-	$thumbs = get_albums($item);
-	$albums =  get_albums($item, 1);
+	$item['thumbs'] = explode('|',$item['thumbs']);
+	$thumbs = get_albums($item,0,true);
+	$albums =  get_albums($item, 1,true);
 	$update = '';
 	$fee = get_fee($item['fee'], $MOD['fee_view']);
 	if(check_group($_groupid, $MOD['group_contact'])) {

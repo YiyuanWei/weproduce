@@ -26,6 +26,47 @@ show_menu($menus);
 <td class="tl"><span class="f_red">*</span> 行业分类</td>
 <td><div id="catesch"></div><?php echo ajax_category_select('post[catid]', '选择分类', $catid, $moduleid);?> <a href="javascript:schcate(<?php echo $moduleid;?>);" class="t">搜索分类</a> <span id="dcatid" class="f_red"></span></td>
 </tr>
+<tr>
+	<td class="tl"><span class="f_hid">*</span> 文件</td>
+	<td>
+		<table cellspacing="1" bgcolor="#E7E7EB" class="ctb">
+			<tr bgcolor="#F5F5F5" align="center">
+				<td width="176px">File Title</td>
+				<td width="216px">File Path</td>
+				<td width="227px"><button type="button" onclick="newFileInput()">Add New</button></td>
+			</tr>
+			<tbody id="files_input"></tbody>
+		</table>
+		<script>
+			function newFileInput(){
+				var fnames = [];
+				var files = [];
+				var i = 0;
+				while( i < Dd('files_input').children.length ){
+					fnames[i] = Dd('fname'+i).value;
+					files[i] = Dd('file'+i).value;
+					console.log(i);
+					i++;
+				}
+				var tr = '<tr>';
+				tr+= '<td><input name="post[files][fname'+i+']" type="text" size="20" id="fname'+i+'"/></td>';
+				tr+= '<td colspan="2"><input name="post[files][file'+i+']" type="text" size="40" id="file'+i+'"/>&nbsp;&nbsp;<span onclick="mDfile(<?php echo $moduleid?>, Dd(`file'+i+'`).value, `file'+i+'`);" class="jt">[上传]</span>&nbsp;&nbsp;<span onclick="if(Dd(`file'+i+'`).value) window.open(Dd(`file'+i+'`).value);" class="jt">[预览]</span>&nbsp;&nbsp;<span onclick="Dd(`file'+i+'`).value=``;" class="jt">[删除]</span> <span class="f_red" id="dfiles"></span></td>';
+				tr+= '</tr>';
+				Dd('files_input').innerHTML += tr;
+				for( i = 0; i < fnames.length; i++ ){
+					Dd('fname'+i).value = fnames[i];
+					Dd('file'+i).value = files[i];
+				}
+			}
+			function mDfile(m, o, f){
+				Dfile(m, o, f);
+			}
+			function checkFiles(){
+				
+			}
+		</script>
+	</td>
+</tr>
 <?php if($CP) { ?>
 <script type="text/javascript">
 var property_catid = <?php echo $catid;?>;
@@ -41,29 +82,82 @@ var property_admin = 1;
 <tr>
 <td class="tl"><span class="f_hid">*</span> 详细说明</td>
 <?php require_once DT_ROOT.'/module/buy/global.func.php';?>
-<td><textarea name="post[content]" id="content" class="dsn"><?php echo content2str($content);?></textarea>
+<td><textarea name="post[content]" id="content" class="dsn"><?php echo $content;?></textarea>
 <?php echo deditor($moduleid, 'content', $MOD['editor'], '100%', 350);?><br/><span id="dcontent" class="f_red"></span>
 </td>
 </tr>
 <tr>
-<td class="tl"><span class="f_hid">*</span> 产品图片</td>
-<td>
-	<input type="hidden" name="post[thumb]" id="thumb" value="<?php echo $thumb;?>"/>
-	<input type="hidden" name="post[thumb1]" id="thumb1" value="<?php echo $thumb1;?>"/>
-	<input type="hidden" name="post[thumb2]" id="thumb2" value="<?php echo $thumb2;?>"/>
-	<table width="360" class="ctb">
-	<tr align="center" height="120" class="c_p">
-	<td width="120"><img src="<?php echo $thumb ? $thumb : DT_SKIN.'image/waitpic.gif';?>" width="100" height="100" id="showthumb" title="预览图片" alt="" onclick="if(this.src.indexOf('waitpic.gif') == -1){_preview(Dd('showthumb').src, 1);}else{Dalbum('',<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb').value, true);}"/></td>
-	<td width="120"><img src="<?php echo $thumb1 ? $thumb1 : DT_SKIN.'image/waitpic.gif';?>" width="100" height="100" id="showthumb1" title="预览图片" alt="" onclick="if(this.src.indexOf('waitpic.gif') == -1){_preview(Dd('showthumb1').src, 1);}else{Dalbum(1,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb1').value, true);}"/></td>
-	<td width="120"><img src="<?php echo $thumb2 ? $thumb2 : DT_SKIN.'image/waitpic.gif';?>" width="100" height="100" id="showthumb2" title="预览图片" alt="" onclick="if(this.src.indexOf('waitpic.gif') == -1){_preview(Dd('showthumb2').src, 1);}else{Dalbum(2,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb2').value, true);}"/></td>
-	</tr>
-	<tr align="center" class="c_p">
-	<td><span onclick="Dalbum('',<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb').value, true);" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif" width="12" height="12" title="上传"/></span>&nbsp;&nbsp;<img src="<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif" width="12" height="12" title="选择" onclick="selAlbum('');"/>&nbsp;&nbsp;<span onclick="delAlbum('', 'wait');" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif" width="12" height="12" title="删除"/></span></td>
-	<td><span onclick="Dalbum(1,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb1').value, true);" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif" width="12" height="12" title="上传"/></span>&nbsp;&nbsp;<img src="<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif" width="12" height="12" title="选择" onclick="selAlbum(1);"/>&nbsp;&nbsp;<span onclick="delAlbum(1, 'wait');" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif" width="12" height="12" title="删除"/></span></td>
-	<td><span onclick="Dalbum(2,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb2').value, true);" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif" width="12" height="12" title="上传"/></span>&nbsp;&nbsp;<img src="<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif" width="12" height="12" title="选择" onclick="selAlbum(2);"/>&nbsp;&nbsp;<span onclick="delAlbum(2, 'wait');" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif" width="12" height="12" title="删除"/></span></td>
-	</tr>
-	</table>
-</td>
+	<td class="tl"><span class="f_red">*</span> 商品图片</td>
+	<td>
+		<div id="thumbs_inputs">
+			<?php 
+			foreach($thumbs as $k=>$v){ 
+			?>
+			<input type="hidden" name="post[thumbs][]" id="thumb<?php echo $k;?>" value="<?php echo $thumbs[$k];?>">
+			<?php }?>
+		</div>
+		<script>
+			var paras;
+			function newParas(l){
+				var para = [];
+				for(var i=0;i<l;i++){ para[i]=false;}
+				return para;
+			}
+			function newThumb(i){
+				paras[i] = true;
+				Dd('thumbs_inputs').innerHTML += "<input type='hidden' name='post[thumbs][]' id='thumb"+i+"'/>";
+				Dd('thumbs_preview').innerHTML += "<td width='120' id='preview"+i+"'><img src='<?php echo DT_SKIN;?>image/waitpic.gif' width='100' height='100' id='showthumb"+i+"' title='preivew' onclick='if(this.src.indexOf(`waitpic.gif`) == -1){_preivew(Dd(`showthumb"+i+"`).src,1);}else{mDalbum("+i+",<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>,Dd(`thumb"+i+"`).value,true);}' onload='thumb()'/></td>";
+				Dd('thumbs_controller').innerHTML += "<td id='control"+i+"'><span onclick='mDalbum("+i+",<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>,Dd(`thumb"+i+"`).value,true);' class='jt'><img src='<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif' width='12' height='12' title='上传'/></span>&nbsp;&nbsp;<img src='<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif' width='12' height='12' title='选择' onclick='mselAlbum("+i+");'/>&nbsp;&nbsp;<span onclick='mdelAlbum("+i+", `wait`);' class='jt'><img src='<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif' width='12' height='12' title='删除'/></span></td>";
+			}
+			function delThumb(i){
+				paras[i] = false;
+				Dd('preview'+i).parentNode.removeChild(Dd('preview'+i));
+				Dd('control'+i).parentNode.removeChild(Dd('control'+i));
+				Dd('thumb'+i).parentNode.removeChild(Dd('thumb'+i));
+			}
+			function thumb(){
+				for( var i = 0; i < paras.length ; i++ ){
+					if( paras[i] ) break;
+				}
+				if( i == paras.length ) newThumb(i);
+				else if( paras.length > 1 && ((i + 1) != paras.length) ) delThumb(i);
+			}
+			function mDalbum(f, m, w, h, o, s){
+				paras[f] = false;
+				Dalbum(f,m,w,h,o,s);
+			}
+			function mdelAlbum(f,s){
+				paras[f] = true;
+				delAlbum(f,s);
+			}
+			function mselAlbum(f){
+				paras[f] = false;
+				selAlbum(f);
+			}
+			document.addEventListener("DOMContentLoaded", function() {
+				var l = <?php echo count($thumbs) ? count($thumbs): 1;?>;
+				paras = newParas(l);
+				newThumb(l);
+			});
+		</script>
+		<table class="ctb">
+			<tr align="center" height="120" class="c_p" id="thumbs_preview">
+				<?php 
+				foreach($thumbs as $k=>$v){
+				?>
+				<td width="120" id='preview<?php echo($k);?>'><img src="<?php echo $thumbs[$k] ? $thumbs[$k] : DT_SKIN.'image/waitpic.gif';?>" width="100" height="100" id="showthumb<?php echo $k;?>" title="预览图片" alt="" onclick="if(this.src.indexOf('waitpic.gif') == -1){_preview(Dd('showthumb<?php echo $k;?>').src, 1);}else{mDalbum(<?php echo $k;?>,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb<?php echo $k;?>').value, true);}" onload="thumb()"/></td>
+				<?php }?>
+			</tr>
+			<tr align="center" class="c_p" id="thumbs_controller">
+				<?php 
+				foreach($thumbs as $k=>$v){
+				?>
+				<td id='control<?php echo $k;?>'><span onclick="mDalbum(<?php echo $k;?>,<?php echo $moduleid;?>,<?php echo $MOD['thumb_width'];?>,<?php echo $MOD['thumb_height'];?>, Dd('thumb<?php echo $k;?>').value, true);" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_upload.gif" width="12" height="12" title="上传"/></span>&nbsp;&nbsp;<img src="<?php echo $MODULE[2]['linkurl'];?>image/img_select.gif" width="12" height="12" title="选择" onclick="mselAlbum(<?php echo $k;?>);"/>&nbsp;&nbsp;<span onclick="mdelAlbum(<?php echo $k;?>, 'wait');" class="jt"><img src="<?php echo $MODULE[2]['linkurl'];?>image/img_delete.gif" width="12" height="12" title="删除"/></span></td>
+				<?php }?>
+			</tr>
+		</table>
+		<span id="dthumb" class="f_red"></span>
+	</td>
 </tr>
 <tr>
 <td class="tl"><span class="f_hid">*</span> 过期时间</td>
@@ -89,15 +183,15 @@ var property_admin = 1;
 <th>参数值</th>
 </tr>
 <tr bgcolor="#FFFFFF">
-<td><input name="post[n1]" type="text" size="10" value="<?php echo $n1;?>" id="n1"/></td>
+<td><input name="post[n1]" type="text" size="20" value="<?php echo $n1;?>" id="n1"/></td>
 <td><input name="post[v1]" type="text" size="20" value="<?php echo $v1;?>" id="v1"/></td>
 </tr>
 <tr bgcolor="#FFFFFF">
-<td><input name="post[n2]" type="text" size="10" value="<?php echo $n2;?>" id="n2"/></td>
+<td><input name="post[n2]" type="text" size="20" value="<?php echo $n2;?>" id="n2"/></td>
 <td><input name="post[v2]" type="text" size="20" value="<?php echo $v2;?>" id="v2"/></td>
 </tr>
 <tr bgcolor="#FFFFFF">
-<td><input name="post[n3]" type="text" size="10" value="<?php echo $n3;?>" id="n3"/></td>
+<td><input name="post[n3]" type="text" size="20" value="<?php echo $n3;?>" id="n3"/></td>
 <td><input name="post[v3]" type="text" size="20" value="<?php echo $v3;?>" id="v3"/></td>
 </tr>
 <tr bgcolor="#FFFFFF">
@@ -301,7 +395,7 @@ function check() {
 	}
 	<?php echo $FD ? fields_js() : '';?>
 	<?php echo $CP ? property_js() : '';?>
-	return true;
+	return checkFiles();
 }
 </script>
 <script type="text/javascript">Menuon(<?php echo $menuid;?>);</script>

@@ -15,7 +15,7 @@ class buy {
 		$this->table = $table;
 		$this->table_data = $table_data;
 		$this->split = $MOD['split'];
-		$this->fields = array('catid','areaid','typeid','level','title','style','fee','introduce','n1','n2','n3','v1','v2','v3','amount','price','pack','days','thumb','thumb1','thumb2','tag','status','hits','username','totime','editor','addtime','adddate','edittime','editdate','ip','template','linkurl','filepath','note','company','truename','telephone','mobile','address','email','qq','wx','ali','skype');
+		$this->fields = array('catid','areaid','typeid','level','title','style','fee','introduce','n1','n2','n3','v1','v2','v3','amount','price','pack','days','thumb','thumb1','thumb2','thumbs','tag','status','hits','username','totime','editor','addtime','adddate','edittime','editdate','ip','template','linkurl','filepath','note','company','truename','telephone','mobile','address','email','qq','wx','ali','skype','files');
     }
 
     function buy($moduleid) {
@@ -66,11 +66,10 @@ class buy {
 		unset($post['content']);
 		$post = dhtmlspecialchars($post);
 		$post = array_map("trim",$post);
-		$post['content'] = $content;
+		// $post['content'] = $content;
 		$arr = array('Fabric Material','Fabric Weight','Fabric Type');
 		$vs = array($content['fm'],$content['fw'],$content['fc']);
 		$post = $this->set_nv($arr,$vs,$post);
-		array_map('unset',$vs);
 		return $post;
 	}
 
@@ -147,7 +146,7 @@ class buy {
 			credit_add($post['username'], $MOD['credit_add']);
 			credit_record($post['username'], $MOD['credit_add'], 'system', lang('my->credit_record_add', array($MOD['name'])), 'ID:'.$this->itemid);
 		}
-		clear_upload($post['content'].$post['thumb'].$post['thumb1'].$post['thumb2'], $this->itemid);
+		clear_upload($post['content'].$post['thumbs'], $this->itemid);
 		send_request($content);
 		return $this->itemid;
 	}
@@ -165,7 +164,7 @@ class buy {
 		$post['content'] = content($post['content'], $this->itemid);
 		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$post[content]')");
 		$this->update($this->itemid);
-		clear_upload($post['content'].$post['thumb'].$post['thumb1'].$post['thumb2'], $this->itemid);
+		clear_upload($post['content'].$post['thumbs'], $this->itemid);
 		if($post['status'] > 2) $this->tohtml($this->itemid, $post['catid']);
 		return true;
 	}

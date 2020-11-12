@@ -22,7 +22,6 @@
 {else}
 <p class="h1">The category is not valid</p>
 <p class="h2" style="font-size: 2rem;">Please select the valid category</p>
-<!-- <meta http-equiv="refresh" content="1;{$MOD[linkurl]}?step={php echo($step-1)}&send=0"/> -->
 {/if}
 <script>
     function other(pre){
@@ -36,36 +35,6 @@
         else{
             Dd(pre).style.display = 'none';
         }
-    }
-    function showImage(){
-        var id_btn = 'img';
-        var id_previewer = 'img_pre';
-        if( typeof (FileReader) != "undefined" ){
-            var previewer = document.getElementById(id_previewer);
-            var index = previewer.childElementCount;
-            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
-            var btn = document.getElementById(id_btn);
-            for(var i = 0; i < btn.files.length; i++){
-                var file = btn.files[i];
-                if( regex.test(file.name.toLowerCase()) ){
-                    var reader = new FileReader();
-                    reader.onload = function(e){
-                        var img = document.createElement("IMG");
-                        img.src = e.target.result;
-                        addImg(previewer, img);
-                    }
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-        else{
-            alert("This browser cannot preview images after you upload them.");
-        }
-    }
-    function addImg(previewer, img){
-        img.id = ++previewer.childElementCount;
-        img.addEventListener('click',function(){console.log('click'); this.parentNode.removeChild(this);});
-        previewer.appendChild(img);
     }
     function count(textarea){
         var max = 200;

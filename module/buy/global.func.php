@@ -52,6 +52,8 @@ function form_mail($content){
     return $mail_body;
 }
 
+/* convert content in array into string form
+*/
 function content2str($content){
     $arr = decode_content($content);
     $str = '';
@@ -70,6 +72,9 @@ function line(...$str){
     return $results;
 }
 
+/* 
+deocde the content from database into array
+*/
 function decode_content($content){
     $content = json_decode($content, true);
     $carray = array('f'=>'Fabric','z'=>'Zipper','b'=>'Button');

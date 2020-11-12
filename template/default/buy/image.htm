@@ -1,0 +1,108 @@
+<style>
+    .t_up_imgs{ 
+        display: flex; 
+        flex-wrap: wrap; 
+        width: inherit; 
+        max-width: 33rem; 
+    }
+
+    .t_up_imgs img{ 
+        width: 7.5rem; 
+        height: 7.5rem; 
+        margin:5.6px;
+    }
+    .t_up_imgs img:hover{ 
+        cursor:pointer; 
+        border: 1px solid lightgray; 
+        width: calc(7.5rem - 2px); 
+        height: calc(7.5rem - 2px);
+    }
+    
+    .up_imgs{ 
+        display: block; 
+        cursor: pointer; 
+        border: 2px dashed grey; 
+        border-radius: 2rem; 
+        width: 2.5rem; 
+        font-size: xx-large; 
+        color: black; 
+        text-align: center; 
+        padding: 2.5rem; 
+        background-color: white; 
+        margin: 3.6px;
+    }
+    .up_imgs:hover{ 
+        border: 4px solid lightgray; 
+        background-color: #113ff412; 
+        margin: 1.6px; 
+    }
+    #Dtop{border:#E0E0E0 6px solid;border-radius:10px;}
+#Dtop .dbody{background:#FFFFFF;}
+#Dtop .dhead{background:#F0F0F0;border-bottom:#E7E7EB 1px solid;padding-left:16px;font-size:15px;line-height:32px;height:32px;font-weight:bold;cursor:move;-moz-user-select:none;-khtml-user-select:none;user-select:none;}
+#Dtop .dhead span{float:right;cursor:pointer;display:block;width:32px;height:32px;background:url('dialog-close.png') no-repeat center center;}
+#Dtop .dhead span:hover{background:#F45454 url('dialog-close-on.png') no-repeat center center;border-radius:0 3px 0 0;}
+#Dtop .dbox{overflow:hidden;line-height:180%;clear:both;}
+#Dtop .dbox table{margin-left:10px;}
+#Dtop .dsize{height:11px;font-size:1px;}
+#Dtop .dsize div{height:11px;width:11px;background:url('resize.gif') no-repeat;cursor:se-resize;font-size:1px;float:right;}
+#upalbum{
+    margin-left: 16px;
+}
+</style>
+<div class="upload-img" style="padding: 16px">
+    <p class="h2">Upload Image</p>
+    <p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
+    <div id="thumbinputs">
+    </div>
+    <div class="t_up_imgs">
+        <div class="t_up_imgs" id="img_pre">
+        </div>
+        <div class="t_up_imgs">
+            <div class="up_imgs" onclick="mDalbum({$moduleid},{$MOD[thumb_width]},{$MOD[thumb_height]}, true)">
+                <span>+</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{DT_STATIC}file/script/admin.js"></script>
+<script>
+var paras = []; // each element shows if the input is available for new input: true for available; false for there is an old thumb in the place
+function newThumb(i){
+    paras[i] = true;
+    Dd('thumbinputs').innerHTML += '<input type="hidden" name="post[thumbs][]" id="thumb'+i+'"/>';
+    Dd('img_pre').innerHTML += '<img src="" style="display:none" id="showthumb'+i+'" onload="show(this)" onclick="mdelAlbum('+i+')"/>';
+}
+function mDalbum(m, w, h, s) {
+    var f = 0;
+    while( f < paras.length ){
+        if( paras[f] ) break;
+        f++;
+    }
+    if( f == paras.length ) newThumb(f);
+    paras[f] = false;
+    o = Dd('thumb'+f).value;
+    var s = s ? 'none' : '';
+    var c = '<iframe name="UploadAlbum" style="display:none" src=""></iframe>';
+    c += '<form method="post" target="UploadAlbum" enctype="multipart/form-data" action="'+UPPath+'" onsubmit="return isUP(\'upalbum\');">';
+    c += '<input type="hidden" name="fid" value="'+f+'"/>';
+    c += '<input type="hidden" name="moduleid" value="'+m+'"/>';
+    c += '<input type="hidden" name="from" value="album"/>';
+    c += '<input type="hidden" name="old" value="'+o+'"/>';
+    c += '<input id="upalbum" type="file" size="20" name="upalbum" accept="image/*" onchange="if(isImg(\'upalbum\')){this.form.submit();Dd(\'Dsubmit\').disabled=true;Dd(\'Dsubmit\').value=\''+L['uploading']+'\';}"/>';
+    c += '<div style="display:'+s+'">'+L['width']+'</label><input type="text" size="3" name="width" value="'+w+'"/> px &nbsp;&nbsp;&nbsp;'+L['height']+' <input type="text" size="3" name="height" value="'+h+'"/> px</div>';
+    c += '<div style="width: fit-content; margin: auto;"><input type="submit" class="btn-blue" value="'+L['upload']+'" id="Dsubmit"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="btn" value="'+L['cancel']+'" onclick="cDialog();"/></div>';
+    c += '</form>';
+    mkDialog('',c,L['upload_img'],250);
+}
+function mdelAlbum(f){
+    Dd('thumb'+f).value = '';
+    Dd('showthumb'+f).src = '';
+    Dd('showthumb'+f).style.display = 'none';
+    paras[f] = true;
+}
+function show(ele){
+    if( ele.src ){
+        ele.style.display = "block";
+    }
+}
+</script>

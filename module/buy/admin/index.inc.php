@@ -75,6 +75,9 @@ if(in_array($action, array('', 'check', 'expire', 'reject', 'recycle'))) {
 switch($action) {
 	case 'add':
 		if($submit) {
+			array_pop($post['thumbs']);
+			$post['thumbs'] = implode($post['thumbs'],'|');
+			
 			if($do->pass($post)) {
 				if($FD) fields_check($post_fields);
 				if($CP) property_check($post_ppt);
@@ -110,6 +113,8 @@ switch($action) {
 		$itemid or msg();
 		$do->itemid = $itemid;
 		if($submit) {
+			array_pop($post['thumbs']);
+			$post['thumbs'] = implode($post['thumbs'],'|');
 			if($do->pass($post)) {
 				if($FD) fields_check($post_fields);
 				if($CP) property_check($post_ppt);
@@ -127,6 +132,8 @@ switch($action) {
 			$totime = $totime ? timetodate($totime, 6) : '';
 			$menuon = array('5', '4', '2', '1', '3');
 			$menuid = $menuon[$status];
+			$thumbs = explode('|',$thumbs);
+			$content = content2str(decode_content($content));
 			include tpl($action, $module);
 		}
 	break;

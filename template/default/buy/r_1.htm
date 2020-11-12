@@ -122,21 +122,7 @@
         </td>
     </tr>
 </table>
-<div class="upload-img" style="padding: 16px">
-    <p class="h2">Upload Image</p>
-    <p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
-    <div class="t_up_imgs">
-        <div class="t_up_imgs" id="img_pre"></div>
-        <div class="t_up_imgs">
-            <input type="file" name="content[img][]" id="img" style="display: none;" multiple accept="image/*" onchange="showImage()">
-            <label for="img">
-                <div class="up_imgs">
-                    <span>+</span>
-                </div>
-            </label>
-        </div>
-    </div>
-</div>
+{template 'image','buy'}
 <table class="content-table">
     <thead><p class="h2" style="padding: 0 16px">Upload Files</p></thead>
     <tr>
