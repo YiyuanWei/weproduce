@@ -4,22 +4,22 @@
 */
 var L = new Array();
 /* admin.js */
-L['system_tips']			= '系统提示';
-L['ok']						= '确 定';
-L['cancel']					= '取 消';
-L['upload']					= '上 传';
-L['uploading']				= '上传中..';
-L['upload_file']			= '上传文件';
-L['upload_img']				= '上传图片';
+L['system_tips']			= 'System Tips';
+L['ok']						= 'OK';
+L['cancel']					= 'Cancel';
+L['upload']					= 'Upload';
+L['uploading']				= 'Uploading..';
+L['upload_file']			= 'Upload Files';
+L['upload_img']				= 'Upload Images';
 L['allow']					= '限制为:';
-L['preview_img']			= '图片预览';
-L['choose_img']				= '选择图片';
-L['width']					= '宽度';
-L['height']					= '高度';
-L['up_local']				= '本地图片';
-L['up_remote']				= '网络图片';
+L['preview_img']			= 'Image Preview';
+L['choose_img']				= 'Choose Image';
+L['width']					= 'Width';
+L['height']					= 'Height';
+L['up_local']				= 'Local Image';
+L['up_remote']				= 'Online Image';
 L['type_imgurl']			= '请填写图片网址';
-L['choose_file']			= '请选择文件';
+L['choose_file']			= 'Please choose file';
 L['choose_item']			= '选择信息';
 L['dialog_user']			= '会员{V0}资料';
 L['empty_img']				= '不可预览，图片地址为空';

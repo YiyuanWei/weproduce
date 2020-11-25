@@ -77,7 +77,15 @@ switch($action) {
 		if($submit) {
 			array_pop($post['thumbs']);
 			$post['thumbs'] = implode($post['thumbs'],'|');
-			
+			$fcount = count($post['filepath'])/2;
+			for($i = 0; $i < $fcount ; $i++){
+				$fname = $post['filepath']["fname$i"];
+				$file = $post['filepath']["file$i"];
+				$post['filepath'][$fname] = $file;
+				unset($post['filepath']["fname$i"]);
+				unset($post['filepath']["file$i"]);
+			}
+			$post['filepath'] = arr2str($post['filepath']);
 			if($do->pass($post)) {
 				if($FD) fields_check($post_fields);
 				if($CP) property_check($post_ppt);
@@ -115,6 +123,15 @@ switch($action) {
 		if($submit) {
 			array_pop($post['thumbs']);
 			$post['thumbs'] = implode($post['thumbs'],'|');
+			$fcount = count($post['filepath'])/2;
+			for($i = 0; $i < $fcount ; $i++){
+				$fname = $post['filepath']["fname$i"];
+				$file = $post['filepath']["file$i"];
+				$post['filepath'][$fname] = $file;
+				unset($post['filepath']["fname$i"]);
+				unset($post['filepath']["file$i"]);
+			}
+			$post['filepath'] = arr2str($post['filepath']);
 			if($do->pass($post)) {
 				if($FD) fields_check($post_fields);
 				if($CP) property_check($post_ppt);
@@ -128,12 +145,12 @@ switch($action) {
 		} else {
 			$item = $do->get_one();
 			extract($item);
+			$filepath = str2arr($filepath);
 			$addtime = timetodate($addtime);
 			$totime = $totime ? timetodate($totime, 6) : '';
 			$menuon = array('5', '4', '2', '1', '3');
 			$menuid = $menuon[$status];
 			$thumbs = explode('|',$thumbs);
-			$content = content2str(decode_content($content));
 			include tpl($action, $module);
 		}
 	break;

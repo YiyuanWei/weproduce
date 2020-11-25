@@ -7,16 +7,7 @@ function label($content, $l, $c='', $id = null){
     echo("<label for='$eid'>".$content.": </label>");
 }
 
-function content($content, $itemid){
-    $_files = rearrange($content['files']);
-    unset($content['files']);
-    $_files = array_map('rearrange',$_files);
-    $results = array();
-    require_once DT_ROOT.'/include/upload.class.php';
-    foreach( $_files as $key=>$files ){
-        $results[$key] = upload($files, $key, $itemid);
-    }
-    $content['files'] = $results;
+function content($content){
     return json_encode($content);
 }
 

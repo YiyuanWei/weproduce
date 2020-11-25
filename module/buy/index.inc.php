@@ -21,7 +21,15 @@ if($DT_PC) {
 		switch($action){
 			case "add":
 				$post['thumbs'] = implode($post['thumbs'], '|');
-				$content['files'] = $_FILES['content'];
+				$fcount = count(array_keys($post['filepath']));
+				for($i = 0; $i < $fcount/2 ; $i++){
+					$fname = $post['filepath']["fname$i"];
+					$file = $post['filepath']["file$i"];
+					$post['filepath'][$fname] = $file;
+					unset($post['filepath']["fname$i"]);
+					unset($post['filepath']["file$i"]);
+				}
+				$post['filepath'] = arr2str($post['filepath']);
 				$content['fm'] = $content['fm'] ? $content['fm'] : get_cat($content['fmid'])['catname'];
 				$content['fc'] = $content['fc'] ? $content['fc'] : get_cat($content['fcid'])['catname'];
 				unset($content['fmid']);unset($content['fcid']);
@@ -32,7 +40,7 @@ if($DT_PC) {
 				isset($post['totime']) or $post['totime'] = 0;
 				if($do->pass($post)){
 					if( $itemid = $do->add($post) ){
-						dheader('?step='.($step+1));
+						dheader('?step='.($step+1)."&itemid=$itemid");
 					}
 				}
 				break;

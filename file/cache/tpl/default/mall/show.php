@@ -10,7 +10,7 @@ padding: 0;
 width: 600px;
 height: 480px;
 }
-.nav #next:hover, .nav #prev:hover{
+.nav .spanbtn:hover{
 cursor: default;
 }
 .nav{
@@ -85,7 +85,7 @@ color: white;
         padding: .5rem 1rem;
         margin: 0 0;
 }
-#next, #prev{
+.nav .spanbtn{
 cursor: pointer;
 }
 </style>
@@ -96,15 +96,12 @@ var module_id= <?php echo $moduleid;?>,item_id=<?php echo $itemid;?>,content_id=
 <div class="m">
 <div class="nav">
 <div>
-<div id="next" class="<?php if($itemid!=1) { ?>clickable<?php } ?>
-" onclick="Go('?itemid=<?php echo next_item($itemid,$catid);?>')">
+<div <?php echo next_item($itemid, $catid);?>>
 Next
 <i>&#62;</i>
 </div>
 <div><i>|</i></div>
-<div id="prev" class="<?php if(!($last)) { ?>clickable<?php } ?>
-" <?php if($itemid!=1) { ?> onclick="Go('?itemid=<?php echo next_item($itemid,$catid,-1);?>')" <?php } ?>
->
+<div <?php echo next_item($itemid, $catid, -1);?>>
 <i>&#60;</i>
 Prev
 </div>

@@ -50,7 +50,7 @@ ID：<input type="text" size="4" name="itemid" value="<?php echo $itemid;?>"/>&n
 <th width="130"><?php echo $timetype == 'add' ? '添加' : '更新';?>时间</th>
 <th>浏览</th>
 <th>评论</th>
-<th width="50">操作</th>
+<th width="100">操作</th>
 </tr>
 <?php foreach($lists as $k=>$v) {?>
 <tr align="center">

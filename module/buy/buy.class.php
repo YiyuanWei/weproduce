@@ -37,7 +37,6 @@ class buy {
 
 	function set($post) {
 		global $MOD, $TYPE, $_username, $_userid;
-		$post['filepath'] = (isset($post['filepath']) && is_filepath($post['filepath'])) ? file_vname($post['filepath']) : '';
 		$post['editor'] = $_username;
 		$post['addtime'] = (isset($post['addtime']) && is_time($post['addtime'])) ? strtotime($post['addtime']) : DT_TIME;
 		$post['adddate'] = timetodate($post['addtime'], 3);
@@ -66,7 +65,7 @@ class buy {
 		unset($post['content']);
 		$post = dhtmlspecialchars($post);
 		$post = array_map("trim",$post);
-		// $post['content'] = $content;
+		$post['content'] = $content;
 		$arr = array('Fabric Material','Fabric Weight','Fabric Type');
 		$vs = array($content['fm'],$content['fw'],$content['fc']);
 		$post = $this->set_nv($arr,$vs,$post);
@@ -139,14 +138,14 @@ class buy {
 		DB::query("INSERT INTO {$this->table} ($sqlk) VALUES ($sqlv)");
 		$this->itemid = DB::insert_id();
 		$content_table = content_table($this->moduleid, $this->itemid, $this->split, $this->table_data);
-		$content = content($post['content'], $this->itemid);
+		$content = content($post['content']);
 		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$content')");
 		$this->update($this->itemid);
 		if($post['status'] == 3 && $post['username'] && $MOD['credit_add']) {
 			credit_add($post['username'], $MOD['credit_add']);
 			credit_record($post['username'], $MOD['credit_add'], 'system', lang('my->credit_record_add', array($MOD['name'])), 'ID:'.$this->itemid);
 		}
-		clear_upload($post['content'].$post['thumbs'], $this->itemid);
+		clear_upload($post['content'].$post['thumbs'].$post['filepath'], $this->itemid);
 		send_request($content);
 		return $this->itemid;
 	}
@@ -161,10 +160,10 @@ class buy {
         $sql = substr($sql, 1);
 	    DB::query("UPDATE {$this->table} SET $sql WHERE itemid=$this->itemid");
 		$content_table = content_table($this->moduleid, $this->itemid, $this->split, $this->table_data);
-		$post['content'] = content($post['content'], $this->itemid);
+		$post['content'] = content($post['content']);
 		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$post[content]')");
 		$this->update($this->itemid);
-		clear_upload($post['content'].$post['thumbs'], $this->itemid);
+		clear_upload($post['content'].$post['thumbs'].$post['filepath'], $this->itemid);
 		if($post['status'] > 2) $this->tohtml($this->itemid, $post['catid']);
 		return true;
 	}

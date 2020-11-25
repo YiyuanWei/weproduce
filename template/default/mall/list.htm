@@ -77,7 +77,7 @@
         onquickview = bool;
     }
     function show(id){
-        if(!onquickview) location.href= '{$MOD[linkurl]}show.php?&itemid='+id;
+        if(!onquickview) Go('{$MOD[linkurl]}show.php?&itemid='+id);
     }
 </script>
 {template quickview,mall}

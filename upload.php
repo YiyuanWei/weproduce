@@ -247,6 +247,8 @@ if($do->save()) {
 		} else {
 			if($action == 'webuploader') exit('{"error":0,"url":"'.str_replace('/', '\/', $saveto).'","size":'.dround($do->file_size/1024/1024, 2).'}');
 			$js .= $pr.'("'.$fid.'").value="'.$saveto.'";';
+			$js .= $pr.'("show'.$fid.'").innerHTML="'.$do->file_name.'";';
+			$js .= $pr.'("show'.$fid.'").parentNode.style.display = "block";';
 			if($module == 'down') $js .= 'window.parent.initd('.dround($do->file_size/1024/1024, 2).');';
 		}
 		$js .= 'window.parent.cDialog();';

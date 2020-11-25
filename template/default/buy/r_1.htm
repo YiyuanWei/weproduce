@@ -123,28 +123,41 @@
     </tr>
 </table>
 {template 'image','buy'}
+<style>
+    .file_block span{
+        color: var(--we-blue);
+    }
+    .file_block input.clickable{
+        font-size: 12px;
+        padding: 0 5px;
+    }
+</style>
 <table class="content-table">
     <thead><p class="h2" style="padding: 0 16px">Upload Files</p></thead>
-    <tr>
-        <td width="180px">{label('Design Draft','design')}</td>
-        <td>
-            <input class="clickable" type="file" name="content[file][design]" id="design" class="inputfile">
-        </td>
+    {php $filenames = array('Design Draft','Size Table','Label Design')}
+    {loop $filenames $k $v}
+    <tr class="file_block" id="file{$k}_block">
+        <input type="hidden" name="post[filepath][fname{$k}]" value="{$v}"/>
+        <input type="hidden" name="post[filepath][file{$k}]" id="file{$k}">
+        <td width="150px"><span>{$v}</span></td>
+        <td width="50px"><input class="clickable" type="button" value="Upload" onclick="mDfile({$moduleid},Dd('file{$k}').value,'file{$k}')"></td>
+        <td><input type="button" class="clickable" value="Delete" style="color:var(--we-red)" onclick="mdelfile({$k})"></td>
+        <td align="left" style="display: none;"><span id="showfile{$k}" style="font-size: 14px; font-style: italic;"></span></td>
     </tr>
-    <tr>
-        <td>{label('Size Table','size')}</td>
-        <td>
-            <input class="clickable" type="file" name="content[file][size]" id="size" class="inputfile">
-        </td>
-    </tr>
-    <tr>
-        <td>{label('Label Design','label')}</td>
-        <td>
-            <input class="clickable" type="file" name="content[file][label]" id="label" class="inputfile">
-        </td>
-    </tr>
+    {/loop}
 </table>
-
+<script>
+    function mDfile(m, o, f){
+        Dd('show'+f).innerHTML = "";
+        Dd('show'+f).parentNode.style.display = "none";
+        Dfile(m, o, f);
+    }
+    function mdelfile(i){
+        Dd('file'+i).value = "";
+        Dd('showfile'+i).innerHTML = "";
+        Dd('showfile'+i).parentNode.style.display = "none";
+    }
+</script>
 {php unset($c)}
 {php unset($l)}
 {php unset($p)}

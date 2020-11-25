@@ -115,19 +115,14 @@ function last($itemid){
 }
 function next_item($itemid, $catid, $dir = 1){
 	global $db, $table;
-	$catid = intval($catid);
-	$newcatid = 0; $newid = $itemid;
-	while($newcatid != $catid){
-		$newid += $dir;
-		$item = $db->get_one("SELECT * FROM {$table} WHERE itemid='$newid'");
-		if(!$item){
-			$order = $dir == 1 ? 'DESC' : 'ASC';
-			$item = $db->get_one("SELECT * FROM {$table} ORDER BY itemid '$order' LIMIT 1");
-		}
-		$newid = $item['itemid'];
-		$newcatid = intval($item['catid']);
+	$items = array();
+	$result = $db->query("SELECT itemid FROM {$table} WHERE catid='$catid'");
+	while( $r = $db->fetch_array($result) ){
+		$items[] = $r['itemid'];
 	}
-	echo $newid;
+	$k = array_search($itemid, $items);
+	$newid = $items[$k+$dir];
+	echo "class='spanbtn".($newid ? ' clickable' : '')."' ".($newid ? "onclick='Go(`?itemid=$newid`)'" : "");
 }
 function get_big($albums){
 	foreach ($albums as $k => $album) {

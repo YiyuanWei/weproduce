@@ -35,7 +35,16 @@ show_menu($menus);
 				<td width="216px">File Path</td>
 				<td width="227px"><button type="button" onclick="newFileInput()">Add New</button></td>
 			</tr>
-			<tbody id="files_input"></tbody>
+			<tbody id="files_input">
+				<?php for($i = 0; $i < count(array_keys($filepath)); $i++){?>
+					<?php $key = array_keys($filepath)[$i];?>
+					<tr>
+						<td><input type="text" id="fname<?php echo $i;?>" size="20" name="post[filepath][fname<?php echo $i;?>" value="<?php echo $key;?>"></td>
+						<td colspan="2"><input name="post[filepath][file<?php echo $i;?>]" type="text" size="40" id="file<?php echo $i;?>" value="<?php echo $filepath[$key];?>"/>&nbsp;&nbsp;<span onclick="mDfile(<?php echo $moduleid?>, Dd('file<?php echo $i?>').value, 'file<?php echo $i;?>');" class="jt">[上传]</span>&nbsp;&nbsp;<span onclick="if(Dd('file<?php echo $i?>').value) window.open(Dd('file<?php echo $i?>').value);" class="jt">[预览]</span>&nbsp;&nbsp;<span onclick="mdelfile(<?php echo $i;?>)" class="jt">[删除]</span> <span class="f_red" id="dfiles"></span></td>
+						<?php unset($k);?>
+					</tr>
+				<?php }?>
+			</tbody>
 		</table>
 		<script>
 			function newFileInput(){
@@ -49,8 +58,8 @@ show_menu($menus);
 					i++;
 				}
 				var tr = '<tr>';
-				tr+= '<td><input name="post[files][fname'+i+']" type="text" size="20" id="fname'+i+'"/></td>';
-				tr+= '<td colspan="2"><input name="post[files][file'+i+']" type="text" size="40" id="file'+i+'"/>&nbsp;&nbsp;<span onclick="mDfile(<?php echo $moduleid?>, Dd(`file'+i+'`).value, `file'+i+'`);" class="jt">[上传]</span>&nbsp;&nbsp;<span onclick="if(Dd(`file'+i+'`).value) window.open(Dd(`file'+i+'`).value);" class="jt">[预览]</span>&nbsp;&nbsp;<span onclick="Dd(`file'+i+'`).value=``;" class="jt">[删除]</span> <span class="f_red" id="dfiles"></span></td>';
+				tr+= '<td><input name="post[filepath][fname'+i+']" type="text" size="20" id="fname'+i+'"/></td>';
+				tr+= '<td colspan="2"><input name="post[filepath][file'+i+']" type="text" size="40" id="file'+i+'"/>&nbsp;&nbsp;<span onclick="mDfile(<?php echo $moduleid?>, Dd(`file'+i+'`).value, `file'+i+'`);" class="jt">[上传]</span>&nbsp;&nbsp;<span onclick="if(Dd(`file'+i+'`).value) window.open(Dd(`file'+i+'`).value);" class="jt">[预览]</span>&nbsp;&nbsp;<span onclick="mdelfile('+i+')" class="jt">[删除]</span> <span class="f_red" id="dfiles"></span></td>';
 				tr+= '</tr>';
 				Dd('files_input').innerHTML += tr;
 				for( i = 0; i < fnames.length; i++ ){
@@ -61,8 +70,19 @@ show_menu($menus);
 			function mDfile(m, o, f){
 				Dfile(m, o, f);
 			}
+			function mdelfile(i){
+				Dd('fname'+i).parentNode.parentNode.parentNode.removeChild(Dd('fname'+i).parentNode.parentNode);
+			}
 			function checkFiles(){
-				
+				for( var i = 0; i < Dd('files_input').children.length; i++ ){
+					if( !Dd('fname'+i).value || !Dd('file'+i).value ){
+						Dmsg('Please enter the name of the file or upload a valid file','files');
+						var id = !Dd('file'+i).value ? 'file'+i : 'fname'+i;
+						Dd(id).focus();
+						return false;
+					}
+				}
+				return true;
 			}
 		</script>
 	</td>

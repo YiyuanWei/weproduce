@@ -1269,6 +1269,27 @@ function decode_thumb($thumbs){
 	return $thumbs;
 }
 
+function arr2str($arr){
+	$str = "{";
+	foreach( $arr as $k=>$v ){
+		$str .= "$k-:-$v|";
+    }
+    $str = substr($str,0,strlen($str)-1);
+	$str.="}";
+	return $str;
+}
+
+function str2arr($str){
+    $str = substr($str, 1, strlen($str)-2);
+    $arr = explode('|',$str);
+    foreach($arr as $k=>$v){
+        list($nk,$nv) = explode('-:-',$v);
+        unset($arr[$k]);
+        $arr[$nk] = $nv;
+    }
+    return $arr;
+}
+
 function arraytoquery($arr, $fields=array()){
 	$sqlk = '';
 	$sqlv = '';
