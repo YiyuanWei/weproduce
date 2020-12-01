@@ -52,6 +52,7 @@
 <div class="upload-img" style="padding: 16px">
     <p class="h2">Upload Image</p>
     <p style="font-size: .6rem; font-family: cursive; font-style: italic; color: rgba(18, 43, 92, .5);">Click the uploaded image to remove it.</p>
+    <p><span class="f_red" id="dthumb"></span></p>
     <div id="thumbinputs">
     </div>
     <div class="t_up_imgs">
@@ -94,10 +95,9 @@ function mDalbum(m, w, h, s) {
     mkDialog('',c,L['upload_img'],250);
 }
 function mdelAlbum(f){
-    Dd('thumb'+f).value = '';
-    Dd('showthumb'+f).src = '';
-    Dd('showthumb'+f).style.display = 'none';
-    paras[f] = true;
+    Dd('thumb'+f).remove();
+    Dd('showthumb'+f).remove();
+    paras.splice(f,1);
 }
 function show(ele){
     if( ele.src ){

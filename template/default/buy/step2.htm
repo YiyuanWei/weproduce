@@ -6,6 +6,7 @@
 {if in_array(array('catdir'=>$catdir), $tags)}
 <script>
     var otherid = {$otherid};
+    var noid = otherid+1;
 </script>
 <form class="info-table" action="?step={$step}" method="post" enctype="multipart/form-data" id="info" onsubmit="return check()">
 <input type="hidden" name="post[catid]" value="{$catid}">
@@ -17,7 +18,7 @@
 <input type="hidden" name="action" value="add">
 {template $catdir,buy}
 <button type="submit" name="submit" class="clickable">Submit</button>
-<div class="button clickable" onclick="Go('?step={php echo(($step)-1)}&send=0')">Back</button>
+<div class="button clickable" onclick="Go('?step={php echo(($step)-1)}&send=0')">Back</div>
 </form>
 {else}
 <p class="h1">The category is not valid</p>
@@ -47,16 +48,27 @@
         var selects = document.getElementsByTagName("SELECT");
         for( var i = 0 ; i < selects.length; i++ ){
             var e = selects[i];
-            if( e.value == otherid ){
+            if( e.value == otherid && !(Dd((e.id).substr(0,2)+"_input").value) ){
                 Dmsg("Please input the requirement for this field.",e.id);
                 return false;
             }
         }
         if( Dd('q').value == '' ){
-            Dmsg("Please input the requirement for the quantity of your request","dq");
+            Dmsg("Please input the requirement for the quantity of your request","q");
             return false;
         }
-        
+        if( Dd('thumbinputs').children.length == 0 ){ 
+            return confirm("Please confirm if you don't want to upload any images!");
+        }
         return true;
     }
 </script>
+{if $debug == 1}
+<script>
+    var selects = document.getElementsByTagName("SELECT");
+    for( var i = 0; i < selects.length; i++){
+        var e = selects[i];
+        e.value = noid;
+    }
+</script>
+{/if}

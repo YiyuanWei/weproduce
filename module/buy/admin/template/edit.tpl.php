@@ -40,7 +40,7 @@ show_menu($menus);
 					<?php $key = array_keys($filepath)[$i];?>
 					<tr>
 						<td><input type="text" id="fname<?php echo $i;?>" size="20" name="post[filepath][fname<?php echo $i;?>" value="<?php echo $key;?>"></td>
-						<td colspan="2"><input name="post[filepath][file<?php echo $i;?>]" type="text" size="40" id="file<?php echo $i;?>" value="<?php echo $filepath[$key];?>"/>&nbsp;&nbsp;<span onclick="mDfile(<?php echo $moduleid?>, Dd('file<?php echo $i?>').value, 'file<?php echo $i;?>');" class="jt">[上传]</span>&nbsp;&nbsp;<span onclick="if(Dd('file<?php echo $i?>').value) window.open(Dd('file<?php echo $i?>').value);" class="jt">[预览]</span>&nbsp;&nbsp;<span onclick="mdelfile(<?php echo $i;?>)" class="jt">[删除]</span> <span class="f_red" id="dfiles"></span></td>
+						<td colspan="2"><input name="post[filepath][file<?php echo $i;?>]" type="text" size="40" id="file<?php echo $i;?>" value="<?php echo $filepath[$key];?>"/>&nbsp;&nbsp;<span onclick="mDfile(<?php echo $moduleid?>, Dd('file<?php echo $i?>').value, 'file<?php echo $i;?>');" class="jt">[上传]</span>&nbsp;&nbsp;<span onclick="if(Dd('file<?php echo $i?>').value) window.open(Dd('file<?php echo $i?>').value);" class="jt">[预览]</span>&nbsp;&nbsp;<span onclick="mdelfile(<?php echo $i;?>)" class="jt">[删除]</span><br> <span class="f_red" id="dfiles<?php echo $i;?>"></span></td>
 						<?php unset($k);?>
 					</tr>
 				<?php }?>
@@ -59,7 +59,7 @@ show_menu($menus);
 				}
 				var tr = '<tr>';
 				tr+= '<td><input name="post[filepath][fname'+i+']" type="text" size="20" id="fname'+i+'"/></td>';
-				tr+= '<td colspan="2"><input name="post[filepath][file'+i+']" type="text" size="40" id="file'+i+'"/>&nbsp;&nbsp;<span onclick="mDfile(<?php echo $moduleid?>, Dd(`file'+i+'`).value, `file'+i+'`);" class="jt">[上传]</span>&nbsp;&nbsp;<span onclick="if(Dd(`file'+i+'`).value) window.open(Dd(`file'+i+'`).value);" class="jt">[预览]</span>&nbsp;&nbsp;<span onclick="mdelfile('+i+')" class="jt">[删除]</span> <span class="f_red" id="dfiles"></span></td>';
+				tr+= '<td colspan="2"><input name="post[filepath][file'+i+']" type="text" size="40" id="file'+i+'"/>&nbsp;&nbsp;<span onclick="mDfile(<?php echo $moduleid?>, Dd(`file'+i+'`).value, `file'+i+'`);" class="jt">[上传]</span>&nbsp;&nbsp;<span onclick="if(Dd(`file'+i+'`).value) window.open(Dd(`file'+i+'`).value);" class="jt">[预览]</span>&nbsp;&nbsp;<span onclick="mdelfile('+i+')" class="jt">[删除]</span><br> <span class="f_red" id="dfiles'+i+'"></span></td>';
 				tr+= '</tr>';
 				Dd('files_input').innerHTML += tr;
 				for( i = 0; i < fnames.length; i++ ){
@@ -76,7 +76,7 @@ show_menu($menus);
 			function checkFiles(){
 				for( var i = 0; i < Dd('files_input').children.length; i++ ){
 					if( !Dd('fname'+i).value || !Dd('file'+i).value ){
-						Dmsg('Please enter the name of the file or upload a valid file','files');
+						Dmsg('Please enter the name of the file or upload a valid file','files'+i);
 						var id = !Dd('file'+i).value ? 'file'+i : 'fname'+i;
 						Dd(id).focus();
 						return false;
@@ -100,11 +100,8 @@ var property_admin = 1;
 <?php } ?>
 <?php echo $FD ? fields_html('<td class="tl">', '<td>', $item) : '';?>
 <tr>
-<td class="tl"><span class="f_hid">*</span> 详细说明</td>
-<?php require_once DT_ROOT.'/module/buy/global.func.php';?>
-<td><textarea name="post[content]" id="content" class="dsn"><?php echo $content;?></textarea>
-<?php echo deditor($moduleid, 'content', $MOD['editor'], '100%', 350);?><br/><span id="dcontent" class="f_red"></span>
-</td>
+	<td class="tl"><span class="f_hid">*</span> Requirement</td>
+	<td><textarea name="post[content][Requirements]" cols="80" rows="5"><?php echo $req;?></textarea></td>
 </tr>
 <tr>
 	<td class="tl"><span class="f_red">*</span> 商品图片</td>
@@ -199,24 +196,18 @@ var property_admin = 1;
 <td class="nv">
 <table cellspacing="1" bgcolor="#E7E7EB" class="ctb">
 <tr align="center">
-<th>参数名称</th>
-<th>参数值</th>
+	<th>参数名称</th>
+	<th>参数值</th>
 </tr>
+<?php foreach($content as $k=>$v) {?>
+	<tr bgcolor="#FFFFFF">
+		<td><span><?php echo $k;?></span></td>
+		<td><input type="text" name="post[content][<?php echo encode_content_entry($k);?>]" value="<?php echo $v;?>"></td>
+	</tr>
+<?php }?>
 <tr bgcolor="#FFFFFF">
-<td><input name="post[n1]" type="text" size="20" value="<?php echo $n1;?>" id="n1"/></td>
-<td><input name="post[v1]" type="text" size="20" value="<?php echo $v1;?>" id="v1"/></td>
-</tr>
-<tr bgcolor="#FFFFFF">
-<td><input name="post[n2]" type="text" size="20" value="<?php echo $n2;?>" id="n2"/></td>
-<td><input name="post[v2]" type="text" size="20" value="<?php echo $v2;?>" id="v2"/></td>
-</tr>
-<tr bgcolor="#FFFFFF">
-<td><input name="post[n3]" type="text" size="20" value="<?php echo $n3;?>" id="n3"/></td>
-<td><input name="post[v3]" type="text" size="20" value="<?php echo $v3;?>" id="v3"/></td>
-</tr>
-<tr bgcolor="#FFFFFF">
-<td class="f_gray">例如：规格</td>
-<td class="f_gray">例如：10cm*20cm</td>
+	<td class="f_gray">例如：规格</td>
+	<td class="f_gray">例如：10cm*20cm</td>
 </tr>
 </table>
 </td>
@@ -311,9 +302,8 @@ var property_admin = 1;
 <td class="tl"><span class="f_hid">*</span> 信息状态</td>
 <td>
 	<?php include_once load('buy.lang');?>
-	<?php foreach($L['trade_status'] as $k => $v) {?>
-		<input type="radio" name="post[status]" value="<?php echo $k;?>" <?php if($status==$k) echo 'checked';?>/> <?php echo $v;?><br>
-	<?php }?>
+	<?php isset($status) or $status = 1;?>
+	<?php echo $L['trade_status'][$status]; ?>
 </td>
 </tr>
 <tr id="note" style="display:<?php echo $status==1 ? '' : 'none';?>">

@@ -7,6 +7,7 @@ class buy {
 	var $table_data;
 	var $split;
 	var $fields;
+	var $content_fields;
 	var $errmsg = errmsg;
 
     function __construct($moduleid) {
@@ -15,6 +16,7 @@ class buy {
 		$this->table = $table;
 		$this->table_data = $table_data;
 		$this->split = $MOD['split'];
+		$this->content_fields = array('Fabric Material','Fabric Weight','Fabric Type','Button Material','Button Diameter','Button Thickness','Zipper Material','Zipper Number','Zipper Thickness','Estimated Time','Fabric Thickness','Requirements');
 		$this->fields = array('catid','areaid','typeid','level','title','style','fee','introduce','n1','n2','n3','v1','v2','v3','amount','price','pack','days','thumb','thumb1','thumb2','thumbs','tag','status','hits','username','totime','editor','addtime','adddate','edittime','editdate','ip','template','linkurl','filepath','note','company','truename','telephone','mobile','address','email','qq','wx','ali','skype','files');
     }
 
@@ -47,6 +49,9 @@ class buy {
 		if($MOD['clear_link']) $post['content'] = clear_link($post['content']);
 		if($MOD['save_remotepic']) $post['content'] = save_remote($post['content']);
 		if($MOD['introduce_length']) $post['introduce'] = addslashes(get_intro($post['content'], $MOD['introduce_length']));
+		$post['thumb'] = $post['thumbs'][0];
+		$post['thumbs'] = implode($post['thumbs'], '|');
+		$post = $this->set_filepath($post);
 		if($this->itemid) {
 			$new = $post['content'];
 			if($post['thumb']) $new .= '<img src="'.$post['thumb'].'"/>';
@@ -65,18 +70,21 @@ class buy {
 		unset($post['content']);
 		$post = dhtmlspecialchars($post);
 		$post = array_map("trim",$post);
+		$content = arr2str(decode_content($content));
 		$post['content'] = $content;
-		$arr = array('Fabric Material','Fabric Weight','Fabric Type');
-		$vs = array($content['fm'],$content['fw'],$content['fc']);
-		$post = $this->set_nv($arr,$vs,$post);
 		return $post;
 	}
 
-	function set_nv($arr, $vs,$post){
-		for( $i = 0; $i < count($arr) ; $i++ ){
-			$post['n'.($i+1)] = $arr[$i];
-			$post['v'.($i+1)] = $vs[$i];
+	function set_filepath($post){
+		$fcount = count(array_keys($post['filepath']));
+		for($i = 0; $i < $fcount/2 ; $i++){
+			$fname = $post['filepath']["fname$i"];
+			$file = $post['filepath']["file$i"];
+			$post['filepath'][$fname] = $file;
+			unset($post['filepath']["fname$i"]);
+			unset($post['filepath']["file$i"]);
 		}
+		$post['filepath'] = arr2str($post['filepath']);
 		return $post;
 	}
 
@@ -138,7 +146,7 @@ class buy {
 		DB::query("INSERT INTO {$this->table} ($sqlk) VALUES ($sqlv)");
 		$this->itemid = DB::insert_id();
 		$content_table = content_table($this->moduleid, $this->itemid, $this->split, $this->table_data);
-		$content = content($post['content']);
+		$content = $post['content'];
 		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$content')");
 		$this->update($this->itemid);
 		if($post['status'] == 3 && $post['username'] && $MOD['credit_add']) {
@@ -146,7 +154,7 @@ class buy {
 			credit_record($post['username'], $MOD['credit_add'], 'system', lang('my->credit_record_add', array($MOD['name'])), 'ID:'.$this->itemid);
 		}
 		clear_upload($post['content'].$post['thumbs'].$post['filepath'], $this->itemid);
-		send_request($content);
+		// send_request($content);
 		return $this->itemid;
 	}
 
@@ -160,8 +168,8 @@ class buy {
         $sql = substr($sql, 1);
 	    DB::query("UPDATE {$this->table} SET $sql WHERE itemid=$this->itemid");
 		$content_table = content_table($this->moduleid, $this->itemid, $this->split, $this->table_data);
-		$post['content'] = content($post['content']);
-		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$post[content]')");
+		$content = $post['content'];
+		DB::query("REPLACE INTO {$content_table} (itemid,content) VALUES ('$this->itemid', '$content')");
 		$this->update($this->itemid);
 		clear_upload($post['content'].$post['thumbs'].$post['filepath'], $this->itemid);
 		if($post['status'] > 2) $this->tohtml($this->itemid, $post['catid']);

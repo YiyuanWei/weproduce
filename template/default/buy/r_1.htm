@@ -93,13 +93,13 @@
             <span class="f_red">*</span>
             {label('Quantity','q')}
             <div class="b16"></div>
-            <input type="number" name="content[Quantity]" id="q" min="1" placeholder="1" value="1" onfocus="this.value=''" onblur="if(this.value == '') this.value='1'" required>
+            <input type="number" name="post[amount]" id="q" min="1" placeholder="1" value="1" onfocus="this.value=''" onblur="if(this.value == '') this.value='1'" required>
             <span id="dq" class="f_red"></span>
         </td>
         <td>
             {label('Estimated on Sale Time','et')}
             <div class="b16"></div>
-            <input type="date" name="content[Estimated_Time]" id="et" style="width: 85%;">
+            <input type="date" name="post[totime]" id="et" style="width: 85%;">
         </td>
         <td>
             {php $l = 't'}

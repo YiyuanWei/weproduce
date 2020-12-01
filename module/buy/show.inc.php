@@ -13,7 +13,9 @@ switch ($action) {
 					$condition = "itemid = $itemid";
 					$db->query("UPDATE {$table} SET $update WHERE $condition");
 					$subject = "Your request has been updated.";
-					$body = "The status of your request # {$itemid} has been changed to {$status}";
+					$linkurl = $MOD['linkurl']."show.php?itemid={$itemid}";
+					$body = "The status of your request <a href='$linkurl'># {$itemid}</a> has been changed to {$L['trade_status'][$status]}";
+					$_contact_email or $_contact_email=$email;
 					send_mail($_contact_email, $subject, $body);
 				}
 				break;
@@ -40,9 +42,7 @@ if($DT_PC) {
 	if(!check_group($_groupid, $CAT['group_show'])) include load('403.inc');
 	$content_table = content_table($moduleid, $itemid, $MOD['split'], $table_data);
 	$t = $db->get_one("SELECT content FROM {$content_table} WHERE itemid=$itemid");
-	$content = decode_content($t['content']);
-	$files = $content['files']['file'];
-	unset($content['files']);
+	$content = str2arr($t['content']);
 	$content = parse_video($content);
 	if($MOD['keylink']) $content = keylink($content, $moduleid);
 	if($lazy) $content = img_lazy($content);
@@ -58,8 +58,9 @@ if($DT_PC) {
 	$expired = $totime && $totime < $DT_TIME ? true : false;
 	$linkurl = $MOD['linkurl'].$linkurl;
 	$item['thumbs'] = explode('|',$item['thumbs']);
-	$thumbs = get_albums($item,0,true);
-	$albums =  get_albums($item, 1,true);
+	$filepath = str2arr($filepath);
+	$thumbs = get_albums($item,0);
+	$albums =  get_albums($item,1);
 	$update = '';
 	$fee = get_fee($item['fee'], $MOD['fee_view']);
 	if(check_group($_groupid, $MOD['group_contact'])) {

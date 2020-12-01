@@ -20,21 +20,7 @@ if($DT_PC) {
 	if($submit){
 		switch($action){
 			case "add":
-				$post['thumbs'] = implode($post['thumbs'], '|');
-				$fcount = count(array_keys($post['filepath']));
-				for($i = 0; $i < $fcount/2 ; $i++){
-					$fname = $post['filepath']["fname$i"];
-					$file = $post['filepath']["file$i"];
-					$post['filepath'][$fname] = $file;
-					unset($post['filepath']["fname$i"]);
-					unset($post['filepath']["file$i"]);
-				}
-				$post['filepath'] = arr2str($post['filepath']);
-				$content['fm'] = $content['fm'] ? $content['fm'] : get_cat($content['fmid'])['catname'];
-				$content['fc'] = $content['fc'] ? $content['fc'] : get_cat($content['fcid'])['catname'];
-				unset($content['fmid']);unset($content['fcid']);
 				$post['content'] = $content;
-				$post['amount'] = $content['Quantity'];
 				$catname = get_cat($post['catid'])['catname'];
 				$post['title'] = $catname."_request";
 				isset($post['totime']) or $post['totime'] = 0;

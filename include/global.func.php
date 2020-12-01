@@ -1273,7 +1273,7 @@ function arr2str($arr){
 	$str = "{";
 	foreach( $arr as $k=>$v ){
 		$str .= "$k-:-$v|";
-    }
+	}
     $str = substr($str,0,strlen($str)-1);
 	$str.="}";
 	return $str;

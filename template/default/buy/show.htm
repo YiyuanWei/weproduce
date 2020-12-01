@@ -53,7 +53,7 @@
 			</div>
 			<div class="b10"></div>
 			<div>
-			{loop $img $k $v}<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album({$k}, '{$img[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>{/loop}
+			{loop $thumbs $k $v}<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album({$k}, '{$thumbs[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>{/loop}
 			</div>
 			<div class="b10"></div>
 			<div onclick="PAlbum(Dd('mid_pic'));" class="c_b t_c c_p"><img src="{DT_SKIN}image/ico_zoom.gif" width="16" height="16" align="absmiddle"/> <span class="fn">Click to Preview</span></div>
@@ -123,6 +123,11 @@
 <table class="content c_b" id="content">
 {loop $content $t $v}
 <tr><td><span class="content-n">{$t}</span></td><td width="50px">: </td><td><span class="content-v">{$v}</span></td></tr>
+{/loop}
+{loop $filepath $k $v}
+{if $k && $v}
+<tr><td><span class="content-n">{$k}</span></td><td width="50px">: </td><td><span onclick="if(Dd('file<?php echo $i?>').value) window.open(Dd('file<?php echo $i?>').value);" class="jt content-v">[View]</span></td></tr>
+{/if}
 {/loop}
 </table>
 </div>

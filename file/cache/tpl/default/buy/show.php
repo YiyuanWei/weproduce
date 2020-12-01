@@ -54,7 +54,7 @@ border: .25rem solid green;
 </div>
 <div class="b10"></div>
 <div>
-<?php if(is_array($img)) { foreach($img as $k => $v) { ?><img src="<?php echo $v;?>" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album(<?php echo $k;?>, '<?php echo $img[$k];?>');" class="<?php if($k) { ?>ab_im<?php } else { ?>ab_on<?php } ?>
+<?php if(is_array($thumbs)) { foreach($thumbs as $k => $v) { ?><img src="<?php echo $v;?>" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album(<?php echo $k;?>, '<?php echo $thumbs[$k];?>');" class="<?php if($k) { ?>ab_im<?php } else { ?>ab_on<?php } ?>
 " id="t_<?php echo $k;?>"/><?php } } ?>
 </div>
 <div class="b10"></div>
@@ -125,6 +125,11 @@ font-size: 12px;
 <table class="content c_b" id="content">
 <?php if(is_array($content)) { foreach($content as $t => $v) { ?>
 <tr><td><span class="content-n"><?php echo $t;?></span></td><td width="50px">: </td><td><span class="content-v"><?php echo $v;?></span></td></tr>
+<?php } } ?>
+<?php if(is_array($filepath)) { foreach($filepath as $k => $v) { ?>
+<?php if($k && $v) { ?>
+<tr><td><span class="content-n"><?php echo $k;?></span></td><td width="50px">: </td><td><span onclick="if(Dd('file<?php echo $i?>').value) window.open(Dd('file<?php echo $i?>').value);" class="jt content-v">[View]</span></td></tr>
+<?php } ?>
 <?php } } ?>
 </table>
 </div>

@@ -135,19 +135,37 @@ function step_price($step){
 	$money_sign = $DT['money_sign'];
 	for( $i = 1; $i<count($step)/2; $i++ ){
 		$j = $i + 1;
-		$a1 = intval($step["a$i"]); $a2 = intval($step["a$j"]);
-		$p = dround($step["p$i"],2,1); 
+		$a1 = intval($step["a$i"]);
+		if($a1){ 
+			$a2 = intval($step["a$j"]);
+			if($a2){
+				$p = dround($step["p$i"],2,1); 
+				$tr = "<tr>";
+				$tr.= "<td><span>$a1-$a2 $unit:</span></td>";
+				$tr.= "<td><span>$money_sign $p/$unit</span></td>";
+				$tr.= "</tr>";
+				echo $tr;
+			}
+			else{
+				$a = $a1;
+				$p = dround($step["p$i"],2,1);
+				$tr = "<tr>";
+				$tr.= "<td><span>&gt; $a $unit:</span></td>";
+				$tr.= "<td><span>$money_sign $p/$unit</span></td>";
+				$tr.= "</tr>";
+				echo $tr;
+				break;
+			}
+		}
+	}
+	$a = intval($step["a$i"]); 
+	if($a){
+		$p = dround($step["p$i"],2,1);
 		$tr = "<tr>";
-		$tr.= "<td><span>$a1-$a2 $unit:</span></td>";
+		$tr.= "<td><span>&gt; $a $unit:</span></td>";
 		$tr.= "<td><span>$money_sign $p/$unit</span></td>";
 		$tr.= "</tr>";
 		echo $tr;
 	}
-	$a = intval($step["a$i"]); $p = dround($step["p$i"],2,1);
-	$tr = "<tr>";
-	$tr.= "<td><span>&gt; $a $unit:</span></td>";
-	$tr.= "<td><span>$money_sign $p/$unit</span></td>";
-	$tr.= "</tr>";
-	echo $tr;
 }
 ?>

@@ -76,7 +76,6 @@ switch($action) {
 	case 'add':
 		if($submit) {
 			array_pop($post['thumbs']);
-			$post['thumbs'] = implode($post['thumbs'],'|');
 			$fcount = count($post['filepath'])/2;
 			for($i = 0; $i < $fcount ; $i++){
 				$fname = $post['filepath']["fname$i"];
@@ -122,7 +121,6 @@ switch($action) {
 		$do->itemid = $itemid;
 		if($submit) {
 			array_pop($post['thumbs']);
-			$post['thumbs'] = implode($post['thumbs'],'|');
 			$fcount = count($post['filepath'])/2;
 			for($i = 0; $i < $fcount ; $i++){
 				$fname = $post['filepath']["fname$i"];
@@ -151,6 +149,9 @@ switch($action) {
 			$menuon = array('5', '4', '2', '1', '3');
 			$menuid = $menuon[$status];
 			$thumbs = explode('|',$thumbs);
+			$content = str2arr($content);
+			!$content['Requirements'] or $req = $content['Requirements'];
+			unset($content['Requirements']);
 			include tpl($action, $module);
 		}
 	break;
