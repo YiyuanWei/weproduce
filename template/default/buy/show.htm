@@ -34,6 +34,7 @@
 	{if $_admin}
 	<td width="300" valign="top">
 		<form action="?itemid={$itemid}&action=update&step=status&admin={$_admin}" method="POST">
+			<input type="hidden" name="email" value="{$email}">
 			<select name="status" value="{$status}">
 			{loop $L[show_status] $k $v}
 			<option value="{$k}"{if $k==$status} selected{/if}>{$v}</option>

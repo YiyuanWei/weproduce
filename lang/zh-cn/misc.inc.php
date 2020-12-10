@@ -72,7 +72,7 @@ $L['order_guest'] = '该企业未注册本站会员，无法收到订单';
 $L['order_type_amount'] = '请填写订货总量';
 $L['order_min_amount'] = '订货总量不能小于最小起订量';
 $L['order_max_amount'] = '订货总量不能大于供货总量';
-$L['order_confirm'] = '确认订单';
+$L['order_confirm'] = 'Confirm Order';
 $L['order_goods'] = '订购产品';
 /* job/apply.inc.php */
 $L['apply_self'] = '您不能向自己公司投递简历';
@@ -108,11 +108,11 @@ $L['sms_inquiry'] = '询盘';
 $L['sms_price'] = '报价';
 $L['sms_message'] = '留言';
 /* mall/cart.inc.php */
-$L['cart_title'] = '购物车';
+$L['cart_title'] = 'Cart';
 /* mall|group/buy.inc.php */
-$L['buy_title'] = '提交订单';
+$L['buy_title'] = 'Submit Order';
 $L['post_free'] = '包邮';
-$L['msg_buy_success'] = '订单提交成功';
+$L['msg_buy_success'] = 'Order Success';
 /* group/buy.inc.php*/
 $L['group_expired'] = '团购已结束';
 /* exhibit/sign.inc.php*/

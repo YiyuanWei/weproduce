@@ -174,7 +174,7 @@ $L['trade_message_c5'] = '<a href="{V0}" class="t">{V1}</a> 于 <span class="f_g
 $L['trade_message_t6'] = '站内交易提醒，您有一笔交易需要确认(T{V0})';
 $L['trade_message_c6'] = '<a href="{V0}" class="t">{V1}</a> 于 <span class="f_gray">{V2}</span> 向您订购了：<br/>{V3}<br/>订单编号：<span class="f_red">T{V4}</span> &nbsp;订单金额为：<span class="f_blue f_b">{V5}'.$DT['money_unit'].'</span><br/><a href="{V6}" class="t" target="_blank">&raquo; 请点这里立即处理或查看详情</a>';
 
-$L['purchase_title'] = '确认订单';
+$L['purchase_title'] = 'PURCHASE';
 $L['purchase_msg_address'] = '请先创建收货地址';
 $L['purchase_msg_goods'] = '商品不存在';
 $L['purchase_msg_self'] = '不能购买自己的商品';
@@ -187,5 +187,5 @@ $L['msg_express_no_error'] = '快递单号格式错误';
 $L['msg_express_date_error'] = '发货时间格式错误';
 
 $L['express_sfields'] = array('按条件', '商品名称', '快递公司', '快递单号');
-$L['express_title'] = '我的快递';
+$L['express_title'] = 'Deliveries';
 ?>

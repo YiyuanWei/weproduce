@@ -28,7 +28,7 @@
                     <tr><td><input type="submit" id="reg_btn" name="submit" value="Create Account" class="clickable padd_10 fsize_15 submit"></td></tr>
                     <tr><td><div class="b10"></div></td></tr>
                     <tr><td style="font-size: 12px;">Already have an account?</td></tr>
-                    <tr><td><div class="clickable padd_10 fsize_15 go" id="login_btn" onclick="Go(MEPath+'login.php')">Sign In</div></td></tr>
+                    <tr><td><div class="clickable padd_10 fsize_15 go" id="login_btn" onclick="Go('<?php echo $MOD['linkurl'];?>login.php')">Sign In</div></td></tr>
                 </table>
             </form>
         </div>

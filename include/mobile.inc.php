@@ -16,7 +16,7 @@ $back_link = $head_link = $head_name = $pages = '';
 $areaid = isset($areaid) ? intval($areaid) : 0;
 $site_name = $EXT['mobile_sitename'] ? $EXT['mobile_sitename'] : $DT['sitename'].$L['mobile_version'];
 $DT['sitename'] = $site_name;
-$DT_PC = 0;
+$DT_PC = 1;
 $MURL = $MODULE[2]['linkurl'];
 if($DT_MOB['browser'] == 'screen' && $_username) $MURL = DT_PATH.'api/mobile.php?action=sync&auth='.encrypt($_username.'|'.$DT_IP.'|'.$DT_TIME, DT_KEY.'SCREEN').'&goto=';
 $_cart = ($DT['max_cart'] && $_userid) ? intval(get_cookie('cart')) : 0;

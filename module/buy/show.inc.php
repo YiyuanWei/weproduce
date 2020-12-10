@@ -15,8 +15,7 @@ switch ($action) {
 					$subject = "Your request has been updated.";
 					$linkurl = $MOD['linkurl']."show.php?itemid={$itemid}";
 					$body = "The status of your request <a href='$linkurl'># {$itemid}</a> has been changed to {$L['trade_status'][$status]}";
-					$_contact_email or $_contact_email=$email;
-					send_mail($_contact_email, $subject, $body);
+					send_mail($email, $subject, $body);
 				}
 				break;
 			default:

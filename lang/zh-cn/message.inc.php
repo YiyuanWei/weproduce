@@ -11,7 +11,7 @@ $L['ajax_filepath_not_exists'] = '文件路径没有重复';
 $L['common_forbidden'] = '您的用户级别为禁止访问';
 $L['common_login'] = '您的帐号在别处(IP:{V0})登录，您被迫下线\n如果不是您操作的，请尽快修改登录密码';
 /* upload.php */
-$L['upload_refuse'] = '没有权限上传文件';
+$L['upload_refuse'] = 'Uploading Rejected';
 $L['upload_limit'] = '上传数量超出限制，同一信息最多上传{V0}文件';
 $L['upload_credit'] = '上传文件需扣除{V0}'.$DT['credit_name'].'，当前'.$DT['credit_name'].'余额{V1}';
 $L['upload_limit_day'] = '24小时内最多上传{V0}文件，当前已经上传{V1}文件';
@@ -76,7 +76,7 @@ $L['pass_group_mprice'] = '请填写市场价';
 $L['pass_group_eprice'] = '团购价必须低于市场价';
 /* list|show|search.inc.php */
 $L['without_permission'] = '抱歉，您所在的会员组没有权限访问此页面';
-$L['cate_not_exists'] = '抱歉，你要访问的分类不存在';
-$L['item_not_exists'] = '抱歉，您要访问的信息不存在或被删除';
+$L['cate_not_exists'] = 'Sorry, no category has been found or deleted.';
+$L['item_not_exists'] = 'Sorry, item has been found or deleted.';
 $L['without_permission_and_upgrade'] = '您所在的会员组没有权限使用此功能，请升级';
 ?>

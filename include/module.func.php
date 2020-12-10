@@ -285,7 +285,7 @@ function update_user($member, $item, $fileds = array('groupid','vip','validated'
 	foreach($fileds as $v) {
 		if(isset($item[$v]) && $item[$v] != $member[$v]) $update .= ",$v='".addslashes($member[$v])."'";
 	}
-	if(isset($item['email']) && $item['email'] != $member['mail']) $update .= ",email='".addslashes($member['mail'])."'";
+	if(isset($item['email']) && $item['email'] != $member['email']) $update .= ",email='".addslashes($member['email'])."'";
 	return $update;
 }
 

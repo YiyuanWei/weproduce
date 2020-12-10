@@ -4,7 +4,7 @@
 	This is NOT a freeware, use is subject to license.txt
 */
 defined('IN_DESTOON') or exit('Access Denied');
-$L['unit'] = '件';
+$L['unit'] = 'pc(s)';
 $L['price_dsc'] = '价格由高到低';
 $L['price_asc'] = '价格由低到高';
 $L['orders_dsc'] = '销量由高到低';
