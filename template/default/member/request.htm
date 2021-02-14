@@ -40,7 +40,7 @@
 		<tr bgcolor="#F5F5F5">
 		<td colspan="7" class="f_gray">
 		<span class="f_r"><a href="{$v[linkurl]}" style="text-decoration: underline; font-size: 14px; font-style: italic;">Check</a></span>
-		<span class="c_p" onclick="Go('?itemid={$v[itemid]}&action=update&step=detail');">&nbsp; # {$v[itemid]} <br>&nbsp; {$v[edittime]}<span> 
+		<span class="c_p" onclick="Go('?itemid={$v[itemid]}&action=update&step=detail');">&nbsp; # {$v[itemid]} &nbsp; {timetodate($v[edittime])}<span> 
 		</td>
 		</tr>
 		<tr align="center">

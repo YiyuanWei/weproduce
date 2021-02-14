@@ -42,6 +42,6 @@ $head_name = $EXT['mobile_sitename'] ? $EXT['mobile_sitename'] : $DT['sitename']
 $seo_title = $DT['seo_title'];
 $head_keywords = $DT['seo_keywords'];
 $head_description = $DT['seo_description'];
-$foot = 'home';
+$foot = 'home'; 
 include template('index');
 ?>

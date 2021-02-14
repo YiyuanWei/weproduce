@@ -66,7 +66,8 @@ $DT_TIME = time() + $CFG['timediff'];
 $DT_IP = get_env('ip');
 $DT_URL = get_env('url');
 $DT_REF = get_env('referer');
-$DT_MOB = get_env('mobile');
+$DT_MOB = get_env('mobile'); // For Mobile Version
+// $DT_MOB = array('os'=>'','browser'=>'');
 $DT_BOT = is_robot();
 $DT_TOUCH = is_touch();
 $DT_PC = $GLOBALS['DT_PC'] = 1;

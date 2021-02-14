@@ -1,0 +1,62 @@
+{template header, member}
+<script>page('status');</script>
+<div class="tt">
+    <style>
+        .working{
+            background-color: orange;
+        }
+        .done{
+            background-color: green;
+        }
+        .na{
+            background-color: grey;
+        }
+    </style>
+    <p>Summary of your request status</p>
+    <style>
+        #color-guide div{
+            display: block;
+            border: 1px black solid;
+            border-right-width: 0;
+            font-size: 20px;
+            padding: 0 2px;
+        }
+    </style>
+    <div id="color-guide" style="display: grid; grid-template-columns: 33% 33% 33% 1%">
+        <div class="working">Working on it</div>
+        <div class="done">Done</div>
+        <div class="na">NA</div>
+        <div style="border-width: 0; border-left-width: 1px;"></div>
+    </div>
+    <div class="b12"></div>
+    <style>
+        #status-table, #status-table *:not(a){
+            border: 1px solid black;
+            padding: 2px;
+            border-collapse: collapse;
+        }
+    </style>
+    <table id="status-table" >
+        <tr align='left'>
+            <th>Product</th>
+            <th>Fabric</th>
+            <th>Cutting/<br>Making</th>
+            <th>Quality<br>Control</th>
+            <th>Dispatch to<br>shipping center</th>
+            <th>Tracking</th>
+        </tr>
+        {loop $list $t $v}
+        <tr>
+            {php $v[note]=str2arr($v[note])}
+            <td><a class="clickable" href="{$v[linkurl]}">{$v[title]}</a></td>
+            {loop $L[table_status] $t $k}
+            <td class="{if $v[status]==$t}working{elseif $v[status]>$t}done{else}na{/if}">{$v[note][$t]}</td>
+            {/loop}
+        </tr>
+        {/loop}
+    </table>
+</div>
+
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('request');m('action');</script>
+{template footer, member}

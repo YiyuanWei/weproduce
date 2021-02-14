@@ -35,14 +35,28 @@ border: .25rem solid green;
 <td width="300" valign="top">
 <form action="?itemid=<?php echo $itemid;?>&action=update&step=status&admin=<?php echo $_admin;?>" method="POST">
 <input type="hidden" name="email" value="<?php echo $email;?>">
-<select name="status" value="<?php echo $status;?>">
+<select id="status" name="status" value="<?php echo $status;?>" onchange="input_note()">
 <?php if(is_array($L['show_status'])) { foreach($L['show_status'] as $k => $v) { ?>
 <option value="<?php echo $k;?>"<?php if($k==$status) { ?> selected<?php } ?>
 ><?php echo $v;?></option>
 <?php } } ?>
 </select>
 <input type="submit" name="submit" value="Update Status">
+<input id="note" style="display: none;" type="text" name="note">
+<input type="hidden" name="oldnote" value="<?php echo $note;?>">
+<br>
 </form>
+<script>
+function input_note() {
+var v = Dd('status').value;
+if(v > 4 && v < 10){
+Dd('note').style.display='block';
+}
+else{
+Dd('note').style.display='none';
+}
+}
+</script>
 </td>
 <?php } ?>
 </tr>
@@ -54,7 +68,7 @@ border: .25rem solid green;
 <img src="<?php echo $thumbs['0'];?>" width="320" height="240" id="mid_pic"/><span id="zoomer"></span>
 </div>
 <div class="b10"></div>
-<div style="display: flex;">
+<div>
 <?php if(is_array($thumbs)) { foreach($thumbs as $k => $v) { ?><img src="<?php echo $v;?>" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album(<?php echo $k;?>, '<?php echo $thumbs[$k];?>');" class="<?php if($k) { ?>ab_im<?php } else { ?>ab_on<?php } ?>
 " id="t_<?php echo $k;?>"/><?php } } ?>
 </div>

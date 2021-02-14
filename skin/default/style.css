@@ -117,7 +117,7 @@ a.g:hover {color:#FF6600;}
 .pages a:hover {background:#258CFF;border:#258CFF 1px solid;color:#FFFFFF;padding:6px;text-decoration:none;}
 .pages strong {background:#258CFF;padding:6px;border:#258CFF 1px solid;color:#FFFFFF;}
 .pages_inp {width:32px;border:#DDDDDD 1px solid;color:#666666;padding:4px;text-align:center;}
-.pages_btn {width:32px;border:#FF6600 1px solid;color:#FFFFFF;padding:4px 6px;background:#FF6600;font-weight:bold;font-size:11px;}
+.pages_btn {width:32px;border:var(--we-blue) 1px solid;color:#FFFFFF;padding:4px 6px;background:var(--we-blue);font-weight:bold;font-size:11px;border-radius:1px;}
 .pages label {background:#FFFFFF;border:#DDDDDD 1px solid;color:#666666;padding:6px 6px;}
 .pages label em {color:red;font-weight:bold;font-style:normal;}
 .pages label span {font-weight:bold;}

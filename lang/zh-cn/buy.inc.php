@@ -34,5 +34,12 @@ $L['show_status'] = array(
 	'7'=>'Quality Control',
 	'8'=>'Shipping Arrangement',
 	'9'=>'Dispatched',
-)
+);
+$L['table_status'] = array(
+	'5'=>'Fabric',
+	'6'=>'Manufacturing',
+	'7'=>'Quality Control',
+	'8'=>'Dispatch to shipping center',
+	'9'=>'Tracking',
+);
 ?>

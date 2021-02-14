@@ -118,6 +118,7 @@ color: white;
                 <a href="<?php echo $MOD['linkurl'];?>address.php"><li class="inactive" id="address">My Addresses</li></a>
                 <!-- <li class="inactive" id="wallet">My Wallet</li> -->
                 <a href="<?php echo $MOD['linkurl'];?>account.php"><li class="inactive" id="account">My Account</li></a>
+                <a href="<?php echo $MOD['linkurl'];?>status.php"><li class="inactive" id="status">Requests Status</li></a>
                 <!-- <a href="<?php echo $MOD['linkurl'];?>message.php"></a><li class="inactive" id="message">My Messages</li>
                 <li class="inactive" id="password">Reset Password</li> -->
                 <div class="b5"></div>

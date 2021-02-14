@@ -35,13 +35,27 @@
 	<td width="300" valign="top">
 		<form action="?itemid={$itemid}&action=update&step=status&admin={$_admin}" method="POST">
 			<input type="hidden" name="email" value="{$email}">
-			<select name="status" value="{$status}">
+			<select id="status" name="status" value="{$status}" onchange="input_note()">
 			{loop $L[show_status] $k $v}
 			<option value="{$k}"{if $k==$status} selected{/if}>{$v}</option>
 			{/loop}
 			</select>
 			<input type="submit" name="submit" value="Update Status">
+			<input id="note" style="display: none;" type="text" name="note">
+			<input type="hidden" name="oldnote" value="{$note}">
+			<br>
 		</form>
+		<script>
+			function input_note() {
+				var v = Dd('status').value;
+				if(v > 4 && v < 10){
+					Dd('note').style.display='block';
+				}
+				else{
+					Dd('note').style.display='none';
+				}
+			}
+		</script>
 	</td>
 	{/if}
 		</tr>

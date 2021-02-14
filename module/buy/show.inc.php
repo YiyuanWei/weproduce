@@ -9,9 +9,16 @@ switch ($action) {
 		switch ($step) {
 			case 'status':
 				if($submit){
-					$update = "status = $status";
+					$update = "status = $status"; 
+					$notearr = array($status=>$note);
+					$oldnote = $oldenote ? str2arr($oldnote) : array();
+					$notearr = $oldnote+$notearr;
+					$note = arr2str($notearr);
+					$update .= ", note = '$note'";
 					$condition = "itemid = $itemid";
-					$db->query("UPDATE {$table} SET $update WHERE $condition");
+					$query = "UPDATE {$table} SET $update WHERE $condition";
+					echo $query;
+					$db->query($query);
 					$subject = "Your request has been updated.";
 					$linkurl = $MOD['linkurl']."show.php?itemid={$itemid}";
 					$body = "The status of your request <a href='$linkurl'># {$itemid}</a> has been changed to {$L['trade_status'][$status]}";
