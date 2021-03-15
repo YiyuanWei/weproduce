@@ -24,9 +24,7 @@
 <script type="text/javascript">var errimg = '{DT_SKIN}image/nopic50.gif';</script>
 <style>
 	#main{
-		display: grid;
-		grid-template-columns: 65% 35%;
-		grid-template-areas: "cart summary";
+		width: 1080px;
 		margin: 8rem auto;
 	}
 	#main input[type=submit]{
@@ -138,20 +136,19 @@
 	{/loop}
 	</table>
 	<style>
-		#summary-main table{
-			width: 100%;
-			border-collapse: collapse;
+		#summary-main{
+			margin: 1rem auto;
 		}
-		#summary-main *:not(caption){
+		#summary-main *:not(.page-title){
 			font-size: 1.2rem;
 			font-family: 'Dancing Script';
 			color: var(--background-color);
 		}
-		#summary-main th{
+		#summary-main .th{
 			float: left;
 			font-weight: normal;
 		}
-		#summary-main td{
+		#summary-main .td{
 			float: right;
 		}
 		#address{
@@ -167,29 +164,15 @@
 		}
 	</style>
 	<div id="order-summary">
-		<table id="summary-main" cellpadding="0" cellspacing="0" width="100%">
-			<caption class="page-title">Order Summary</caption>
-			<tr>
-				<th>Subtotal</th>
-				<td>$<span id="total_amount"></span></td>
-			</tr>
-			<tr class="b20"></tr>
-			<tr>
-				<th>Shipping</th>
-				<td>$<span id="shipping">{$shipping}</span></td>
-			</tr>
-			<tr class="b10"></tr>
-			<tr><th colspan="2" id="address"><a href="{$MODULE[linkurl]}address.php">{$_address}</a></th></tr>
-			<tr>
-				<th style="margin-top: 1.5rem">Total</th>
-				<td style="margin-top: 1.5rem">$<span id="total"></span></td>
-			</tr>
-		</table>
-		<input type="submit" value="Checkout" class="clickable">
+		<div id="summary-main">
+			<p class="page-title">Order Summary</p>
+			<p><span class="th">Subtotal</span><span class="td">$ <span id="total_amount"></span></span></p>
+		</div>
+		<input type="submit" value="Place Order" class="clickable">
 	</div>
 	</form>
 	{else}
-	<div style="padding: 8rem 0;">
+	<div style="margin: 8rem auto; width: 1080px;">
 		<div class="page-title">My Cart</div>
 		<div style="width: 100%; height: 500px; border-bottom: 1px solid var(--background-color);">
 			<style>

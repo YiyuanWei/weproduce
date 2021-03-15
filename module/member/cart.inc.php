@@ -28,7 +28,6 @@ include load('misc.lang');
 $do = new cart();
 $do->max = intval($DT['max_cart']);
 $cart = $do->get();
-if($itemid) $action = 'add';
 $lists = array();
 $query = "SELECT address FROM ds_address WHERE username='".$_username."'";
 $_address = DB::get_one($query)['address'];

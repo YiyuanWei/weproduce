@@ -38,7 +38,7 @@ class cart {
 			foreach($itemid as $v) {
 				if(!isset($tags[$v])) continue;
 				if($tags[$v]['status'] != 3) continue;
-				if($tags[$v]['username'] == $_username) continue;
+				// if($tags[$v]['username'] == $_username) continue;
 				$k = $mid.'-'.$v.'-0-0-0';
 				if(isset($cart[$k])) {
 					$cart[$k] = $cart[$k] + 1;
@@ -79,7 +79,7 @@ class cart {
 	}
 
 	function get_list($cart) {
-		global $MODULE, $_username;
+		global $MODULE, $_username, $debug;
 		$lists = $tags = $ids = $data = $_cart = array();
 		foreach($cart as $k=>$v) {
 			$t = array_map('intval', explode('-', $k));
@@ -98,7 +98,7 @@ class cart {
 			foreach($ids as $_mid=>$itemids) {
 				$result = DB::query("SELECT * FROM ".get_table($_mid)." WHERE itemid IN ($itemids)");
 				while($r = DB::fetch_array($result)) {
-					if($r['username'] == $_username || $r['status'] != 3 || $r['price'] < 0.01 || $r['amount'] < 1) continue;
+					if(($r['username'] == $_username && $debug == 1) || $r['status'] != 3 || $r['price'] < 0.01 || $r['amount'] < 1) continue;
 					$r['mid'] = $_mid;
 					$r['alt'] = $r['title'];
 					$r['title'] = dsubstr($r['title'], 40, '..');

@@ -262,7 +262,7 @@ if($submit) {
 			foreach($ids as $_mid=>$itemids) {
 				$result = $db->query("SELECT * FROM ".get_table($_mid)." WHERE itemid IN ($itemids)");
 				while($r = $db->fetch_array($result)) {
-					if($r['username'] == $_username || $r['status'] != 3 || $r['price'] < 0.01 || $r['amount'] < 1) continue;
+					if(($r['username'] == $_username && $debug == 1) || $r['status'] != 3 || $r['price'] < 0.01 || $r['amount'] < 1) continue;
 					$r['mid'] = $_mid;
 					$r['alt'] = $r['title'];
 					$r['title'] = dsubstr($r['title'], 40, '..');
@@ -280,9 +280,7 @@ if($submit) {
 					}
 					if($r['step']) {
 						$s = unserialize($r['step']);
-						foreach(unserialize($r['step']) as $k=>$v) {
-							$r[$k] = $v;
-						}
+						$r['step'] = $s;
 					} else {
 						$r['a1'] = 1;
 						$r['p1'] = $r['price'];

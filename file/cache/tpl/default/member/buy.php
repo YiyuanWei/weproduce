@@ -11,7 +11,7 @@
 </div>
 <?php } else { ?>
 <script type="text/javascript">var errimg = '<?php echo DT_SKIN;?>image/nopic50.gif';</script>
-<div class="m" style="margin: 8rem auto">
+<div class="m" style="margin: 8rem auto; width: 1080px;">
 <?php if($lists) { ?>
 <form method="post" action="buy.php" onsubmit="return check();">
 <input type="hidden" name="submit" value="1"/>
@@ -45,25 +45,15 @@ border-bottom: 1px solid var(--background-color);
 <td align="left">
 <div style="padding:3px 0 3px 0;"><span class="we_f1">Bulk Order:</span> <br><textarea name="post[<?php echo $t['key'];?>][note]" value="" style="border:#CCCCCC 1px solid; resize: none;width: 50%; height: 65px;" maxlength="200" title="Shorter than 200 letters"></textarea></div>
 </td>
-<td title="<?php if($t['a2']) { ?><?php echo $t['a1'];?>-<?php echo $t['a2'];?><?php echo $t['unit'];?> <?php echo $DT['money_sign'];?><?php echo $t['p1'];?>&#10;<?php if($t['a3']) { ?><?php echo $t['a2']+1;?>-<?php echo $t['a3'];?><?php echo $t['unit'];?> <?php echo $DT['money_sign'];?><?php echo $t['p2'];?>&#10;Above <?php echo $t['a3'];?><?php echo $t['unit'];?> <?php echo $DT['money_sign'];?><?php echo $t['p3'];?><?php } else { ?>Above <?php echo $t['a2']+1;?><?php echo $t['unit'];?> <?php echo $DT['money_sign'];?><?php echo $t['p2'];?><?php } ?>
-<?php } else { ?><?php echo $DT['money_sign'];?><?php echo $t['p1'];?><?php } ?>
-"><span class="we_f1_2">$</span><span class="we_f1_2" id="price_<?php echo $t['key'];?>"><?php echo $t['price'];?></span></td>
+<!-- TODO: show price step in this td  -->
+<td title="<?php for($i = 1; $i<=count($t['step'])/2; $i++){$a1=$t['step']['a'.$i]; $p=dround($t['step']['p'.$i]);if($a1){ $j=$i+1; if($a2=$t['step']['a'.$j]){echo $a1.'-'.$a2.$t['unit'].' '.$DT['money_sign'].$p.'&#10;'; }else{echo '&gt;'.$a1.$t['unit'].' '.$DT['money_sign'].$p;}}}?>">
+<span class="we_f1_2">$</span><span class="we_f1_2" id="price_<?php echo $t['key'];?>"><?php echo $t['price'];?></span>
+</td>
 <td><input type="number" name="post[<?php echo $t['key'];?>][number]" value="<?php echo $t['a'];?>" class="cc_inp" id="number_<?php echo $t['key'];?>" onblur="calculate();" onchange="calculate();"/></td>
 <td>
 <input type="hidden" name="post[<?php echo $t['key'];?>][express]" value='0'>
-<input type="hidden" id="a1_<?php echo $t['key'];?>" value="<?php echo $t['a1'];?>"/>
-<input type="hidden" id="a2_<?php echo $t['key'];?>" value="<?php echo $t['a2'];?>"/>
-<input type="hidden" id="a3_<?php echo $t['key'];?>" value="<?php echo $t['a3'];?>"/>
-<input type="hidden" id="p1_<?php echo $t['key'];?>" value="<?php echo $t['p1'];?>"/>
-<input type="hidden" id="p2_<?php echo $t['key'];?>" value="<?php echo $t['p2'];?>"/>
-<input type="hidden" id="p3_<?php echo $t['key'];?>" value="<?php echo $t['p3'];?>"/>
+<input type="hidden" id="step_<?php echo $t['key'];?>" value='<?php echo json_encode($t['step'])?>'>
 <input type="hidden" id="amount_<?php echo $t['key'];?>" value="<?php echo $t['amount'];?>"/>
-<input type="hidden" id="fee_start_<?php echo $t['key'];?>_1" value="<?php echo $t['fee_start_1'];?>"/>
-<input type="hidden" id="fee_step_<?php echo $t['key'];?>_1" value="<?php echo $t['fee_step_1'];?>"/>
-<input type="hidden" id="fee_start_<?php echo $t['key'];?>_2" value="<?php echo $t['fee_start_2'];?>"/>
-<input type="hidden" id="fee_step_<?php echo $t['key'];?>_2" value="<?php echo $t['fee_step_2'];?>"/>
-<input type="hidden" id="fee_start_<?php echo $t['key'];?>_3" value="<?php echo $t['fee_start_3'];?>"/>
-<input type="hidden" id="fee_step_<?php echo $t['key'];?>_3" value="<?php echo $t['fee_step_3'];?>"/>
 <span class="we_f1_2">$ </span>
 <span class="we_f1_2" id="total_<?php echo $t['key'];?>" total-<?php echo $t['username'];?>="1">0.00</span></td>
 </tr>
@@ -119,7 +109,7 @@ border-bottom: 1px solid var(--background-color);
 </tr>
 <tr>
 <td class="tl"> </td>
-<td><input type="submit" name="submit" value=" Checkout " class="btn-green"/></td>
+<td><input type="submit" name="submit" value="Confirm Order" class="btn-green" style="padding: 4px 8px; width: auto;"/></td>
 </tr>
 </table>
 </form>
@@ -193,39 +183,42 @@ Dd('number_'+i).value = parseInt(Dd('number_'+i).value) - 1;
 }
 calculate();
 }
-function get_price(i) {
-if(Dd('a2_'+i).value > 0) {
-if(Dd('a3_'+i).value > 1 && parseInt(Dd('number_'+i).value) > parseInt(Dd('a3_'+i).value)) return Dd('p3_'+i).value;
-if(Dd('a2_'+i).value > 1 && parseInt(Dd('number_'+i).value) > parseInt(Dd('a2_'+i).value)) return Dd('p2_'+i).value;
+function get_price(step, num){
+var i;
+for(i=1; i < (Object.keys(step).length/2)+1; i++){
+if( num < step["a"+i] ) break;
 }
-return Dd('p1_'+i).value
+return step["p"+(i-1)];
 }
 function calculate() {
-var _good = 0;
+var _good = 0; var _total = 0;
 $('[data-key]').each(function() {
 var num, good, maxa, mina, price;
 var key = $(this).attr('data-key');
+
+var step = JSON.parse(Dd('step_'+key).value);
 num = parseInt(Dd('number_'+key).value);
-mina = parseInt(Dd('a1_'+key).value);
+mina = step['a1'];
 if(num < mina) Dd('number_'+key).value = num = mina;
 if(isNaN(num) || num < 0) Dd('number_'+key).value = num = mina;
-price = parseFloat(get_price(key));
+price = parseFloat(get_price(step, num));
 good = price*num;
 Dd('total_'+key).innerHTML = good.toFixed(2);
 Dd('price_'+key).innerHTML = price.toFixed(2);
 _good += 1;
+_total += good;
 });
-var d_c = 0;
 var t_a = _good;
-$('[data-user]').each(function() {
-var user = $(this).attr('data-user');
-var t_t = 0;
-$('[total-'+user+']').each(function() {
-t_t += parseFloat($(this).html());
-});
-$(this).html(t_t.toFixed(2));
-});
-$('#total_price').html(_good.toFixed(2));
+var d_c = _total;
+// $('[data-user]').each(function() {
+// var user = $(this).attr('data-user');
+// var t_t = 0;
+// $('[total-'+user+']').each(function() {
+// t_t += parseFloat($(this).html());
+// });
+// $(this).html(t_t.toFixed(2));
+// });
+$('#total_price').html(d_c.toFixed(2));
 $('#total_amount').html(t_a.toFixed(2));
 }
 <?php if($lists) { ?>
